@@ -68,8 +68,8 @@
     }
 
     // =========================================================================
-    // FOUNTAIN PARTICLE SYSTEM
-    // Elegant water droplets that spout from the fountain logo on scroll
+    // FOUNTAIN PARTICLE SYSTEM v2
+    // Wide cascading arcs of luminous mist — like light catching water spray
     // =========================================================================
     var canvas = document.querySelector('.hero-fountain-canvas');
     var logo = document.querySelector('.hero-logo-mark');
@@ -83,20 +83,7 @@
         var scrollVelocity = 0;
         var lastScrollY = 0;
         var animating = false;
-
-        // Gold/water colour palette — translucent, classy
-        var colours = [
-            'rgba(196, 164, 74, 0.ALPHA)',   // gold
-            'rgba(212, 185, 106, 0.ALPHA)',   // light gold
-            'rgba(255, 255, 255, 0.ALPHA)',   // white shimmer
-            'rgba(180, 150, 60, 0.ALPHA)',    // warm gold
-            'rgba(220, 200, 140, 0.ALPHA)'    // pale gold
-        ];
-
-        function getColour(alpha) {
-            var tpl = colours[Math.floor(Math.random() * colours.length)];
-            return tpl.replace('ALPHA', alpha.toFixed(2));
-        }
+        var MAX_PARTICLES = 300;
 
         function resize() {
             var rect = canvas.parentElement.getBoundingClientRect();
@@ -107,79 +94,137 @@
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
-        // Get fountain spout position (top-centre of the logo image)
+        // Fountain spout position — top of the fountain bowl
         function getSpoutPos() {
             var logoRect = logo.getBoundingClientRect();
             var heroRect = canvas.parentElement.getBoundingClientRect();
             return {
                 x: logoRect.left + logoRect.width / 2 - heroRect.left,
-                y: logoRect.top - heroRect.top + logoRect.height * 0.15
+                y: logoRect.top - heroRect.top + logoRect.height * 0.12,
+                w: logoRect.width
             };
         }
 
-        function Particle(x, y, intensity) {
-            // Spout upward then arc and fall
-            var angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.8;
-            var speed = 1.2 + Math.random() * 2.5 * Math.min(intensity, 1);
+        // --- Particle: a single luminous water droplet ---
+        function Particle(cx, cy, fountainWidth) {
+            // Wide fan spray — arcs out left and right like a real fountain
+            // Pick a random arc from -150° to -30° (wide umbrella shape)
+            var side = Math.random() < 0.5 ? -1 : 1;
+            var spreadAngle = 0.3 + Math.random() * 1.0; // 17° to 74° from vertical
+            var angle = -Math.PI / 2 + side * spreadAngle;
 
-            this.x = x + (Math.random() - 0.5) * 6;
-            this.y = y;
+            // Some particles go nearly straight up (central jet)
+            if (Math.random() < 0.25) {
+                angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.3;
+            }
+
+            var speed = 1.8 + Math.random() * 3.0;
+
+            // Spawn from a wider area across the fountain top
+            var spawnSpread = fountainWidth * 0.3;
+            this.x = cx + (Math.random() - 0.5) * spawnSpread;
+            this.y = cy;
             this.vx = Math.cos(angle) * speed;
             this.vy = Math.sin(angle) * speed;
-            this.gravity = 0.03 + Math.random() * 0.02;
-            this.life = 1;
-            this.decay = 0.004 + Math.random() * 0.006;
-            this.radius = 1 + Math.random() * 2;
-            this.baseAlpha = 0.15 + Math.random() * 0.25;
-            this.colour = Math.floor(Math.random() * colours.length);
+            this.gravity = 0.025 + Math.random() * 0.025;
+            this.drag = 0.997;
+            this.life = 1.0;
+            this.decay = 0.003 + Math.random() * 0.005;
+            this.baseAlpha = 0.08 + Math.random() * 0.18;
+
+            // Vary sizes — mostly fine mist with occasional larger drops
+            var sizeRoll = Math.random();
+            if (sizeRoll < 0.6) {
+                this.radius = 1.5 + Math.random() * 1.5; // fine mist
+            } else if (sizeRoll < 0.9) {
+                this.radius = 3 + Math.random() * 2;      // medium drops
+            } else {
+                this.radius = 5 + Math.random() * 3;      // large soft orbs
+            }
+
+            // Colour — mostly white/silver with hints of gold
+            var colourRoll = Math.random();
+            if (colourRoll < 0.45) {
+                this.r = 255; this.g = 255; this.b = 255;  // pure white
+            } else if (colourRoll < 0.7) {
+                this.r = 230; this.g = 225; this.b = 210;  // warm white
+            } else if (colourRoll < 0.85) {
+                this.r = 210; this.g = 195; this.b = 140;  // soft gold
+            } else {
+                this.r = 196; this.g = 180; this.b = 120;  // richer gold
+            }
         }
 
         Particle.prototype.update = function () {
             this.vy += this.gravity;
             this.x += this.vx;
             this.y += this.vy;
-            this.vx *= 0.995;
+            this.vx *= this.drag;
+            this.vy *= this.drag;
             this.life -= this.decay;
         };
 
-        Particle.prototype.draw = function (ctx) {
+        Particle.prototype.draw = function () {
             if (this.life <= 0) return;
-            var alpha = this.life * this.baseAlpha;
-            var tpl = colours[this.colour];
-            ctx.fillStyle = tpl.replace('ALPHA', alpha.toFixed(3));
+
+            // Fade in quickly, hold, then fade out
+            var fadeIn = Math.min(1, (1 - this.life) * 8);
+            var fadeOut = this.life;
+            var alpha = fadeIn * fadeOut * this.baseAlpha;
+            if (alpha < 0.005) return;
+
+            var r = this.radius * (0.6 + this.life * 0.4);
+
+            // Soft glow for larger particles
+            if (r > 3) {
+                ctx.globalAlpha = alpha * 0.3;
+                ctx.fillStyle = 'rgb(' + this.r + ',' + this.g + ',' + this.b + ')';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, r * 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Core droplet
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = 'rgb(' + this.r + ',' + this.g + ',' + this.b + ')';
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius * this.life, 0, Math.PI * 2);
+            ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
             ctx.fill();
         };
 
-        function spawnBurst(count, intensity) {
+        function spawnWave(count) {
+            if (particles.length > MAX_PARTICLES) return;
             var pos = getSpoutPos();
             for (var i = 0; i < count; i++) {
-                particles.push(new Particle(pos.x, pos.y, intensity));
+                particles.push(new Particle(pos.x, pos.y, pos.w));
             }
         }
 
         function tick() {
             if (!animating) return;
 
-            ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+            var w = canvas.width / dpr;
+            var h = canvas.height / dpr;
+            ctx.clearRect(0, 0, w, h);
+            ctx.globalAlpha = 1;
 
-            // Update and draw particles
             for (var i = particles.length - 1; i >= 0; i--) {
                 var p = particles[i];
                 p.update();
-                p.draw(ctx);
+                p.draw();
 
-                if (p.life <= 0 || p.y > canvas.height / dpr + 20) {
+                if (p.life <= 0 || p.y > h + 30 || p.x < -30 || p.x > w + 30) {
                     particles.splice(i, 1);
                 }
             }
 
-            // Continuous gentle drip while scrolling
+            ctx.globalAlpha = 1;
+
+            // Spawn while scrolling within hero
             if (isScrolling && window.scrollY < window.innerHeight) {
-                var intensity = Math.min(Math.abs(scrollVelocity) / 40, 1);
-                var count = Math.ceil(1 + intensity * 3);
-                spawnBurst(count, intensity);
+                var intensity = Math.min(Math.abs(scrollVelocity) / 20, 1);
+                var count = Math.ceil(3 + intensity * 8);
+                spawnWave(count);
             }
 
             if (particles.length > 0 || isScrolling) {
@@ -200,7 +245,6 @@
             scrollVelocity = window.scrollY - lastScrollY;
             lastScrollY = window.scrollY;
 
-            // Only run particles while hero is in view
             if (window.scrollY > window.innerHeight) return;
 
             isScrolling = true;
@@ -209,17 +253,16 @@
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(function () {
                 isScrolling = false;
-            }, 150);
+            }, 200);
         }, { passive: true });
 
-        // Resize canvas on load and window resize
         resize();
         window.addEventListener('resize', resize);
 
-        // Small initial burst after hero animation completes
+        // Gentle opening burst after hero animation settles
         setTimeout(function () {
-            spawnBurst(8, 0.4);
+            spawnWave(20);
             startAnimation();
-        }, 1800);
+        }, 2000);
     }
 })();

@@ -1,12 +1,15 @@
 # Changelog
 
+## [Build 12] — 2026-04-08
+- Rebuilt fountain particle system v2: wide cascading spray arcs instead of single stream
+- Particles fan out left and right in an umbrella shape like a real ornamental fountain
+- Mixed particle sizes: fine mist, medium drops, and large luminous soft-glow orbs
+- White/silver dominant palette with warm gold accents — looks like light catching water
+- Larger particles get a soft bloom/glow halo for ethereal feel
+- Scroll-velocity-responsive: faster scroll = denser spray (up to 300 particle cap)
+
 ## [Build 11] — 2026-04-08
-- Fountain particle system: gold-tinted water droplets spout from the fountain logo on scroll
-- Canvas overlay on hero with physics-based particles (gravity, drift, fade)
-- Particles spawn proportional to scroll velocity for a responsive feel
-- Subtle initial burst after hero entrance animation completes
-- Gold/white colour palette with translucent rendering for classy, understated effect
-- Only active while hero is in viewport, self-cleans when offscreen
+- Initial fountain particle system (replaced in Build 12)
 
 ## [Build 10] — 2026-04-08
 - Luxury homepage redesign: cinematic full-bleed hero with gold accents, film grain texture, and entrance animations
