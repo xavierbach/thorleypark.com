@@ -21,6 +21,12 @@
     --garden-accent: #3d6b1e;
     --garden-gold: #b8960c;
 
+    /* Luxe gold palette */
+    --gold: #c4a44a;
+    --gold-light: #d4b96a;
+    --gold-soft: rgba(196, 164, 74, 0.15);
+    --gold-line: rgba(196, 164, 74, 0.35);
+
     /* Devs palette */
     --devs-dark: #0b1120;
     --devs-blue: #3b82f6;
@@ -208,9 +214,12 @@ img {
     background: var(--garden-green);
 }
 
-/* --- Home Hero --- */
+/* ==========================================================================
+   HOME HERO — Cinematic, full-bleed, luxe
+   ========================================================================== */
 .hero {
     min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -225,45 +234,69 @@ img {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse at 25% 50%, rgba(61, 107, 30, 0.2) 0%, transparent 60%),
-        radial-gradient(ellipse at 75% 50%, rgba(11, 17, 32, 0.4) 0%, transparent 60%);
+        radial-gradient(ellipse at 20% 40%, rgba(61, 107, 30, 0.25) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 60%, rgba(11, 17, 32, 0.5) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, 0.3) 0%, transparent 50%);
 }
 
 .hero::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.012'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Film grain overlay */
+.hero-bg-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    pointer-events: none;
+    z-index: 1;
 }
 
 .hero-content {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     padding: 24px;
 }
 
 .hero-logo-mark {
     display: block;
-    width: 120px;
+    width: 100px;
     height: auto;
-    margin: 0 auto 40px;
-    opacity: 0.4;
+    margin: 0 auto 52px;
+    opacity: 0.3;
+    filter: brightness(1.2) saturate(0);
+    transition: opacity 0.8s ease;
 }
 
 .hero h1 {
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-size: clamp(3rem, 8vw, 6.5rem);
     color: var(--white);
-    margin-bottom: 16px;
-    letter-spacing: 0.18em;
+    margin-bottom: 0;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     font-weight: 300;
+    line-height: 1;
+}
+
+/* Gold accent line under hero title */
+.hero-gold-line {
+    width: 64px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 28px auto 24px;
+    opacity: 0.6;
 }
 
 .hero-subtitle {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.35);
     font-weight: 400;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
 }
 
@@ -272,23 +305,86 @@ img {
     bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1;
+    z-index: 2;
 }
 
 .hero-scroll span {
     display: block;
     width: 1px;
-    height: 48px;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
-    animation: scrollPulse 2s ease-in-out infinite;
+    height: 56px;
+    background: linear-gradient(to bottom, var(--gold-line), transparent);
+    animation: scrollPulse 2.5s ease-in-out infinite;
 }
 
 @keyframes scrollPulse {
     0%, 100% { opacity: 0.3; transform: scaleY(1); }
-    50% { opacity: 0.6; transform: scaleY(1.2); }
+    50% { opacity: 0.7; transform: scaleY(1.15); }
 }
 
-/* --- Split Cards (Home) --- */
+/* ==========================================================================
+   ESSENCE SECTION — Homepage statement
+   ========================================================================== */
+.essence {
+    padding: 120px 40px;
+    background: var(--garden-bg);
+    text-align: center;
+    position: relative;
+}
+
+.essence::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, var(--gold-line), transparent);
+}
+
+.essence-inner {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.essence-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 40px;
+}
+
+.essence-statement {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.3;
+    color: var(--garden-green);
+    margin-bottom: 0;
+}
+
+.essence-gold-line {
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    margin: 36px auto;
+    opacity: 0.4;
+}
+
+.essence-sub {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--text-mid);
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   SPLIT CARDS — Luxe upgrade
+   ========================================================================== */
 .split {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -298,7 +394,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 100px 60px;
+    padding: 120px 60px;
     transition: all var(--transition-slow);
     position: relative;
     overflow: hidden;
@@ -340,26 +436,48 @@ img {
 }
 
 .split-label {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     display: block;
 }
 
 .split-garden .split-label {
-    color: var(--garden-accent);
+    color: var(--gold);
 }
 
 .split-devs .split-label {
-    color: var(--devs-blue-light);
+    color: var(--gold-light);
+}
+
+.split-line {
+    width: 32px;
+    height: 1px;
+    margin-bottom: 24px;
+    transition: width var(--transition);
+}
+
+.split-garden .split-line {
+    background: var(--gold);
+    opacity: 0.35;
+}
+
+.split-devs .split-line {
+    background: var(--gold-light);
+    opacity: 0.25;
+}
+
+.split-card:hover .split-line {
+    width: 56px;
 }
 
 .split-card h2 {
-    font-size: 2.4rem;
+    font-size: 2.6rem;
     margin-bottom: 20px;
-    font-weight: 400;
+    font-weight: 300;
+    letter-spacing: 0.04em;
 }
 
 .split-garden h2 {
@@ -371,9 +489,9 @@ img {
 }
 
 .split-card p {
-    font-size: 0.95rem;
-    line-height: 1.8;
-    margin-bottom: 28px;
+    font-size: 0.92rem;
+    line-height: 1.85;
+    margin-bottom: 32px;
 }
 
 .split-garden p {
@@ -386,12 +504,13 @@ img {
 
 .split-cta {
     font-weight: 500;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: gap var(--transition);
+    transition: gap var(--transition), color var(--transition);
 }
 
 .split-garden .split-cta {
@@ -406,7 +525,164 @@ img {
     gap: 14px;
 }
 
-/* --- Page Heroes --- */
+/* ==========================================================================
+   LOCATION BAND
+   ========================================================================== */
+.location-band {
+    padding: 72px 40px;
+    background: var(--garden-green);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.location-band::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 30% 50%, rgba(61, 107, 30, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 50%, rgba(0, 0, 0, 0.2) 0%, transparent 60%);
+}
+
+.location-inner {
+    position: relative;
+    z-index: 1;
+}
+
+.location-coords {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 20px;
+}
+
+.location-divider {
+    width: 32px;
+    height: 1px;
+    background: var(--gold-line);
+    margin: 0 auto 20px;
+}
+
+.location-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   LUXE FOOTER
+   ========================================================================== */
+.footer-luxe {
+    padding: 64px 40px 48px;
+    background: var(--garden-bg);
+    border-top: none;
+    text-align: center;
+}
+
+.footer-logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.footer-fountain {
+    width: 36px;
+    height: auto;
+    opacity: 0.25;
+    filter: saturate(0);
+}
+
+.footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--garden-green);
+    opacity: 0.7;
+}
+
+.footer-gold-line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.25;
+    margin: 28px auto;
+}
+
+/* --- Standard Footer (subpages) --- */
+.footer {
+    padding: 48px 40px;
+    text-align: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    background: var(--garden-bg);
+}
+
+.footer-devs {
+    background: var(--devs-dark);
+    border-top-color: rgba(255, 255, 255, 0.04);
+}
+
+.footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.footer-nav {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 24px;
+}
+
+.footer-nav a {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    transition: color var(--transition);
+}
+
+.footer-nav a:hover {
+    color: var(--garden-green);
+}
+
+.footer-devs .footer-nav a {
+    color: var(--devs-gray-dark);
+}
+
+.footer-devs .footer-nav a:hover {
+    color: var(--devs-blue);
+}
+
+.footer p {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.footer-devs p {
+    color: var(--devs-gray-dark);
+}
+
+.footer-location {
+    margin-top: 4px;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   PAGE HEROES (Garden & Devs subpages)
+   ========================================================================== */
 .page-hero {
     min-height: 50vh;
     display: flex;
@@ -472,7 +748,9 @@ img {
     margin: 28px auto;
 }
 
-/* --- Content Sections --- */
+/* ==========================================================================
+   CONTENT SECTIONS (subpages)
+   ========================================================================== */
 .content-section {
     padding: 100px 0;
 }
@@ -556,7 +834,9 @@ img {
     border: 1px solid rgba(59, 130, 246, 0.08);
 }
 
-/* --- Feature Cards --- */
+/* ==========================================================================
+   FEATURE CARDS
+   ========================================================================== */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -618,7 +898,9 @@ img {
     line-height: 1.7;
 }
 
-/* --- Projects Grid --- */
+/* ==========================================================================
+   PROJECTS GRID
+   ========================================================================== */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -700,7 +982,9 @@ img {
     color: var(--devs-blue-light);
 }
 
-/* --- CTA Boxes --- */
+/* ==========================================================================
+   CTA BOXES
+   ========================================================================== */
 .cta-box {
     text-align: center;
     padding: 72px 48px;
@@ -767,7 +1051,9 @@ img {
     color: var(--devs-gray);
 }
 
-/* --- Buttons --- */
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
 .btn {
     display: inline-block;
     padding: 15px 36px;
@@ -801,67 +1087,9 @@ img {
     box-shadow: 0 8px 28px rgba(59, 130, 246, 0.3);
 }
 
-/* --- Footer --- */
-.footer {
-    padding: 48px 40px;
-    text-align: center;
-    border-top: 1px solid rgba(0, 0, 0, 0.04);
-    background: var(--garden-bg);
-}
-
-.footer-devs {
-    background: var(--devs-dark);
-    border-top-color: rgba(255, 255, 255, 0.04);
-}
-
-.footer-inner {
-    max-width: var(--max-width);
-    margin: 0 auto;
-}
-
-.footer-nav {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    margin-bottom: 24px;
-}
-
-.footer-nav a {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-light);
-    transition: color var(--transition);
-}
-
-.footer-nav a:hover {
-    color: var(--garden-green);
-}
-
-.footer-devs .footer-nav a {
-    color: var(--devs-gray-dark);
-}
-
-.footer-devs .footer-nav a:hover {
-    color: var(--devs-blue);
-}
-
-.footer p {
-    font-size: 0.8rem;
-    color: var(--text-light);
-}
-
-.footer-devs p {
-    color: var(--devs-gray-dark);
-}
-
-.footer-location {
-    margin-top: 4px;
-    font-size: 0.75rem !important;
-    letter-spacing: 0.05em;
-}
-
-/* --- Animations --- */
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
 .fade-in {
     opacity: 0;
     transform: translateY(24px);
@@ -873,7 +1101,65 @@ img {
     transform: translateY(0);
 }
 
-/* --- Responsive --- */
+/* Staggered reveal for homepage sections */
+.reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hero entrance animation */
+.hero-content {
+    animation: heroReveal 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+@keyframes heroReveal {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-logo-mark {
+    animation: heroReveal 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0s both;
+}
+
+.hero-gold-line {
+    animation: lineExpand 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.6s both;
+}
+
+@keyframes lineExpand {
+    from {
+        opacity: 0;
+        width: 0;
+    }
+    to {
+        opacity: 0.6;
+        width: 64px;
+    }
+}
+
+.hero-subtitle {
+    animation: heroReveal 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+}
+
+.hero-scroll span {
+    animation: scrollPulse 2.5s ease-in-out 1.5s infinite;
+    opacity: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
 @media (max-width: 768px) {
     .nav {
         padding: 18px 24px;
@@ -919,12 +1205,28 @@ img {
     }
 
     .split-card {
-        padding: 72px 32px;
+        padding: 80px 32px;
     }
 
     .split-garden {
         border-right: none;
         border-bottom: 1px solid rgba(26, 58, 10, 0.06);
+    }
+
+    .essence {
+        padding: 80px 28px;
+    }
+
+    .essence::before {
+        height: 48px;
+    }
+
+    .essence-statement {
+        font-size: clamp(1.6rem, 5vw, 2.2rem);
+    }
+
+    .location-band {
+        padding: 56px 28px;
     }
 
     .content-grid {
@@ -949,11 +1251,28 @@ img {
     .content-section {
         padding: 72px 0;
     }
+
+    .footer-luxe {
+        padding: 48px 24px 36px;
+    }
 }
 
 @media (max-width: 480px) {
     .hero h1 {
-        font-size: 2.2rem;
-        letter-spacing: 0.12em;
+        font-size: 2.4rem;
+        letter-spacing: 0.14em;
+    }
+
+    .hero-logo-mark {
+        width: 72px;
+        margin-bottom: 36px;
+    }
+
+    .footer-logo-section {
+        gap: 12px;
+    }
+
+    .footer-fountain {
+        width: 28px;
     }
 }

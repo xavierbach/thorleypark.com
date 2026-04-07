@@ -6,6 +6,7 @@
 - Upload fountain logo PNG to Canva brand kit Logos section
 
 ## Done
+- Luxury homepage redesign with gold accents, cinematic hero, essence section, location band
 - Feature Sorted app on devs Projects section
 - Update Canva brand kit with full colour palette and fonts
 - SEO optimisation — meta tags, structured data, sitemap, robots.txt

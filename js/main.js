@@ -24,7 +24,6 @@
             links.classList.toggle('open');
         });
 
-        // Close menu when a link is clicked
         links.querySelectorAll('a').forEach(function (link) {
             link.addEventListener('click', function () {
                 links.classList.remove('open');
@@ -32,21 +31,42 @@
         });
     }
 
-    // --- Scroll fade-in animations ---
-    const faders = document.querySelectorAll('.feature-card, .project-card, .cta-box, .content-grid');
+    // --- Scroll reveal animations ---
+    // Targets both homepage and subpage elements
+    var revealTargets = document.querySelectorAll(
+        '.essence-inner, .split-card, .location-inner, ' +
+        '.feature-card, .project-card, .cta-box, .content-grid'
+    );
 
     if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver(function (entries) {
+        var delay = 0;
+        var observer = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in', 'visible');
-                    observer.unobserve(entry.target);
+                    // Stagger siblings slightly
+                    var el = entry.target;
+                    var siblings = el.parentElement.querySelectorAll('.reveal, .fade-in');
+                    var idx = Array.prototype.indexOf.call(siblings, el);
+                    var stagger = Math.max(0, idx) * 80;
+
+                    setTimeout(function () {
+                        el.classList.add('visible');
+                    }, stagger);
+
+                    observer.unobserve(el);
                 }
             });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.12 });
 
-        faders.forEach(function (el) {
-            el.classList.add('fade-in');
+        revealTargets.forEach(function (el) {
+            // Use 'reveal' for homepage elements, 'fade-in' for subpage elements
+            if (el.classList.contains('essence-inner') ||
+                el.classList.contains('split-card') ||
+                el.classList.contains('location-inner')) {
+                el.classList.add('reveal');
+            } else {
+                el.classList.add('fade-in');
+            }
             observer.observe(el);
         });
     }

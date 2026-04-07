@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -68,14 +68,24 @@
     <main>
         <!-- Hero -->
         <section class="hero">
+            <div class="hero-bg-grain"></div>
             <div class="hero-content">
-                <!-- Fountain logo mark -->
                 <img src="images/fountain.png" alt="Thorley Park fountain logo" class="hero-logo-mark">
                 <h1>Thorley Park</h1>
-                <div class="divider" style="background: white; opacity: 0.15; margin: 20px auto 16px;"></div>
+                <div class="hero-gold-line"></div>
                 <p class="hero-subtitle">Mount Macedon, Victoria</p>
             </div>
             <div class="hero-scroll"><span></span></div>
+        </section>
+
+        <!-- Essence -->
+        <section class="essence">
+            <div class="essence-inner">
+                <span class="essence-label">Est. Mount Macedon</span>
+                <p class="essence-statement">Where heritage gardens meet<br>modern craft.</p>
+                <div class="essence-gold-line"></div>
+                <p class="essence-sub">A private estate reimagined &mdash; part botanical sanctuary, part digital studio. Two pursuits, one philosophy: build things worth caring about.</p>
+            </div>
         </section>
 
         <!-- Two worlds -->
@@ -84,28 +94,44 @@
                 <div class="split-card-inner">
                     <span class="split-label">Visit</span>
                     <h2>The Garden</h2>
-                    <p>A beautiful Mount Macedon garden, soon open to visitors. Come wander through seasonal blooms, towering trees, and curated garden rooms.</p>
+                    <div class="split-line"></div>
+                    <p>Seasonal blooms, heritage trees, and curated garden rooms across a stunning Mount Macedon property.</p>
                     <span class="split-cta">Explore <span>&rarr;</span></span>
                 </div>
             </a>
             <a href="/devs.html" class="split-card split-devs">
                 <div class="split-card-inner">
                     <span class="split-label">Build</span>
-                    <h2>Thorley Park Devs</h2>
-                    <p>Boutique app development. We turn ideas into polished, reliable software for iOS, Android, and the web.</p>
+                    <h2>The Studio</h2>
+                    <div class="split-line"></div>
+                    <p>Boutique software development. Polished, reliable apps for iOS, Android, and the web.</p>
                     <span class="split-cta">Learn more <span>&rarr;</span></span>
                 </div>
             </a>
         </section>
+
+        <!-- Location band -->
+        <section class="location-band">
+            <div class="location-inner">
+                <span class="location-coords">37.4&deg;S &nbsp; 144.5&deg;E</span>
+                <div class="location-divider"></div>
+                <p class="location-text">Nestled in the Macedon Ranges, an hour north-west of Melbourne.</p>
+            </div>
+        </section>
     </main>
 
-    <footer class="footer">
+    <footer class="footer footer-luxe">
         <div class="footer-inner">
+            <div class="footer-logo-section">
+                <img src="images/fountain.png" alt="" class="footer-fountain">
+                <span class="footer-brand">Thorley Park</span>
+            </div>
             <nav class="footer-nav">
                 <a href="/garden.html">The Garden</a>
                 <a href="/devs.html">The Studio</a>
                 <a href="mailto:hello@thorleypark.com">Contact</a>
             </nav>
+            <div class="footer-gold-line"></div>
             <p>&copy; 2026 Thorley Park</p>
             <p class="footer-location">Mount Macedon, Victoria, Australia</p>
         </div>
