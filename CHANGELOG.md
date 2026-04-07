@@ -1,7 +1,12 @@
 # Changelog
 
+## [Build 15] — 2026-04-08
+- Garden split card background changed to #3D6B1E with white/gold text for contrast
+- Essence label updated to "Est. 2017"
+- Remove fountain particle/string effects — cleaner hero
+
 ## [Build 14] — 2026-04-08
-- Remove fountain particle/string effects — cleaner hero without animation gimmicks
+- Fountain string effects (removed in Build 15)
 
 ## [Build 13] — 2026-04-08
 - Rebuilt fountain effect as flowing strings: thin luminous threads that cascade from the fountain

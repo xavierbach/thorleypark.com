@@ -413,12 +413,12 @@ img {
 }
 
 .split-garden {
-    background: var(--garden-bg);
-    border-right: 1px solid rgba(26, 58, 10, 0.06);
+    background: var(--garden-green-light);
+    border-right: none;
 }
 
 .split-garden::before {
-    background: linear-gradient(135deg, rgba(26, 58, 10, 0.02), rgba(61, 107, 30, 0.05));
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.03));
 }
 
 .split-devs {
@@ -445,7 +445,7 @@ img {
 }
 
 .split-garden .split-label {
-    color: var(--gold);
+    color: var(--gold-light);
 }
 
 .split-devs .split-label {
@@ -460,8 +460,8 @@ img {
 }
 
 .split-garden .split-line {
-    background: var(--gold);
-    opacity: 0.35;
+    background: var(--gold-light);
+    opacity: 0.4;
 }
 
 .split-devs .split-line {
@@ -481,7 +481,7 @@ img {
 }
 
 .split-garden h2 {
-    color: var(--garden-green);
+    color: var(--white);
 }
 
 .split-devs h2 {
@@ -495,7 +495,7 @@ img {
 }
 
 .split-garden p {
-    color: var(--text-mid);
+    color: rgba(255, 255, 255, 0.65);
 }
 
 .split-devs p {
@@ -514,7 +514,7 @@ img {
 }
 
 .split-garden .split-cta {
-    color: var(--garden-green-mid);
+    color: var(--white);
 }
 
 .split-devs .split-cta {
@@ -1210,7 +1210,7 @@ img {
 
     .split-garden {
         border-right: none;
-        border-bottom: 1px solid rgba(26, 58, 10, 0.06);
+        border-bottom: none;
     }
 
     .essence {
