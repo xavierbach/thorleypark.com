@@ -6,7 +6,7 @@
 - Upload fountain logo PNG to Canva brand kit Logos section
 
 ## Done
-- Fountain particle system v2: wide cascading spray with luminous mist and soft-glow orbs
+- Fountain flowing strings effect with cursor tracking, centred footer logo
 - Luxury homepage redesign with gold accents, cinematic hero, essence section, location band
 - Feature Sorted app on devs Projects section
 - Update Canva brand kit with full colour palette and fonts

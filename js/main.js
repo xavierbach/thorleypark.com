@@ -68,8 +68,9 @@
     }
 
     // =========================================================================
-    // FOUNTAIN PARTICLE SYSTEM v2
-    // Wide cascading arcs of luminous mist — like light catching water spray
+    // FOUNTAIN STRINGS
+    // Thin luminous threads that cascade from the fountain and drift toward
+    // the cursor — elegant, slow, like silk caught in a breeze
     // =========================================================================
     var canvas = document.querySelector('.hero-fountain-canvas');
     var logo = document.querySelector('.hero-logo-mark');
@@ -77,13 +78,15 @@
     if (canvas && logo) {
         var ctx = canvas.getContext('2d');
         var dpr = window.devicePixelRatio || 1;
-        var particles = [];
+        var strands = [];
         var isScrolling = false;
         var scrollTimeout = null;
-        var scrollVelocity = 0;
-        var lastScrollY = 0;
         var animating = false;
-        var MAX_PARTICLES = 300;
+        var time = 0;
+        var MAX_STRANDS = 14;
+
+        // Mouse position relative to hero (null when cursor is outside)
+        var mouse = { x: null, y: null, active: false };
 
         function resize() {
             var rect = canvas.parentElement.getBoundingClientRect();
@@ -94,140 +97,187 @@
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         }
 
-        // Fountain spout position — top of the fountain bowl
         function getSpoutPos() {
             var logoRect = logo.getBoundingClientRect();
             var heroRect = canvas.parentElement.getBoundingClientRect();
             return {
                 x: logoRect.left + logoRect.width / 2 - heroRect.left,
-                y: logoRect.top - heroRect.top + logoRect.height * 0.12,
+                y: logoRect.top - heroRect.top + logoRect.height * 0.1,
                 w: logoRect.width
             };
         }
 
-        // --- Particle: a single luminous water droplet ---
-        function Particle(cx, cy, fountainWidth) {
-            // Wide fan spray — arcs out left and right like a real fountain
-            // Pick a random arc from -150° to -30° (wide umbrella shape)
+        // Track mouse within the hero section
+        var hero = canvas.parentElement;
+        hero.addEventListener('mousemove', function (e) {
+            var rect = hero.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+            mouse.active = true;
+        });
+        hero.addEventListener('mouseleave', function () {
+            mouse.active = false;
+        });
+
+        // --- Strand: a flowing thread of water ---
+        function Strand(cx, cy, fountainWidth) {
             var side = Math.random() < 0.5 ? -1 : 1;
-            var spreadAngle = 0.3 + Math.random() * 1.0; // 17° to 74° from vertical
-            var angle = -Math.PI / 2 + side * spreadAngle;
 
-            // Some particles go nearly straight up (central jet)
-            if (Math.random() < 0.25) {
-                angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.3;
+            var spread;
+            if (Math.random() < 0.3) {
+                spread = side * (Math.random() * 0.3);
+            } else {
+                spread = side * (0.2 + Math.random() * 0.8);
             }
 
-            var speed = 1.8 + Math.random() * 3.0;
-
-            // Spawn from a wider area across the fountain top
-            var spawnSpread = fountainWidth * 0.3;
-            this.x = cx + (Math.random() - 0.5) * spawnSpread;
-            this.y = cy;
-            this.vx = Math.cos(angle) * speed;
-            this.vy = Math.sin(angle) * speed;
-            this.gravity = 0.025 + Math.random() * 0.025;
-            this.drag = 0.997;
+            this.points = [];
+            this.originX = cx + (Math.random() - 0.5) * fountainWidth * 0.25;
+            this.originY = cy;
+            this.driftX = spread * 0.5;
+            this.fallSpeed = 0.3 + Math.random() * 0.35;
+            this.swaySeed = Math.random() * Math.PI * 2;
+            this.swayAmount = 0.15 + Math.random() * 0.25;
+            this.swaySpeed = 0.008 + Math.random() * 0.012;
             this.life = 1.0;
-            this.decay = 0.003 + Math.random() * 0.005;
-            this.baseAlpha = 0.08 + Math.random() * 0.18;
+            this.decay = 0.0018 + Math.random() * 0.0018;
+            this.maxPoints = 70 + Math.floor(Math.random() * 50);
+            this.age = 0;
+            this.lineWidth = 0.8 + Math.random() * 1.2;
 
-            // Vary sizes — mostly fine mist with occasional larger drops
-            var sizeRoll = Math.random();
-            if (sizeRoll < 0.6) {
-                this.radius = 1.5 + Math.random() * 1.5; // fine mist
-            } else if (sizeRoll < 0.9) {
-                this.radius = 3 + Math.random() * 2;      // medium drops
+            // How strongly this strand is attracted to the cursor
+            this.cursorAffinity = 0.01 + Math.random() * 0.025;
+
+            var roll = Math.random();
+            if (roll < 0.5) {
+                this.colour = [255, 255, 255];
+            } else if (roll < 0.75) {
+                this.colour = [235, 230, 215];
             } else {
-                this.radius = 5 + Math.random() * 3;      // large soft orbs
+                this.colour = [210, 195, 150];
             }
 
-            // Colour — mostly white/silver with hints of gold
-            var colourRoll = Math.random();
-            if (colourRoll < 0.45) {
-                this.r = 255; this.g = 255; this.b = 255;  // pure white
-            } else if (colourRoll < 0.7) {
-                this.r = 230; this.g = 225; this.b = 210;  // warm white
-            } else if (colourRoll < 0.85) {
-                this.r = 210; this.g = 195; this.b = 140;  // soft gold
-            } else {
-                this.r = 196; this.g = 180; this.b = 120;  // richer gold
-            }
+            this.baseAlpha = 0.15 + Math.random() * 0.2;
         }
 
-        Particle.prototype.update = function () {
-            this.vy += this.gravity;
-            this.x += this.vx;
-            this.y += this.vy;
-            this.vx *= this.drag;
-            this.vy *= this.drag;
+        Strand.prototype.update = function () {
+            this.age++;
             this.life -= this.decay;
+
+            if (this.points.length < this.maxPoints && this.life > 0.2) {
+                var lastX, lastY;
+                if (this.points.length === 0) {
+                    lastX = this.originX;
+                    lastY = this.originY;
+                } else {
+                    var last = this.points[this.points.length - 1];
+                    lastX = last.x;
+                    lastY = last.y;
+                }
+
+                // Gentle sway
+                var sway = Math.sin(this.swaySeed + this.age * this.swaySpeed) * this.swayAmount;
+
+                // Cursor attraction — strand tips drift toward mouse
+                var cursorPull = 0;
+                if (mouse.active && mouse.x !== null) {
+                    var dx = mouse.x - lastX;
+                    var dy = mouse.y - lastY;
+                    var dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist > 10 && dist < 400) {
+                        // Gentle pull scaled by distance — stronger when closer
+                        var strength = this.cursorAffinity * (1 - dist / 400);
+                        cursorPull = dx * strength;
+
+                        // Also subtly pull downward toward cursor y
+                        this.fallSpeed += dy * strength * 0.003;
+                    }
+                }
+
+                var newX = lastX + this.driftX + sway + cursorPull;
+                var newY = lastY + this.fallSpeed;
+
+                // Gentle gravity acceleration
+                this.fallSpeed += 0.004;
+                // Clamp so strands don't fall too fast
+                if (this.fallSpeed > 1.8) this.fallSpeed = 1.8;
+
+                this.points.push({ x: newX, y: newY });
+            }
         };
 
-        Particle.prototype.draw = function () {
-            if (this.life <= 0) return;
+        Strand.prototype.draw = function () {
+            if (this.points.length < 3 || this.life <= 0) return;
 
-            // Fade in quickly, hold, then fade out
-            var fadeIn = Math.min(1, (1 - this.life) * 8);
-            var fadeOut = this.life;
-            var alpha = fadeIn * fadeOut * this.baseAlpha;
-            if (alpha < 0.005) return;
+            var pts = this.points;
+            var r = this.colour[0];
+            var g = this.colour[1];
+            var b = this.colour[2];
 
-            var r = this.radius * (0.6 + this.life * 0.4);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
 
-            // Soft glow for larger particles
-            if (r > 3) {
-                ctx.globalAlpha = alpha * 0.3;
-                ctx.fillStyle = 'rgb(' + this.r + ',' + this.g + ',' + this.b + ')';
+            for (var i = 1; i < pts.length - 1; i++) {
+                var progress = i / pts.length;
+
+                // Fade in from origin, hold, taper at tail
+                var fadeIn = Math.min(1, i / 10);
+                var fadeTail = 1 - Math.pow(progress, 1.5);
+                var alpha = fadeIn * fadeTail * this.life * this.baseAlpha;
+
+                if (alpha < 0.003) continue;
+
+                // Taper width along length
+                var width = this.lineWidth * (1 - progress * 0.5);
+
+                ctx.strokeStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha.toFixed(3) + ')';
+                ctx.lineWidth = width;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, r * 2, 0, Math.PI * 2);
-                ctx.fill();
-            }
+                ctx.moveTo(pts[i - 1].x, pts[i - 1].y);
 
-            // Core droplet
-            ctx.globalAlpha = alpha;
-            ctx.fillStyle = 'rgb(' + this.r + ',' + this.g + ',' + this.b + ')';
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
-            ctx.fill();
+                var cpx = (pts[i].x + pts[i + 1].x) / 2;
+                var cpy = (pts[i].y + pts[i + 1].y) / 2;
+                ctx.quadraticCurveTo(pts[i].x, pts[i].y, cpx, cpy);
+                ctx.stroke();
+            }
         };
 
-        function spawnWave(count) {
-            if (particles.length > MAX_PARTICLES) return;
+        function spawnStrand() {
+            if (strands.length >= MAX_STRANDS) return;
             var pos = getSpoutPos();
-            for (var i = 0; i < count; i++) {
-                particles.push(new Particle(pos.x, pos.y, pos.w));
-            }
+            strands.push(new Strand(pos.x, pos.y, pos.w));
         }
+
+        var spawnAccumulator = 0;
 
         function tick() {
             if (!animating) return;
+            time++;
 
             var w = canvas.width / dpr;
             var h = canvas.height / dpr;
             ctx.clearRect(0, 0, w, h);
-            ctx.globalAlpha = 1;
 
-            for (var i = particles.length - 1; i >= 0; i--) {
-                var p = particles[i];
-                p.update();
-                p.draw();
+            for (var i = strands.length - 1; i >= 0; i--) {
+                var s = strands[i];
+                s.update();
+                s.draw();
 
-                if (p.life <= 0 || p.y > h + 30 || p.x < -30 || p.x > w + 30) {
-                    particles.splice(i, 1);
+                if (s.life <= 0 || (s.points.length > 0 && s.points[s.points.length - 1].y > h + 20)) {
+                    strands.splice(i, 1);
                 }
             }
 
-            ctx.globalAlpha = 1;
-
-            // Spawn while scrolling within hero
+            // Spawn strands gradually while scrolling
             if (isScrolling && window.scrollY < window.innerHeight) {
-                var intensity = Math.min(Math.abs(scrollVelocity) / 20, 1);
-                var count = Math.ceil(3 + intensity * 8);
-                spawnWave(count);
+                spawnAccumulator += 0.12;
+                while (spawnAccumulator >= 1) {
+                    spawnStrand();
+                    spawnAccumulator -= 1;
+                }
             }
 
-            if (particles.length > 0 || isScrolling) {
+            if (strands.length > 0 || isScrolling) {
                 requestAnimationFrame(tick);
             } else {
                 animating = false;
@@ -242,9 +292,6 @@
         }
 
         window.addEventListener('scroll', function () {
-            scrollVelocity = window.scrollY - lastScrollY;
-            lastScrollY = window.scrollY;
-
             if (window.scrollY > window.innerHeight) return;
 
             isScrolling = true;
@@ -253,16 +300,18 @@
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(function () {
                 isScrolling = false;
-            }, 200);
+            }, 300);
         }, { passive: true });
 
         resize();
         window.addEventListener('resize', resize);
 
-        // Gentle opening burst after hero animation settles
+        // Opening: a few strands cascade after hero entrance
         setTimeout(function () {
-            spawnWave(20);
+            for (var i = 0; i < 4; i++) {
+                setTimeout(spawnStrand, i * 500);
+            }
             startAnimation();
-        }, 2000);
+        }, 2200);
     }
 })();

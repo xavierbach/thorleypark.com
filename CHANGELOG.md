@@ -1,12 +1,16 @@
 # Changelog
 
+## [Build 13] — 2026-04-08
+- Rebuilt fountain effect as flowing strings: thin luminous threads that cascade from the fountain
+- Strands drift toward the cursor — each strand has its own cursor affinity for organic feel
+- Smooth quadratic curves between points with tapered width and fading opacity along length
+- Slow, elegant fall speed with gentle sway and gravity acceleration
+- Opening sequence: 4 strands spawn staggered after hero entrance animation
+- Max 14 concurrent strands, spawn gradually on scroll
+- Fix footer: stack fountain icon above brand text so "Thorley Park" is truly centred
+
 ## [Build 12] — 2026-04-08
-- Rebuilt fountain particle system v2: wide cascading spray arcs instead of single stream
-- Particles fan out left and right in an umbrella shape like a real ornamental fountain
-- Mixed particle sizes: fine mist, medium drops, and large luminous soft-glow orbs
-- White/silver dominant palette with warm gold accents — looks like light catching water
-- Larger particles get a soft bloom/glow halo for ethereal feel
-- Scroll-velocity-responsive: faster scroll = denser spray (up to 300 particle cap)
+- Particle spray effect (replaced in Build 13 with flowing strings)
 
 ## [Build 11] — 2026-04-08
 - Initial fountain particle system (replaced in Build 12)
