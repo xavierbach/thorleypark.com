@@ -1,5 +1,13 @@
 # Changelog
 
+## [Build 11] — 2026-04-08
+- Fountain particle system: gold-tinted water droplets spout from the fountain logo on scroll
+- Canvas overlay on hero with physics-based particles (gravity, drift, fade)
+- Particles spawn proportional to scroll velocity for a responsive feel
+- Subtle initial burst after hero entrance animation completes
+- Gold/white colour palette with translucent rendering for classy, understated effect
+- Only active while hero is in viewport, self-cleans when offscreen
+
 ## [Build 10] — 2026-04-08
 - Luxury homepage redesign: cinematic full-bleed hero with gold accents, film grain texture, and entrance animations
 - New "Essence" section with large serif statement, gold divider, and estate philosophy copy
