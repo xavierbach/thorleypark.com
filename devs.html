@@ -3,28 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thorley Park Devs — App Development</title>
-    <meta name="description" content="Thorley Park Devs — boutique app development for iOS, Android, and the web. Based in Mount Macedon, Victoria.">
+    <title>Thorley Park Devs — App Development | Mount Macedon</title>
+    <meta name="description" content="Thorley Park Devs — boutique app development for iOS, Android, and the web. Clean, reliable software built in Mount Macedon, Victoria.">
+    <link rel="canonical" href="https://thorleypark.com/devs.html">
+    <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" sizes="32x32">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <meta property="og:image" content="/images/og-image.png">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Thorley Park Devs — Boutique App Development">
+    <meta property="og:description" content="Boutique app development for iOS, Android, and the web. Clean, reliable software built in Mount Macedon, Victoria.">
+    <meta property="og:url" content="https://thorleypark.com/devs.html">
+    <meta property="og:image" content="https://thorleypark.com/images/og-image.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:locale" content="en_AU">
+    <meta property="og:site_name" content="Thorley Park">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Thorley Park Devs — Boutique App Development">
+    <meta name="twitter:description" content="Boutique app development for iOS, Android, and the web. Clean, reliable software built in Mount Macedon, Victoria.">
+    <meta name="twitter:image" content="https://thorleypark.com/images/og-image.png">
+    <!-- Styles -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Thorley Park Devs",
+        "url": "https://thorleypark.com/devs.html",
+        "description": "Boutique app development studio building clean, reliable software for iOS, Android, and the web.",
+        "image": "https://thorleypark.com/images/og-image.png",
+        "email": "dev@thorleypark.com",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Mount Macedon",
+            "addressRegion": "VIC",
+            "addressCountry": "AU"
+        },
+        "knowsAbout": ["iOS Development", "Android Development", "Web Development", "Swift", "Mobile Apps"]
+    }
+    </script>
 </head>
 <body class="page-devs">
 
-    <nav class="nav">
-        <a href="/" class="nav-logo">Thorley Park</a>
-        <div class="nav-links">
-            <a href="/garden.html">The Garden</a>
-            <a href="/devs.html" class="active">Devs</a>
-        </div>
-        <button class="nav-toggle" aria-label="Toggle menu">
-            <span></span><span></span><span></span>
-        </button>
-    </nav>
+    <header>
+        <nav class="nav">
+            <a href="/" class="nav-logo">Thorley Park</a>
+            <div class="nav-links">
+                <a href="/garden.html">The Garden</a>
+                <a href="/devs.html" class="active" aria-current="page">Devs</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
 
     <main>
         <section class="page-hero devs-hero">
@@ -45,7 +83,7 @@
                         <p>We care about getting the details right: smooth interactions, solid architecture, and code that's built to last.</p>
                     </div>
                     <div class="content-image devs-placeholder">
-                        <div class="placeholder-box placeholder-devs">
+                        <div class="placeholder-box placeholder-devs" role="img" aria-label="Code illustration">
                             <span>&lt;/&gt;</span>
                         </div>
                     </div>
@@ -59,17 +97,17 @@
                 <p class="section-subtitle">Focused expertise across mobile and web platforms.</p>
                 <div class="features-grid">
                     <div class="feature-card feature-card-devs">
-                        <div class="feature-icon">&#128241;</div>
+                        <div class="feature-icon" aria-hidden="true">&#128241;</div>
                         <h3>Mobile Apps</h3>
                         <p>Native iOS and Android development. Swift, Kotlin, and cross-platform when it makes sense.</p>
                     </div>
                     <div class="feature-card feature-card-devs">
-                        <div class="feature-icon">&#127760;</div>
+                        <div class="feature-icon" aria-hidden="true">&#127760;</div>
                         <h3>Web Apps</h3>
                         <p>Modern web applications built with the right tools for the job. Fast, accessible, and responsive.</p>
                     </div>
                     <div class="feature-card feature-card-devs">
-                        <div class="feature-icon">&#9881;&#65039;</div>
+                        <div class="feature-icon" aria-hidden="true">&#9881;&#65039;</div>
                         <h3>Side Projects</h3>
                         <p>We're always tinkering. More projects coming soon — watch this space.</p>
                     </div>
@@ -115,6 +153,6 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js" defer></script>
 </body>
 </html>

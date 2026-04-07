@@ -4,27 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Garden — Thorley Park, Mount Macedon</title>
-    <meta name="description" content="Visit Thorley Park — a beautiful garden in Mount Macedon, Victoria. Seasonal blooms, heritage trees, and curated garden rooms.">
+    <meta name="description" content="Visit Thorley Park — a beautiful garden in Mount Macedon, Victoria. Seasonal blooms, heritage trees, and curated garden rooms. Opening soon.">
+    <link rel="canonical" href="https://thorleypark.com/garden.html">
+    <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" sizes="32x32">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <meta property="og:image" content="/images/og-image.png">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="The Garden — Thorley Park, Mount Macedon">
+    <meta property="og:description" content="Visit Thorley Park — a beautiful garden in Mount Macedon, Victoria. Seasonal blooms, heritage trees, and curated garden rooms.">
+    <meta property="og:url" content="https://thorleypark.com/garden.html">
+    <meta property="og:image" content="https://thorleypark.com/images/og-image.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:locale" content="en_AU">
+    <meta property="og:site_name" content="Thorley Park">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="The Garden — Thorley Park, Mount Macedon">
+    <meta name="twitter:description" content="Visit Thorley Park — a beautiful garden in Mount Macedon, Victoria. Seasonal blooms, heritage trees, and curated garden rooms.">
+    <meta name="twitter:image" content="https://thorleypark.com/images/og-image.png">
+    <!-- Styles -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Thorley Park Garden",
+        "url": "https://thorleypark.com/garden.html",
+        "description": "A beautiful garden in Mount Macedon, Victoria, opening soon to visitors. Featuring seasonal blooms, heritage trees, and curated garden rooms.",
+        "image": "https://thorleypark.com/images/og-image.png",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Mount Macedon",
+            "addressRegion": "VIC",
+            "addressCountry": "AU"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -37.43,
+            "longitude": 144.57
+        }
+    }
+    </script>
 </head>
 <body class="page-garden">
 
-    <nav class="nav">
-        <a href="/" class="nav-logo">Thorley Park</a>
-        <div class="nav-links">
-            <a href="/garden.html" class="active">The Garden</a>
-            <a href="/devs.html">Devs</a>
-        </div>
-        <button class="nav-toggle" aria-label="Toggle menu">
-            <span></span><span></span><span></span>
-        </button>
-    </nav>
+    <header>
+        <nav class="nav">
+            <a href="/" class="nav-logo">Thorley Park</a>
+            <div class="nav-links">
+                <a href="/garden.html" class="active" aria-current="page">The Garden</a>
+                <a href="/devs.html">Devs</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
 
     <main>
         <section class="page-hero garden-hero">
@@ -45,7 +86,7 @@
                         <p>We're working on visitor details including opening days, seasonal highlights, and how to plan your visit. Check back soon for updates.</p>
                     </div>
                     <div class="content-image garden-placeholder">
-                        <div class="placeholder-box">
+                        <div class="placeholder-box" role="img" aria-label="Garden photograph coming soon">
                             <span>Garden photos coming soon</span>
                         </div>
                     </div>
@@ -59,17 +100,17 @@
                 <p class="section-subtitle">Each season brings something new to discover.</p>
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-icon">&#127793;</div>
+                        <div class="feature-icon" aria-hidden="true">&#127793;</div>
                         <h3>Seasonal Blooms</h3>
                         <p>From spring bulbs to autumn colour, the garden changes beautifully with every season.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">&#127795;</div>
+                        <div class="feature-icon" aria-hidden="true">&#127795;</div>
                         <h3>Heritage Trees</h3>
                         <p>Towering oaks, elms, and conifers that have stood for generations in the Macedon Ranges.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">&#128218;</div>
+                        <div class="feature-icon" aria-hidden="true">&#128218;</div>
                         <h3>Garden Rooms</h3>
                         <p>Curated spaces each with their own character — from formal borders to woodland walks.</p>
                     </div>
@@ -101,6 +142,6 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <script src="js/main.js" defer></script>
 </body>
 </html>
