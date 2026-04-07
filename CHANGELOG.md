@@ -1,5 +1,11 @@
 # Changelog
 
+## [Build 16] — 2026-04-08
+- Add garden steps photo to garden.html, replacing placeholder
+- Image resized to 1600px wide and compressed (11MB → 1.2MB)
+- Essence label updated to "Est. 2017"
+- Garden split card background changed to #3D6B1E
+
 ## [Build 15] — 2026-04-08
 - Garden split card background changed to #3D6B1E with white/gold text for contrast
 - Essence label updated to "Est. 2017"

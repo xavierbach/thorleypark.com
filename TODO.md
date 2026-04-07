@@ -2,7 +2,7 @@
 
 ## Open
 - HTTPS enforcement — GitHub Pages SSL cert provisioning, enable when ready
-- Garden photos — placeholder boxes on garden.html waiting for real photography
+- Garden photos — more photos needed (only steps photo so far)
 - Upload fountain logo PNG to Canva brand kit Logos section
 
 ## Done

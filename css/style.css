@@ -813,6 +813,14 @@ img {
     overflow: hidden;
 }
 
+.garden-photo {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    object-fit: cover;
+    aspect-ratio: 4/3;
+}
+
 .garden-placeholder .placeholder-box {
     background: linear-gradient(145deg, #e8e0d0, #d4ccb8);
     border: 1px solid rgba(26, 58, 10, 0.06);
