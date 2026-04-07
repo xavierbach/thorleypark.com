@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 14] — 2026-04-08
+- Remove fountain particle/string effects — cleaner hero without animation gimmicks
+
 ## [Build 13] — 2026-04-08
 - Rebuilt fountain effect as flowing strings: thin luminous threads that cascade from the fountain
 - Strands drift toward the cursor — each strand has its own cursor affinity for organic feel
