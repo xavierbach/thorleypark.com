@@ -530,19 +530,10 @@ img {
    ========================================================================== */
 .location-band {
     padding: 72px 40px;
-    background: var(--garden-green);
+    background: var(--garden-cream);
     text-align: center;
     position: relative;
     overflow: hidden;
-}
-
-.location-band::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(ellipse at 30% 50%, rgba(61, 107, 30, 0.15) 0%, transparent 60%),
-        radial-gradient(ellipse at 70% 50%, rgba(0, 0, 0, 0.2) 0%, transparent 60%);
 }
 
 .location-inner {
@@ -556,15 +547,16 @@ img {
     font-size: 0.7rem;
     font-weight: 400;
     letter-spacing: 0.35em;
-    color: var(--gold);
-    opacity: 0.7;
+    color: var(--garden-green-mid);
+    opacity: 0.5;
     margin-bottom: 20px;
 }
 
 .location-divider {
     width: 32px;
     height: 1px;
-    background: var(--gold-line);
+    background: var(--garden-green);
+    opacity: 0.12;
     margin: 0 auto 20px;
 }
 
@@ -573,7 +565,7 @@ img {
     font-size: 1.15rem;
     font-weight: 300;
     font-style: italic;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-mid);
     letter-spacing: 0.02em;
 }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## [Build 17] — 2026-04-08
+- Location band background changed from dark green to dark cream (#f5f0e8)
+- Text colours adjusted for light background (green coords, muted divider, mid-tone text)
+
 ## [Build 16] — 2026-04-08
 - Add garden steps photo to garden.html, replacing placeholder
 - Image resized to 1600px wide and compressed (11MB → 1.2MB)
