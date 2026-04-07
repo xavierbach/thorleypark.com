@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 200" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Finial top -->
+  <path d="M140 10 C140 10, 136 18, 136 22 C136 26, 138 28, 140 28 C142 28, 144 26, 144 22 C144 18, 140 10, 140 10Z"/>
+
+  <!-- Finial neck -->
+  <path d="M136 28 C136 28, 134 30, 134 32 C134 34, 136 36, 140 36 C144 36, 146 34, 146 32 C146 30, 144 28, 144 28"/>
+
+  <!-- Upper small bowl rim -->
+  <line x1="126" y1="36" x2="154" y2="36"/>
+
+  <!-- Upper small bowl -->
+  <path d="M126 36 C126 36, 124 40, 124 43 C124 48, 130 52, 140 52 C150 52, 156 48, 156 43 C156 40, 154 36, 154 36"/>
+
+  <!-- Ornate stem between bowls -->
+  <path d="M136 52 C136 52, 133 56, 132 60 C131 64, 133 67, 136 68 C133 69, 130 72, 130 76 C130 80, 134 82, 140 82 C146 82, 150 80, 150 76 C150 72, 147 69, 144 68 C147 67, 149 64, 148 60 C147 56, 144 52, 144 52"/>
+
+  <!-- Lower large bowl rim -->
+  <line x1="94" y1="82" x2="186" y2="82"/>
+
+  <!-- Lower large bowl -->
+  <path d="M94 82 C94 82, 90 90, 90 96 C90 106, 106 116, 140 116 C174 116, 190 106, 190 96 C190 90, 186 82, 186 82"/>
+
+  <!-- Lower stem to base -->
+  <path d="M132 116 C132 116, 126 122, 122 130 C118 138, 120 144, 126 148 L154 148 C160 144, 162 138, 158 130 C154 122, 148 116, 148 116"/>
+
+  <!-- Base - upper shelf -->
+  <rect x="52" y="148" width="176" height="10" rx="1"/>
+
+  <!-- Base - lower block -->
+  <rect x="40" y="158" width="200" height="30" rx="1"/>
+</svg>

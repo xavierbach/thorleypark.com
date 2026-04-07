@@ -243,8 +243,10 @@ img {
 }
 
 .hero-logo-mark {
+    display: block;
     margin: 0 auto 40px;
-    opacity: 0.4;
+    opacity: 0.35;
+    filter: brightness(0) invert(1);
 }
 
 .hero h1 {
