@@ -1,5 +1,15 @@
 # Changelog
 
+## [Build 19] — 2026-04-12
+- Add Sorted Money project card to devs page (links to money.sortedapp.io)
+- Add Sorted Money app icon from website project
+
+## [Build 18] — 2026-04-10
+- Replace all emoji icons with inline SVG line-drawing icons on garden.html and devs.html
+- Garden: seedling, tree, grid icons for Seasonal Blooms, Heritage Trees, Garden Rooms
+- Devs: phone, globe, gear icons for Mobile Apps, Web Apps, Side Projects
+- SVGs use currentColor stroke so they inherit each page's theme colours
+
 ## [Build 17] — 2026-04-08
 - Location band background changed from dark green to dark cream (#f5f0e8)
 - Text colours adjusted for light background (green coords, muted divider, mid-tone text)
