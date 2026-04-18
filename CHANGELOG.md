@@ -1,5 +1,10 @@
 # Changelog
 
+## [Build 20] — 2026-04-18
+- Add Bucko project card to devs page (links to getbucko.com)
+- Add Bucko app icon from bucko-site project
+- Bucko status badge: iOS &amp; Android
+
 ## [Build 19] — 2026-04-12
 - Add Sorted Money project card to devs page (links to money.sortedapp.io)
 - Add Sorted Money app icon from website project

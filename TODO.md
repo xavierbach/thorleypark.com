@@ -6,6 +6,7 @@
 - Upload fountain logo PNG to Canva brand kit Logos section
 
 ## Done
+- Feature Bucko on devs Projects section
 - Feature Sorted Money on devs Projects section
 - Replace emoji icons with inline SVG line-drawing icons (garden + devs pages)
 - Fountain flowing strings effect with cursor tracking, centred footer logo
