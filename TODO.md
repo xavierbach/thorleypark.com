@@ -6,6 +6,7 @@
 - Upload fountain logo PNG to Canva brand kit Logos section
 
 ## Done
+- Add `julytrip/` itinerary page (unlinked, share-by-link only)
 - Feature Bucko on devs Projects section
 - Feature Sorted Money on devs Projects section
 - Replace emoji icons with inline SVG line-drawing icons (garden + devs pages)

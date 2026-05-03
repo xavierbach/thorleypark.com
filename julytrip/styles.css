@@ -1,0 +1,537 @@
+/* ============================================
+   Mount Macedon Itinerary
+   Holiday plan for Hannah, Ben & Ruby
+   3-17 July 2026
+   ============================================ */
+
+:root {
+  --ink: #0a1929;
+  --paper: #f7f1e1;
+  --paper-dim: #ede4cd;
+  --forest: #1f3a2e;
+  --forest-deep: #15291f;
+  --navy: #122742;
+  --navy-deep: #0a1929;
+  --gold: #b8924a;
+  --gold-soft: #d4b572;
+  --rule: #d6c89f;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter Tight', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+  font-size: 16px;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(31, 58, 46, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 85% 60%, rgba(18, 39, 66, 0.04) 0%, transparent 45%);
+}
+
+.frame {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 50px 32px 80px;
+}
+
+/* ============================================
+   Masthead
+   ============================================ */
+
+.masthead {
+  text-align: center;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 48px;
+}
+
+.kicker {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.masthead h1 {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: clamp(40px, 7vw, 68px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  color: var(--forest);
+}
+
+.masthead h1 em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--gold);
+  text-transform: lowercase;
+  letter-spacing: -0.02em;
+}
+
+.dateline {
+  font-size: 14px;
+  color: var(--navy);
+  margin-top: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.ornament {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin: 22px auto 0;
+  position: relative;
+}
+
+.ornament::before,
+.ornament::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+.ornament::before {
+  left: -10px;
+}
+
+.ornament::after {
+  right: -10px;
+}
+
+/* ============================================
+   Flight callout
+   ============================================ */
+
+.flight-callout {
+  background: var(--navy-deep);
+  color: var(--paper);
+  padding: 22px 26px;
+  margin: 0 0 32px;
+  border-radius: 4px;
+}
+
+.flight-callout .header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.flight-callout .icon {
+  font-size: 26px;
+  color: var(--gold-soft);
+  line-height: 1;
+}
+
+.flight-callout .label {
+  font-weight: 600;
+  color: var(--gold-soft);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+}
+
+.flight-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.flight-grid .leg-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.flight-grid .leg-detail {
+  color: var(--paper);
+}
+
+.flight-grid .leg-detail strong {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* ============================================
+   At-a-glance summary card
+   ============================================ */
+
+.summary-card {
+  background: var(--paper-dim);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 28px 32px;
+  margin-bottom: 56px;
+  position: relative;
+}
+
+.summary-card::before {
+  content: 'AT A GLANCE';
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  background: var(--paper);
+  padding: 0 12px;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 14px 18px;
+  align-items: baseline;
+}
+
+.summary-grid .day {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.summary-grid .what {
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.summary-grid .what strong {
+  font-weight: 600;
+}
+
+.summary-grid .tag {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ============================================
+   Day blocks
+   ============================================ */
+
+.day-block {
+  margin-bottom: 56px;
+}
+
+.day-header {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--forest);
+}
+
+.day-number {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 900;
+  font-size: 56px;
+  line-height: 0.9;
+  color: var(--gold);
+  letter-spacing: -0.04em;
+}
+
+.day-meta {
+  flex: 1;
+}
+
+.day-name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--forest);
+}
+
+.day-date {
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.day-content {
+  padding-left: 8px;
+}
+
+/* ============================================
+   Activity blocks
+   ============================================ */
+
+.activity {
+  margin-bottom: 20px;
+  padding-left: 18px;
+  border-left: 2px solid var(--rule);
+}
+
+.activity:last-child {
+  margin-bottom: 0;
+}
+
+.activity-title {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 4px;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+
+.activity-title .time {
+  font-family: 'Inter Tight', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--gold);
+  margin-right: 10px;
+  letter-spacing: 0.05em;
+}
+
+.activity-title .tbc {
+  display: inline-block;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  background: var(--gold);
+  color: var(--paper);
+  padding: 2px 7px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-left: 8px;
+  font-weight: 700;
+}
+
+.activity-where {
+  font-size: 13px;
+  color: var(--navy);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.activity-body {
+  font-size: 15px;
+  color: #2a3a4a;
+  line-height: 1.6;
+}
+
+.activity-body p {
+  margin-bottom: 8px;
+}
+
+.activity-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   Variant: Open day (free / unscheduled)
+   ============================================ */
+
+.open-day {
+  background: linear-gradient(135deg, rgba(31, 58, 46, 0.07), rgba(18, 39, 66, 0.05));
+  border: 1px dashed var(--rule);
+  border-left: none;
+  padding: 18px 20px;
+  border-radius: 4px;
+  margin-left: -8px;
+}
+
+.open-day .activity-title {
+  color: var(--forest);
+}
+
+/* ============================================
+   Variant: Family day (handover, arrival, etc.)
+   ============================================ */
+
+.family-day {
+  background: rgba(18, 39, 66, 0.06);
+  border: 1px solid rgba(18, 39, 66, 0.15);
+  border-left: none;
+  padding: 18px 20px;
+  border-radius: 4px;
+  margin-left: -8px;
+}
+
+.family-day .activity-title {
+  color: var(--navy);
+}
+
+/* ============================================
+   Kinder/optional inline note
+   ============================================ */
+
+.kinder-note {
+  display: inline-block;
+  background: rgba(184, 146, 74, 0.15);
+  color: var(--forest-deep);
+  padding: 8px 14px;
+  border-radius: 3px;
+  font-size: 13px;
+  margin-top: 10px;
+  border-left: 3px solid var(--gold);
+}
+
+.kinder-note strong {
+  font-weight: 600;
+  color: var(--forest);
+}
+
+/* ============================================
+   Practical notes section
+   ============================================ */
+
+.notes-section {
+  margin-top: 80px;
+  padding-top: 48px;
+  border-top: 1px solid var(--rule);
+}
+
+.notes-section h2 {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  margin-bottom: 28px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--forest);
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+.note-card {
+  background: var(--paper-dim);
+  padding: 20px 22px;
+  border-radius: 4px;
+  border-top: 3px solid var(--gold);
+}
+
+.note-card h3 {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--forest);
+}
+
+.note-card p {
+  font-size: 14px;
+  color: #2a3a4a;
+  line-height: 1.55;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+
+.footer-flourish {
+  text-align: center;
+  margin-top: 64px;
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.footer-flourish::before,
+.footer-flourish::after {
+  content: '✦';
+  margin: 0 14px;
+  color: var(--gold);
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 640px) {
+  .frame {
+    padding: 32px 20px 60px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .summary-grid .what {
+    padding-bottom: 10px;
+    border-bottom: 1px dotted var(--rule);
+  }
+
+  .day-header {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .day-number {
+    font-size: 44px;
+  }
+
+  .day-name {
+    font-size: 20px;
+  }
+
+  .flight-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ============================================
+   Print styles
+   ============================================ */
+
+@media print {
+  body {
+    background: white;
+  }
+
+  .day-block {
+    page-break-inside: avoid;
+  }
+}

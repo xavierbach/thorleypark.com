@@ -1,5 +1,9 @@
 # Changelog
 
+## [Build 21] — 2026-05-03
+- Add `julytrip/` subdirectory hosting Mt Macedon trip itinerary (Hannah, Ben &amp; Ruby, 3-17 Jul 2026)
+- Served at thorleypark.com/julytrip/ — unlinked from main site (private, share-by-link)
+
 ## [Build 20] — 2026-04-18
 - Add Bucko project card to devs page (links to getbucko.com)
 - Add Bucko app icon from bucko-site project
