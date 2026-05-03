@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 25] — 2026-05-03
+- wimbledon2026: rename heading to &ldquo;Strawberries, Champagne &amp; Centre Court&rdquo; with sub &ldquo;Wimbledon &middot; Paris &middot; Quiet Luxury&rdquo;; update &lt;title&gt; to match
+
 ## [Build 24] — 2026-05-03
 - Add branded 404 page (`404.html`) — &ldquo;Lost in the garden&rdquo;, cream + forest green, fountain logo, return-home + garden buttons
 - GitHub Pages serves automatically for any 404; replaces default GitHub 404
