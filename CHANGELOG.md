@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 28] — 2026-05-03
+- julytrip: Sunday 5 July handover &mdash; update flight info to QF37 dep Melbourne 3:55pm, leave home 11am to be at airport by midday
+
 ## [Build 27] — 2026-05-03
 - wimbledon2026: shrink &ldquo;Strawberries, Champagne &amp; Centre Court&rdquo; sub-heading from 0.5em to 0.35em
 
