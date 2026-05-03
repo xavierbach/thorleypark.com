@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Kat & Xave — Euro Trip 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F0EDE6;
+    --ink: #F0EDE6;
+    --gold: #5B9B6B;
+    --gold-light: #89C49A;
+    --slate: #C8C0D0;
+    --muted: #9A8FAA;
+    --london: #5B9B6B;
+    --paris: #5B9B6B;
+    --transit: #2D5C3A;
+    --bg: #1E0A38;
+    --bg-mid: #2A1050;
+    --bg-card: #250D45;
+    --divider: rgba(91,155,107,0.25);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 3rem 2rem;
+    background: linear-gradient(160deg, #0F0520 0%, #1E0A38 40%, #2A1050 100%);
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 15% 85%, rgba(91,155,107,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 70% at 85% 15%, rgba(91,155,107,0.10) 0%, transparent 50%);
+  }
+
+  .map-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Cpath d='M100,300 Q200,200 350,250 Q400,260 420,240 Q480,210 550,220 Q600,225 650,200' stroke='%235B9B6B' stroke-width='2' fill='none'/%3E%3Cpath d='M50,400 Q150,380 200,350 Q300,310 380,330 Q450,345 500,320 Q580,290 700,310' stroke='%235B9B6B' stroke-width='1.5' fill='none'/%3E%3Cpath d='M200,100 Q250,150 280,200 Q310,250 300,300' stroke='%235B9B6B' stroke-width='1' fill='none'/%3E%3Ccircle cx='380' cy='250' r='4' fill='%235B9B6B'/%3E%3Ccircle cx='520' cy='215' r='4' fill='%235B9B6B'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+  }
+
+  .header-label {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.2s forwards;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    line-height: 0.9;
+    text-align: center;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    opacity: 0;
+    animation: fadeUp 1s 0.4s forwards;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .header-sub {
+    margin-top: 2.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 1s 0.6s forwards;
+  }
+
+  .route-line {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp 1s 0.8s forwards;
+  }
+
+  .route-line span { color: var(--gold); font-size: 1rem; }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1s 1.4s forwards;
+  }
+
+  .scroll-hint p {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 3rem;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s 1.4s infinite;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .timeline-intro {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .timeline-intro h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2.5rem;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+  }
+
+  .timeline-intro p {
+    color: var(--muted);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* SEGMENT */
+  .segment {
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+
+  .segment.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .segment-header {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0 2rem;
+    align-items: start;
+    cursor: pointer;
+  }
+
+  .date-col {
+    text-align: right;
+    padding-top: 0.2rem;
+  }
+
+  .date-day {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--gold);
+  }
+
+  .date-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+  }
+
+  .segment-body {
+    border-left: 1px solid var(--divider);
+    padding: 0 0 2.5rem 2rem;
+    position: relative;
+  }
+
+  .segment-body::before {
+    content: '';
+    position: absolute;
+    left: -4.5px;
+    top: 0.4rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 1px var(--gold);
+  }
+
+  .segment-type {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .segment-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .segment-title em { font-style: italic; color: var(--gold); }
+
+  .segment-detail {
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: var(--slate);
+    max-width: 500px;
+  }
+
+  .badge {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .badge-gold { color: var(--gold); }
+  .badge-london { color: var(--gold); border-color: var(--gold); }
+  .badge-paris { color: var(--gold); border-color: var(--gold); }
+  .badge-transit { color: var(--gold); border-color: var(--gold); }
+
+  /* FLIGHT CARD */
+  .flight-card {
+    margin-top: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: #0F2419;
+    border: 1px solid rgba(91,155,107,0.3);
+    color: var(--cream);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    max-width: 480px;
+  }
+
+  .flight-city {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+  }
+
+  .flight-code {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+  }
+
+  .flight-arrow {
+    text-align: center;
+    color: var(--gold);
+    font-size: 1.2rem;
+  }
+
+  .flight-cabin {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.2rem;
+  }
+
+  .flight-right { text-align: right; }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box {
+    margin-top: 1rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--divider);
+    background: rgba(91,155,107,0.06);
+    border-radius: 4px;
+    max-width: 480px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .highlight-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--gold);
+  }
+
+  .highlight-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .highlight-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--cream);
+  }
+
+  .highlight-note {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* EUROSTAR CARD */
+  .eurostar-card {
+    margin-top: 1rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #0F2419 0%, #081410 100%);
+    border: 1px solid rgba(91,155,107,0.3);
+    color: var(--cream);
+    border-radius: 4px;
+    max-width: 480px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .eurostar-icon { font-size: 1.5rem; }
+
+  .eurostar-info { flex: 1; }
+  .eurostar-route {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 300;
+  }
+  .eurostar-sub {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.1rem;
+  }
+
+  /* PARIS DINNER */
+  .paris-dinner {
+    margin-top: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(91,155,107,0.07);
+    border: 1px solid rgba(91,155,107,0.25);
+    border-radius: 4px;
+    max-width: 480px;
+  }
+
+  .paris-dinner-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .paris-dinner-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--cream);
+  }
+
+  .paris-dinner-sub {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  /* LOUNGE CARD */
+  .lounge-card {
+    margin-top: 1rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #2A1050 0%, #1A0838 100%);
+    border: 1px solid rgba(91,155,107,0.2);
+    color: var(--cream);
+    border-radius: 4px;
+    max-width: 480px;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .lounge-icon { font-size: 1.4rem; line-height: 1; }
+
+  .lounge-info { flex: 1; }
+  .lounge-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+  }
+  .lounge-sub {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-top: 0.15rem;
+  }
+
+  .lounge-card.concorde {
+    background: linear-gradient(135deg, #3A1060 0%, #220840 100%);
+    border: 1px solid rgba(91,155,107,0.4);
+  }
+
+  /* PHANTOM */
+  .phantom-card {
+    margin-top: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, #2A1050 0%, #1A0838 100%);
+    border: 1px solid rgba(91,155,107,0.2);
+    color: var(--cream);
+    border-radius: 4px;
+    max-width: 480px;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .phantom-mask { font-size: 2.5rem; line-height: 1; }
+
+  .phantom-info { flex: 1; }
+  .phantom-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    font-style: italic;
+  }
+  .phantom-venue {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-top: 0.3rem;
+  }
+
+  /* DIVIDER */
+  .location-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 0 0 112px;
+    padding: 1.5rem 0;
+  }
+
+  .location-divider::before, .location-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--divider), transparent);
+  }
+
+  .location-divider span {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 5rem 2rem 4rem;
+    border-top: 1px solid var(--divider);
+  }
+
+  footer h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  footer p {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .segment-header { grid-template-columns: 60px 1fr; gap: 0 1rem; }
+    .location-divider { margin-left: 76px; }
+    .flight-card { grid-template-columns: 1fr auto 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="map-bg"></div>
+  <p class="header-label">July 2026 · Europe</p>
+  <h1>Kat <em>&amp;</em> Xave<br>Euro Trip</h1>
+  <p class="header-sub">London · Paris · London · Home</p>
+  <div class="route-line">
+    <span>✈</span> Melbourne
+    <span>·</span> Singapore
+    <span>·</span> London
+    <span>·</span> Paris
+    <span>·</span> London
+    <span>·</span> Singapore
+    <span>·</span> Melbourne <span>✈</span>
+  </div>
+  <div class="scroll-hint">
+    <p>Scroll</p>
+    <div class="scroll-line"></div>
+  </div>
+</header>
+
+<div class="timeline">
+
+  <div class="timeline-intro">
+    <h2>The Itinerary</h2>
+    <p>9 nights · 3 cities · 2 Eurostar journeys</p>
+  </div>
+
+  <!-- OUTBOUND FLIGHTS -->
+  <div class="segment" data-delay="0">
+    <div class="segment-header">
+      <div class="date-col">
+        <div class="date-day">5</div>
+        <span class="date-label">Jul · Sat</span>
+      </div>
+      <div class="segment-body">
+        <p class="segment-type">Departure · Melbourne</p>
+        <h3 class="segment-title">Off to <em>Europe</em></h3>
+        <p class="segment-detail">Two legs, two cabins, one very long journey in the kind of comfort that makes it almost enjoyable. Platinum status gets you into the best rooms in every airport along the way.</p>
+        <div class="lounge-card">
+          <div class="lounge-icon">🥂</div>
+          <div class="lounge-info">
+            <div class="lounge-name">Qantas First Lounge</div>
+            <div class="lounge-sub">Melbourne Airport · Terminal 2 · Pre-departure</div>
+          </div>
+        </div>
+        <div class="flight-card" style="margin-top: 0.75rem;">
+          <div>
+            <div class="flight-city">MEL</div>
+            <div class="flight-code">QF37 · Departs 15:55</div>
+            <div class="flight-cabin">Qantas Business · A330-200</div>
+          </div>
+          <div class="flight-arrow">→</div>
+          <div class="flight-right">
+            <div class="flight-city">SIN</div>
+            <div class="flight-code">Arrives 22:05 · T1</div>
+            <div class="flight-cabin">8h 10min · Transit 1h 15min</div>
+          </div>
+        </div>
+        <div class="lounge-card" style="margin-top: 0.5rem;">
+          <div class="lounge-icon">✦</div>
+          <div class="lounge-info">
+            <div class="lounge-name">BA First Lounge &amp; Concorde Bar</div>
+            <div class="lounge-sub">Changi Airport T1 · Transit · 1h 15min</div>
+          </div>
+        </div>
+        <div class="flight-card" style="margin-top: 0.5rem;">
+          <div>
+            <div class="flight-city">SIN</div>
+            <div class="flight-code">BA12 · Departs 23:20</div>
+            <div class="flight-cabin">BA First Class · 777-300er</div>
+          </div>
+          <div class="flight-arrow">→</div>
+          <div class="flight-right">
+            <div class="flight-city">LHR</div>
+            <div class="flight-code">Arrives 06:35 Mon · T5</div>
+            <div class="flight-cabin">14h 15min</div>
+          </div>
+        </div>
+        <span class="badge badge-gold">BA First Class · Boeing 777-300er</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LONDON DIVIDER -->
+  <div class="location-divider"><span>London</span></div>
+
+  <!-- CLARIDGE'S CHECK IN -->
+  <div class="segment" data-delay="1">
+    <div class="segment-header">
+      <div class="date-col">
+        <div class="date-day">6</div>
+        <span class="date-label">Jul · Mon</span>
+      </div>
+      <div class="segment-body">
+        <p class="segment-type">Arrival · London</p>
+        <h3 class="segment-title"><em>Claridge's</em></h3>
+        <p class="segment-detail">Touch down at Heathrow and head straight to Brook Street. Three nights in one of London's great institutions — the art deco rooms, the bar, the whole thing.</p>
+        <div class="highlight-box">
+          <p class="highlight-label">Hotel</p>
+          <p class="highlight-name">Claridge's, Mayfair</p>
+          <p class="highlight-note">6–9 July · 3 nights · Brook Street, London W1K</p>
+        </div>
+        <span class="badge badge-london">London · Night 1 of 3</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WIMBLEDON -->
+  <div class="segment" data-delay="2">
+    <div class="segment-header">
+      <div class="date-col">
+        <div class="date-day">7</div>
+        <span class="date-label">Jul · Tue</span>
+      </div>
+      <div class="segment-body">
+        <p class="segment-type">Day Out · SW19</p>
+        <h3 class="segment-title">Wimbledon<br><em>Quarterfinal</em></h3>
+        <p class="segment-detail">Centre Court in July. Strawberries and cream, the grass courts, and the unmistakable quiet that falls over the crowd before a serve. Quarterfinal day — the draw starts thinning and the tennis gets serious.</p>
+        <div class="highlight-box">
+          <p class="highlight-label">Tickets</p>
+          <p class="highlight-name">VIP Debenture · Centre Court</p>
+          <p class="highlight-note">Courtside Restaurant access included</p>
+        </div>
+        <span class="badge badge-london">The Championships · Debenture Holder</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LONDON DAY 3 -->
+  <div class="segment" data-delay="3">
+    <div class="segment-header">
+      <div class="date-col">
+        <div class="date-day">8</div>
+        <span class="date-label">Jul · Wed</span>
+      </div>
+      <div class="segment-body">
+        <p class="segment-type">Free Day · London</p>
+        <h3 class="segment-title">London at<br><em>Leisure</em></h3>
+        <p class="segment-detail">A day to explore however feels right — Mayfair is on the doorstep, the parks are green and the galleries are free. Last night at Claridge's.</p>
+        <span class="badge badge-london">London · Night 3 of 3</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LUCY & HOWARD DIVIDER -->
+  <div class="location-divider"><span>With Family</span></div>
+
+  <!-- LUCY & HOWARD ARRIVE -->
+  <div class="segment" data-delay="4">
+    <div class="segment-header">
+      <div class="date-col">
+        <div class="date-day">9</div>
+        <span class="date-label">Jul · Thu</span>
+      </div>
+      <div class="segment-body">
+        <p class="segment-type">Check-out · Claridge's</p>
+        <h3 class="segment-title">Lucy, Howard<br><em>&amp; the Girls</em></h3>
+        <p class="segment-detail">Check out of Claridge's and head to Kat's sister Lucy and husband Howard's place — two nights with the family, including their two daughters. The kind of time that matters most on any trip.</p>
+        <div class="highlight-box">
+          <p class="highlight-label">Staying with</p>
+          <p class="highlight-name">Lucy, Howard &amp; family</p>
+          <p class="highlight-note">9–11 July · 2 nights</p>
+        </div>
+        <span class="badge badge-london">London · Night 4 of 5</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LUCY HOWARD DAY 2 -->
+  <div class="segment" data-delay="5">
+    <div class="segment-header">
+      <div class="date-col">
+        <div class="date-day">10</div>
+        <span class="date-label">Jul · Fri</span>
+      </div>
+      <div class="segment-body">
+        <p class="segment-type">Day · London</p>
+        <h3 class="segment-title">A Day with<br><em>Family</em></h3>
+        <p class="segment-detail">A slower London day. Last full day before Paris — whatever feels right with the family.</p>
+        <span class="badge badge-london">London · Night 5 of 5</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARIS DIVIDER -->
+  <div class="location-divider"><span>Paris</span></div>
+
+  <!-- EUROSTAR TO PARIS -->
+  <div class="segment" data-delay="6">
+    <div class="segment-header">
+      <div class="date-col">
+        <div class="date-day">11</div>
+        <span class="date-label">Jul · Sat</span>
+      </div>
+      <div class="segment-body">
+        <p class="segment-type">Departure · St Pancras</p>
+        <h3 class="segment-title">Paris by<br><em>Eurostar</em></h3>
+        <p class="segment-detail">Down to St Pancras and under the Channel. Two hours and fifteen minutes to Gare du Nord. Two nights in Paris.</p>
+        <div class="eurostar-card">
+          <div class="eurostar-icon">🚄</div>
+          <div class="eurostar-info">
+            <div class="eurostar-route">London → Paris</div>
+            <div class="eurostar-sub">St Pancras · Gare du Nord · Eurostar</div>
+          </div>
+        </div>
+        <p class="segment-detail" style="margin-top: 1rem;">The dinner reservation is the headline act.</p>
+        <div class="paris-dinner">
+          <p class="paris-dinner-label">Dinner · Night One</p>
+          <p class="paris-dinner-text">Somewhere extraordinary</p>
+          <p class="paris-dinner-sub">To be decided — worthy of the city</p>
+        </div>
+        <span class="badge badge-paris">Paris · Night 1 of 2</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARIS DAY 2 -->
+  <div class="segment" data-delay="7">
+    <div class="segment-header">
+      <div class="date-col">
+        <div class="date-day">12</div>
+        <span class="date-label">Jul · Sun</span>
+      </div>
+      <div class="segment-body">
+        <p class="segment-type">Full Day · Paris</p>
+        <h3 class="segment-title">A Day in<br><em>Paris</em></h3>
+        <p class="segment-detail">The city does not need an itinerary. Walk somewhere. Sit somewhere. Eat something. The light in July is particular and good.</p>
+        <span class="badge badge-paris">Paris · Night 2 of 2</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACK TO LONDON DIVIDER -->
+  <div class="location-divider"><span>London · Final Night</span></div>
+
+  <!-- EUROSTAR BACK + PHANTOM + SAVOY -->
+  <div class="segment" data-delay="8">
+    <div class="segment-header">
+      <div class="date-col">
+        <div class="date-day">13</div>
+        <span class="date-label">Jul · Mon</span>
+      </div>
+      <div class="segment-body">
+        <p class="segment-type">Return · Gare du Nord · Then West End</p>
+        <h3 class="segment-title">Phantom &amp;<br><em>The Savoy</em></h3>
+        <p class="segment-detail">Eurostar back to St Pancras, check in to the Savoy, then Her Majesty's Theatre for the evening. The chandelier, the mask, the score — one of those shows that simply doesn't get old.</p>
+        <div class="eurostar-card">
+          <div class="eurostar-icon">🚄</div>
+          <div class="eurostar-info">
+            <div class="eurostar-route">Paris → London</div>
+            <div class="eurostar-sub">Gare du Nord · St Pancras · Eurostar</div>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top: 1rem;">
+          <p class="highlight-label">Hotel</p>
+          <p class="highlight-name">The Savoy · Junior Suite</p>
+          <p class="highlight-note">13 July · 1 night · Strand, London WC2</p>
+        </div>
+        <div class="phantom-card" style="margin-top: 1rem;">
+          <div class="phantom-mask">🎭</div>
+          <div class="phantom-info">
+            <div class="phantom-title">The Phantom of the Opera</div>
+            <div class="phantom-venue">Her Majesty's Theatre · Haymarket · West End</div>
+          </div>
+        </div>
+        <span class="badge badge-london">The Savoy · West End · Night 6 of 6</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOME DIVIDER -->
+  <div class="location-divider"><span>Homeward Bound</span></div>
+
+  <!-- RETURN FLIGHT -->
+  <div class="segment" data-delay="9">
+    <div class="segment-header">
+      <div class="date-col">
+        <div class="date-day">14</div>
+        <span class="date-label">Jul · Tue</span>
+      </div>
+      <div class="segment-body">
+        <p class="segment-type">Departure · Heathrow</p>
+        <h3 class="segment-title">London <em>→</em><br>Home</h3>
+        <p class="segment-detail">The trip ends the way it should — through the Concorde Room before a long, comfortable run east. Late evening departure, arriving home Thursday morning.</p>
+        <div class="lounge-card concorde">
+          <div class="lounge-icon">✦</div>
+          <div class="lounge-info">
+            <div class="lounge-name">The Concorde Room</div>
+            <div class="lounge-sub">Heathrow T5 · BA First Class · Pre-departure</div>
+          </div>
+        </div>
+        <div class="flight-card" style="margin-top: 0.75rem;">
+          <div>
+            <div class="flight-city">LHR</div>
+            <div class="flight-code">BA15 · Departs 22:00</div>
+            <div class="flight-cabin">BA First Class · 787-9</div>
+          </div>
+          <div class="flight-arrow">→</div>
+          <div class="flight-right">
+            <div class="flight-city">SIN</div>
+            <div class="flight-code">Arrives 18:40 Wed · T1</div>
+            <div class="flight-cabin">13h 40min · Transit 1h 35min</div>
+          </div>
+        </div>
+        <div class="lounge-card" style="margin-top: 0.5rem;">
+          <div class="lounge-icon">🥂</div>
+          <div class="lounge-info">
+            <div class="lounge-name">Qantas First Lounge</div>
+            <div class="lounge-sub">Changi Airport · Transit · Qantas Platinum</div>
+          </div>
+        </div>
+        <div class="flight-card" style="margin-top: 0.5rem;">
+          <div>
+            <div class="flight-city">SIN</div>
+            <div class="flight-code">QF36 · Departs 20:15</div>
+            <div class="flight-cabin">Qantas Business · A330-200</div>
+          </div>
+          <div class="flight-arrow">→</div>
+          <div class="flight-right">
+            <div class="flight-city">MEL</div>
+            <div class="flight-code">Arrives 05:35 Thu · T2</div>
+            <div class="flight-cabin">7h 20min</div>
+          </div>
+        </div>
+        <span class="badge badge-gold">Wheels down Melbourne · Thursday 16 July</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <h2>See you out there</h2>
+  <p>Kat &amp; Xave · July 2026</p>
+</footer>
+
+<script>
+  // Scroll animation
+  const segments = document.querySelectorAll('.segment');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = parseInt(entry.target.dataset.delay || 0) * 60;
+        setTimeout(() => entry.target.classList.add('visible'), delay);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  segments.forEach(seg => observer.observe(seg));
+</script>
+
+</body>
+</html>

@@ -1,5 +1,9 @@
 # Changelog
 
+## [Build 23] — 2026-05-03
+- Add `wimbledon2026/` itinerary page (Kat &amp; Xave Euro Trip 2026)
+- Served at thorleypark.com/wimbledon2026/ — unlinked, noindex meta, share-by-link only
+
 ## [Build 22] — 2026-05-03
 - Add `&lt;meta name=&quot;robots&quot; content=&quot;noindex, nofollow&quot;&gt;` to julytrip page so search engines won't index it
 
