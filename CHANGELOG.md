@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 22] — 2026-05-03
+- Add `&lt;meta name=&quot;robots&quot; content=&quot;noindex, nofollow&quot;&gt;` to julytrip page so search engines won't index it
+
 ## [Build 21] — 2026-05-03
 - Add `julytrip/` subdirectory hosting Mt Macedon trip itinerary (Hannah, Ben &amp; Ruby, 3-17 Jul 2026)
 - Served at thorleypark.com/julytrip/ — unlinked from main site (private, share-by-link)
