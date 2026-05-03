@@ -63,11 +63,22 @@
     z-index: 1;
   }
 
-  .fountain {
-    width: 84px;
-    height: auto;
-    opacity: 0.85;
+  .medallion {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--garden-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 36px;
+    box-shadow: 0 6px 24px rgba(26, 58, 10, 0.18);
+  }
+
+  .fountain {
+    width: 64%;
+    height: auto;
+    display: block;
   }
 
   .label {
@@ -163,7 +174,7 @@
   }
 
   @media (max-width: 480px) {
-    .fountain { width: 64px; margin-bottom: 28px; }
+    .medallion { width: 76px; height: 76px; margin-bottom: 28px; }
     .actions { flex-direction: column; width: 100%; max-width: 280px; }
     .btn { width: 100%; }
   }
@@ -172,7 +183,9 @@
 <body>
 
 <main>
-  <img src="/images/fountain.png" alt="Thorley Park fountain" class="fountain">
+  <div class="medallion">
+    <img src="/images/fountain.png" alt="Thorley Park fountain" class="fountain">
+  </div>
   <div class="label">Error 404</div>
   <h1>Lost in the garden.</h1>
   <div class="gold-line"></div>

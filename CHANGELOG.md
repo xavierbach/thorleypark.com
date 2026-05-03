@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 26] — 2026-05-03
+- 404: place white fountain on forest-green circular medallion so it&rsquo;s visible against the cream background
+
 ## [Build 25] — 2026-05-03
 - wimbledon2026: rename heading to &ldquo;Strawberries, Champagne &amp; Centre Court&rdquo; with sub &ldquo;Wimbledon &middot; Paris &middot; Quiet Luxury&rdquo;; update &lt;title&gt; to match
 
