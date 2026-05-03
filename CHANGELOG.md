@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 27] — 2026-05-03
+- wimbledon2026: shrink &ldquo;Strawberries, Champagne &amp; Centre Court&rdquo; sub-heading from 0.5em to 0.35em
+
 ## [Build 26] — 2026-05-03
 - 404: place white fountain on forest-green circular medallion so it&rsquo;s visible against the cream background
 
