@@ -1,5 +1,9 @@
 # Changelog
 
+## [Build 24] — 2026-05-03
+- Add branded 404 page (`404.html`) — &ldquo;Lost in the garden&rdquo;, cream + forest green, fountain logo, return-home + garden buttons
+- GitHub Pages serves automatically for any 404; replaces default GitHub 404
+
 ## [Build 23] — 2026-05-03
 - Add `wimbledon2026/` itinerary page (Kat &amp; Xave Euro Trip 2026)
 - Served at thorleypark.com/wimbledon2026/ — unlinked, noindex meta, share-by-link only
