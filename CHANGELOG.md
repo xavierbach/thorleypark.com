@@ -1,5 +1,11 @@
 # Changelog
 
+## [Build 30] — 2026-05-04
+- xave40: replace single &ldquo;Add to Calendar&rdquo; button with a four-option dropdown (Apple Calendar, Google Calendar, Outlook, Other .ics)
+- xave40: rename calendar event to &ldquo;Xave&rsquo;s 40th Dinner&rdquo; and clear the description (location stays as Gimlet, Cavendish House, 33 Russell Street, Melbourne VIC 3000)
+- xave40: darken page to deep night-forest, switch snowflakes to white with parallax (back layer behind card, front layer in front)
+- xave40: remove invite-copy paragraph, &ldquo;Drinks on arrival&rdquo;/&ldquo;Seven in the evening&rdquo; subtitles, and RSVP block
+
 ## [Build 29] — 2026-05-04
 - Add `xave40/` page &mdash; Xavier&rsquo;s 40th birthday dinner invitation at Gimlet, 26 June 2026 7pm
 - Served at thorleypark.com/xave40 &mdash; unlinked, noindex meta, share-by-link only
