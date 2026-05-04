@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Xave at Forty, Dinner at Gimlet</title>
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ivory: #F4EFE5;
+    --ivory-warm: #ECE4D2;
+    --forest: #1a3a0a;
+    --forest-deep: #0F2606;
+    --forest-soft: #2C5217;
+    --brass: #B08D4F;
+    --brass-light: #D4B57A;
+    --night: #07180A;
+    --ink: #2A2418;
+    --ink-soft: #5C5240;
+    --ink-light: #C8BFA8;
+    --rule: rgba(176, 141, 79, 0.35);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--night);
+    background-image:
+      radial-gradient(ellipse 90% 60% at 50% 0%, rgba(26, 58, 10, 0.55) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 55% at 50% 100%, rgba(26, 58, 10, 0.30) 0%, transparent 65%);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* Subtle paper grain over everything */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.5;
+  }
+
+  /* SNOW */
+  .snow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .snow-front {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+    overflow: hidden;
+  }
+
+  .flake {
+    position: absolute;
+    top: -10px;
+    color: #FFFFFF;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.85;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+    animation-name: snowfall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform;
+  }
+
+  @keyframes snowfall {
+    0%   { transform: translate3d(0, -10vh, 0) rotate(0deg); }
+    100% { transform: translate3d(var(--drift, 0px), 110vh, 0) rotate(360deg); }
+  }
+
+  /* MAIN STAGE */
+  main {
+    position: relative;
+    z-index: 3;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 4rem 2rem 5rem;
+  }
+
+  .crest {
+    text-align: center;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: rise 1.1s 0.1s forwards;
+  }
+
+  .crest-mark {
+    display: inline-block;
+    width: 56px;
+    height: 56px;
+    border: 1px solid var(--brass);
+    border-radius: 50%;
+    position: relative;
+    margin-bottom: 1.25rem;
+  }
+
+  .crest-mark::before,
+  .crest-mark::after {
+    content: '';
+    position: absolute;
+    background: var(--brass);
+  }
+
+  /* Stylised gimlet glass inside the crest */
+  .crest-mark::before {
+    /* triangle bowl using border trick */
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    background: transparent;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-top: 14px solid var(--brass);
+  }
+
+  .crest-mark::after {
+    /* stem + base */
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.5px;
+    height: 14px;
+    box-shadow: -7px 13px 0 0 var(--brass), -6px 13px 0 0 var(--brass), -5px 13px 0 0 var(--brass), -4px 13px 0 0 var(--brass), -3px 13px 0 0 var(--brass), -2px 13px 0 0 var(--brass), -1px 13px 0 0 var(--brass), 0 13px 0 0 var(--brass), 1px 13px 0 0 var(--brass), 2px 13px 0 0 var(--brass), 3px 13px 0 0 var(--brass), 4px 13px 0 0 var(--brass), 5px 13px 0 0 var(--brass), 6px 13px 0 0 var(--brass), 7px 13px 0 0 var(--brass);
+  }
+
+  .crest-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+
+  .crest-label .dot { color: var(--ivory); margin: 0 0.5em; opacity: 0.6; }
+
+  /* INVITATION CARD */
+  .card {
+    background: var(--ivory-warm);
+    border: 1px solid var(--rule);
+    padding: 4rem 2.5rem;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 30px 60px -30px rgba(26, 58, 10, 0.18);
+    opacity: 0;
+    animation: rise 1.2s 0.3s forwards;
+  }
+
+  /* Inner brass rule */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px solid var(--rule);
+    pointer-events: none;
+  }
+
+  .card-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+
+  .name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(2.6rem, 8vw, 4.2rem);
+    color: var(--forest);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .turning {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  .age {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(5.5rem, 18vw, 9rem);
+    color: var(--forest);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .age .ampersand {
+    font-style: italic;
+    color: var(--brass);
+  }
+
+  .gold-line {
+    width: 60px;
+    height: 1px;
+    background: var(--brass);
+    margin: 2.25rem auto;
+    position: relative;
+  }
+
+  .gold-line::before,
+  .gold-line::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--brass);
+    transform: translateY(-50%);
+  }
+
+  .gold-line::before { left: -10px; }
+  .gold-line::after { right: -10px; }
+
+  .invite-copy {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 28em;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  /* DETAILS GRID */
+  .details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin: 2.5rem 0;
+    text-align: center;
+  }
+
+  @media (min-width: 540px) {
+    .details {
+      grid-template-columns: 1fr 1px 1fr;
+      gap: 0 2rem;
+      align-items: center;
+    }
+    .detail-rule {
+      width: 1px;
+      height: 70%;
+      background: var(--rule);
+      align-self: stretch;
+      justify-self: center;
+    }
+  }
+
+  .detail-rule {
+    background: var(--rule);
+    height: 1px;
+    width: 60%;
+    margin: 0 auto;
+  }
+
+  .detail-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+  }
+
+  .detail-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    color: var(--forest);
+    line-height: 1.2;
+  }
+
+  .detail-sub {
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* VENUE */
+  .venue {
+    margin: 2.5rem 0 1rem;
+    text-align: center;
+  }
+
+  .venue-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 2.4rem;
+    color: var(--forest);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+
+  .venue-address {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+  }
+
+  .venue-meta {
+    margin-top: 0.5rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+
+  /* CALENDAR BUTTON */
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    margin-top: 2.5rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1rem 2rem;
+    background: var(--forest);
+    color: var(--ivory);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--forest);
+    border-radius: 1px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, transform 0.3s;
+  }
+
+  .btn:hover {
+    background: var(--forest-deep);
+    transform: translateY(-1px);
+  }
+
+  .btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--forest);
+    border-color: var(--rule);
+  }
+
+  .btn-ghost:hover {
+    background: rgba(176, 141, 79, 0.08);
+    color: var(--forest-deep);
+  }
+
+  .map-link {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--brass);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color 0.3s, color 0.3s;
+  }
+
+  .map-link:hover {
+    color: var(--forest);
+    border-color: var(--brass);
+  }
+
+  /* RSVP */
+  .rsvp {
+    text-align: center;
+    margin-top: 4rem;
+    opacity: 0;
+    animation: rise 1.1s 0.6s forwards;
+  }
+
+  .rsvp-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: 1rem;
+  }
+
+  .rsvp-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+  }
+
+  .rsvp-contact {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--forest);
+    text-decoration: none;
+    border-bottom: 1px solid var(--brass);
+    padding-bottom: 2px;
+    transition: color 0.3s;
+  }
+
+  .rsvp-contact:hover { color: var(--forest-soft); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem 2.5rem;
+    position: relative;
+    z-index: 3;
+    border-top: 1px solid var(--rule);
+    margin-top: 4rem;
+  }
+
+  .footer-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ivory);
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-meta {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translate(-50%, 100px);
+    background: var(--forest-deep);
+    color: var(--ivory);
+    padding: 0.85rem 1.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    z-index: 100;
+    transition: transform 0.4s ease;
+    border: 1px solid var(--brass);
+  }
+
+  .toast.show { transform: translate(-50%, 0); }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    main { padding: 2.5rem 1.25rem 4rem; }
+    .card { padding: 3rem 1.5rem; }
+    .card::before { inset: 8px; }
+    .actions { flex-direction: column; }
+    .btn { width: 100%; justify-content: center; }
+    .venue-name { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="snow" aria-hidden="true"></div>
+<div class="snow-front" aria-hidden="true"></div>
+
+<main>
+
+  <div class="crest">
+    <div class="crest-mark" aria-hidden="true"></div>
+    <p class="crest-label">Thorley Park <span class="dot">&middot;</span> An Invitation</p>
+  </div>
+
+  <article class="card">
+    <p class="card-eyebrow">You are invited to dinner</p>
+
+    <h1 class="name">Xavier</h1>
+    <p class="turning">is turning</p>
+    <div class="age">40</div>
+
+    <div class="gold-line"></div>
+
+    <div class="details">
+      <div>
+        <p class="detail-label">The Date</p>
+        <p class="detail-value">Friday, 26 June 2026</p>
+      </div>
+      <div class="detail-rule"></div>
+      <div>
+        <p class="detail-label">The Hour</p>
+        <p class="detail-value">7:00 pm</p>
+      </div>
+    </div>
+
+    <div class="gold-line"></div>
+
+    <div class="venue">
+      <p class="detail-label">The Table</p>
+      <h2 class="venue-name">Gimlet</h2>
+      <p class="venue-address">
+        Cavendish House<br>
+        33 Russell Street, Melbourne VIC 3000
+      </p>
+      <p class="venue-meta">Andrew McConnell</p>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="addCal" type="button">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+        Add to Calendar
+      </button>
+      <a class="map-link" href="https://maps.apple.com/?address=33%20Russell%20Street,%20Melbourne%20VIC%203000&amp;q=Gimlet" target="_blank" rel="noopener">View on map</a>
+    </div>
+  </article>
+
+</main>
+
+<footer>
+  <p class="footer-mark">Thorley Park</p>
+  <p class="footer-meta">Mount Macedon <span style="color: var(--brass)">&middot;</span> Victoria</p>
+</footer>
+
+<div class="toast" id="toast">Calendar invite downloaded</div>
+
+<script>
+  // SNOW
+  (function(){
+    const snowBack = document.querySelector('.snow');
+    const snowFront = document.querySelector('.snow-front');
+    const count = window.matchMedia('(max-width: 600px)').matches ? 50 : 100;
+    const backFrag = document.createDocumentFragment();
+    const frontFrag = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      // ~25% of flakes are foreground: bigger, faster, sit in front of the card
+      const isFront = Math.random() < 0.25;
+      const f = document.createElement('span');
+      f.className = 'flake';
+      const size = isFront ? (5 + Math.random() * 6) : (2 + Math.random() * 4);
+      const left = Math.random() * 100;
+      const drift = (Math.random() - 0.5) * (isFront ? 320 : 220);
+      const duration = isFront ? (6 + Math.random() * 8) : (10 + Math.random() * 14);
+      const delay = -Math.random() * duration;
+      const opacity = isFront ? (0.7 + Math.random() * 0.3) : (0.45 + Math.random() * 0.45);
+      f.style.width = size + 'px';
+      f.style.height = size + 'px';
+      f.style.left = left + 'vw';
+      f.style.setProperty('--drift', drift + 'px');
+      f.style.animationDuration = duration + 's';
+      f.style.animationDelay = delay + 's';
+      f.style.opacity = opacity;
+      (isFront ? frontFrag : backFrag).appendChild(f);
+    }
+    snowBack.appendChild(backFrag);
+    snowFront.appendChild(frontFrag);
+  })();
+
+  // ADD TO CALENDAR
+  (function(){
+    const btn = document.getElementById('addCal');
+    const toast = document.getElementById('toast');
+
+    // 26 June 2026, 7:00 pm Melbourne (AEST, UTC+10, no DST in June)
+    // 19:00 AEST = 09:00 UTC
+    const dtStart = '20260626T090000Z';
+    const dtEnd   = '20260626T140000Z'; // 5 hour window
+
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Thorley Park//Xave at Forty//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:xave40-20260626@thorleypark.com',
+      'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''),
+      'DTSTART:' + dtStart,
+      'DTEND:' + dtEnd,
+      'SUMMARY:Xave at Forty, Dinner at Gimlet',
+      'LOCATION:Gimlet\\, Cavendish House\\, 33 Russell Street\\, Melbourne VIC 3000',
+      'DESCRIPTION:An evening to mark the milestone. Drinks on arrival\\, dinner at 7pm.\\n\\nGimlet\\, 33 Russell Street\\, Melbourne.\\n\\nRSVP: xave@thorleypark.com',
+      'STATUS:CONFIRMED',
+      'SEQUENCE:0',
+      'BEGIN:VALARM',
+      'TRIGGER:-PT1H',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:Dinner at Gimlet in 1 hour',
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    btn.addEventListener('click', function(){
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'xave-at-forty.ics';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    });
+  })();
+</script>
+
+</body>
+</html>

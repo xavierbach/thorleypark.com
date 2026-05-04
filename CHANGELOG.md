@@ -1,5 +1,11 @@
 # Changelog
 
+## [Build 29] — 2026-05-04
+- Add `xave40/` page &mdash; Xavier&rsquo;s 40th birthday dinner invitation at Gimlet, 26 June 2026 7pm
+- Served at thorleypark.com/xave40 &mdash; unlinked, noindex meta, share-by-link only
+- Cream + forest green + brass design (Thorley Park brand meets Gimlet brasserie); Cormorant Garamond serif
+- Falling snow animation; &ldquo;Add to Calendar&rdquo; button generates an `.ics` file (works on iOS, macOS, Outlook, Google Calendar)
+
 ## [Build 28] — 2026-05-03
 - julytrip: Sunday 5 July handover &mdash; update flight info to QF37 dep Melbourne 3:55pm, leave home 11am to be at airport by midday
 
