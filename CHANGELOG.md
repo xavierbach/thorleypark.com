@@ -1,5 +1,10 @@
 # Changelog
 
+## [Build 32] — 2026-05-05
+- wimbledon2026: add Heathrow Express train cards on arrival (Heathrow &rarr; Paddington) and departure (Paddington &rarr; Heathrow); update prose to match
+- wimbledon2026: add &ldquo;Qantas Business &middot; Airbus A330-200&rdquo; call-out badges below the QF37 and QF36 flight cards
+- wimbledon2026: replace all emojis (&#127870;, &#10022;, &#128644;, &#127917;, &#9992;) with thin-stroke line-drawn SVG icons in gold
+
 ## [Build 31] — 2026-05-04
 - xave40: switch &ldquo;View on map&rdquo; link from Apple Maps to Google Maps
 
