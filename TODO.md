@@ -6,6 +6,7 @@
 - Upload fountain logo PNG to Canva brand kit Logos section
 
 ## Done
+- wimbledon2026: gap-fill pass &mdash; hotels/restaurants/activities filled for every day, continuous &ldquo;Night N of 9&rdquo; counter, gold TBC chips on unconfirmed bookings, bouncing tennis-ball rally animation in the title
 - wimbledon2026: Heathrow Express cards both legs, Qantas Business call-out badges, line-drawn SVG icons replacing all emojis
 - Add `xave40/` page &mdash; Xave&rsquo;s 40th dinner invitation at Gimlet (unlinked, share-by-link only)
 - Add `wimbledon2026/` Euro trip page (unlinked, share-by-link only)

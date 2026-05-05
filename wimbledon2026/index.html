@@ -95,6 +95,35 @@
     color: var(--gold);
   }
 
+  .rally-zone {
+    position: relative;
+    display: inline-block;
+  }
+
+  .tennis-ball {
+    position: absolute;
+    left: 0;
+    top: 60%;
+    width: 28px;
+    height: 28px;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    animation: tennis-fade-in 0.6s 1.4s forwards, tennis-rally 4.5s 2s ease-in-out infinite;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+  }
+
+  @keyframes tennis-rally {
+    0%, 100% { left: 0%; top: 60%; }
+    25%      { left: 50%; top: -45%; }
+    50%      { left: calc(100% - 28px); top: 60%; }
+    75%      { left: 50%; top: -45%; }
+  }
+
+  @keyframes tennis-fade-in {
+    to { opacity: 1; }
+  }
+
   h1 .h1-sub {
     font-size: 0.35em;
   }
@@ -282,6 +311,24 @@
   .badge-london { color: var(--gold); border-color: var(--gold); }
   .badge-paris { color: var(--gold); border-color: var(--gold); }
   .badge-transit { color: var(--gold); border-color: var(--gold); }
+
+  .chip-tbc {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.15rem 0.55rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    vertical-align: middle;
+    position: relative;
+    top: -0.2em;
+    white-space: nowrap;
+  }
 
   /* FLIGHT CARD */
   .flight-card {
@@ -596,7 +643,11 @@
 <header>
   <div class="map-bg"></div>
   <p class="header-label">July 2026 · Europe</p>
-  <h1>Kat <em>&amp;</em> Xave<br><span class="h1-sub">Strawberries, Champagne &amp; Centre Court</span></h1>
+  <h1><span class="rally-zone">Kat <em>&amp;</em> Xave<svg class="tennis-ball" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" fill="#d4ec1e" stroke="#a8b81a" stroke-width="0.4"/>
+      <path d="M3 9.5 Q 12 5 21 9.5" stroke="#fff" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+      <path d="M3 14.5 Q 12 19 21 14.5" stroke="#fff" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+    </svg></span><br><span class="h1-sub">Strawberries, Champagne &amp; Centre Court</span></h1>
   <p class="header-sub">Wimbledon · Paris · Quiet Luxury</p>
   <div class="route-line">
     <span class="route-plane"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 13 L22 5 L17 13 L13 14 L11 22 L9 14 L4 13 Z"/></svg></span> Melbourne
@@ -725,7 +776,12 @@
           <p class="highlight-name">Claridge's, Mayfair</p>
           <p class="highlight-note">6–9 July · 3 nights · Brook Street, London W1K</p>
         </div>
-        <span class="badge badge-london">London · Night 1 of 3</span>
+        <div class="highlight-box">
+          <p class="highlight-label">Dinner · Night One</p>
+          <p class="highlight-name">The Painter's Room <span class="chip-tbc">TBC</span></p>
+          <p class="highlight-note">Claridge's bar · A light supper once the day catches up with you</p>
+        </div>
+        <span class="badge badge-london">London · Night 1 of 9</span>
       </div>
     </div>
   </div>
@@ -746,7 +802,13 @@
           <p class="highlight-name">VIP Debenture · Centre Court</p>
           <p class="highlight-note">Courtside Restaurant access included</p>
         </div>
+        <div class="highlight-box">
+          <p class="highlight-label">After the Tennis</p>
+          <p class="highlight-name">Late supper at Claridge's <span class="chip-tbc">TBC</span></p>
+          <p class="highlight-note">Whatever's still being served when Centre Court finishes</p>
+        </div>
         <span class="badge badge-london">The Championships · Debenture Holder</span>
+        <span class="badge badge-london" style="margin-left: 0.4rem;">London · Night 2 of 9</span>
       </div>
     </div>
   </div>
@@ -761,8 +823,23 @@
       <div class="segment-body">
         <p class="segment-type">Free Day · London</p>
         <h3 class="segment-title">London at<br><em>Leisure</em></h3>
-        <p class="segment-detail">A day to explore however feels right — Mayfair is on the doorstep, the parks are green and the galleries are free. Last night at Claridge's.</p>
-        <span class="badge badge-london">London · Night 3 of 3</span>
+        <p class="segment-detail">A morning at the Wallace Collection — five minutes from the doorstep — then lunch at Bellamy's and the Royal Academy summer show in the afternoon. Last night at Claridge's.</p>
+        <div class="highlight-box">
+          <p class="highlight-label">Morning</p>
+          <p class="highlight-name">The Wallace Collection</p>
+          <p class="highlight-note">Manchester Square · Free · Boucher, Fragonard, the armoury</p>
+        </div>
+        <div class="highlight-box">
+          <p class="highlight-label">Lunch</p>
+          <p class="highlight-name">Bellamy's <span class="chip-tbc">TBC</span></p>
+          <p class="highlight-note">Bruton Place · Mayfair brasserie · The proper claret list</p>
+        </div>
+        <div class="highlight-box">
+          <p class="highlight-label">Afternoon</p>
+          <p class="highlight-name">Royal Academy Summer Exhibition</p>
+          <p class="highlight-note">Burlington House · Open submissions, hung by Royal Academicians since 1769</p>
+        </div>
+        <span class="badge badge-london">London · Night 3 of 9</span>
       </div>
     </div>
   </div>
@@ -780,13 +857,13 @@
       <div class="segment-body">
         <p class="segment-type">Check-out · Claridge's</p>
         <h3 class="segment-title">Lucy, Howard<br><em>&amp; the Girls</em></h3>
-        <p class="segment-detail">Check out of Claridge's and head to Kat's sister Lucy and husband Howard's place — two nights with the family, including their two daughters. The kind of time that matters most on any trip.</p>
+        <p class="segment-detail">Check out of Claridge's, black cab across town to Kat's sister Lucy and husband Howard's place — two nights with the family, including their two daughters. The kind of time that matters most on any trip.</p>
         <div class="highlight-box">
           <p class="highlight-label">Staying with</p>
           <p class="highlight-name">Lucy, Howard &amp; family</p>
           <p class="highlight-note">9–11 July · 2 nights</p>
         </div>
-        <span class="badge badge-london">London · Night 4 of 5</span>
+        <span class="badge badge-london">London · Night 4 of 9</span>
       </div>
     </div>
   </div>
@@ -801,8 +878,13 @@
       <div class="segment-body">
         <p class="segment-type">Day · London</p>
         <h3 class="segment-title">A Day with<br><em>Family</em></h3>
-        <p class="segment-detail">A slower London day. Last full day before Paris — whatever feels right with the family.</p>
-        <span class="badge badge-london">London · Night 5 of 5</span>
+        <p class="segment-detail">A slower London day. A walk somewhere green — Hampstead Heath with the Spaniards Inn for lunch, or Kew if quiet feels better — and time at home before the Eurostar tomorrow.</p>
+        <div class="highlight-box">
+          <p class="highlight-label">Walk &amp; Lunch</p>
+          <p class="highlight-name">Hampstead Heath · The Spaniards Inn <span class="chip-tbc">TBC</span></p>
+          <p class="highlight-note">Kenwood House if the weather holds · Or Kew Gardens for something quieter</p>
+        </div>
+        <span class="badge badge-london">London · Night 5 of 9</span>
       </div>
     </div>
   </div>
@@ -839,13 +921,18 @@
             <div class="eurostar-sub">St Pancras · Gare du Nord · Eurostar</div>
           </div>
         </div>
+        <div class="highlight-box" style="margin-top: 1rem;">
+          <p class="highlight-label">Hotel · Paris</p>
+          <p class="highlight-name">Le Bristol Paris <span class="chip-tbc">TBC</span></p>
+          <p class="highlight-note">11–13 July · 2 nights · 112 Rue du Faubourg Saint-Honoré, 8e</p>
+        </div>
         <p class="segment-detail" style="margin-top: 1rem;">The dinner reservation is the headline act.</p>
         <div class="paris-dinner">
-          <p class="paris-dinner-label">Dinner · Night One</p>
-          <p class="paris-dinner-text">Somewhere extraordinary</p>
-          <p class="paris-dinner-sub">To be decided — worthy of the city</p>
+          <p class="paris-dinner-label">Dinner · Night One in Paris</p>
+          <p class="paris-dinner-text">Le Cinq <span class="chip-tbc">TBC</span></p>
+          <p class="paris-dinner-sub">Four Seasons George V · Three Michelin stars · Christian Le Squer</p>
         </div>
-        <span class="badge badge-paris">Paris · Night 1 of 2</span>
+        <span class="badge badge-paris">Paris · Night 6 of 9</span>
       </div>
     </div>
   </div>
@@ -860,8 +947,23 @@
       <div class="segment-body">
         <p class="segment-type">Full Day · Paris</p>
         <h3 class="segment-title">A Day in<br><em>Paris</em></h3>
-        <p class="segment-detail">The city does not need an itinerary. Walk somewhere. Sit somewhere. Eat something. The light in July is particular and good.</p>
-        <span class="badge badge-paris">Paris · Night 2 of 2</span>
+        <p class="segment-detail">A Sunday with shape but not too much of it. Late lunch on the Left Bank, Impressionists in their natural light, then a brasserie evening in the Marais.</p>
+        <div class="highlight-box">
+          <p class="highlight-label">Lunch · Long &amp; Slow</p>
+          <p class="highlight-name">Café de Flore <span class="chip-tbc">TBC</span></p>
+          <p class="highlight-note">Saint-Germain · Open every day · Sit outside if the sun is out</p>
+        </div>
+        <div class="highlight-box">
+          <p class="highlight-label">Afternoon</p>
+          <p class="highlight-name">Musée d'Orsay</p>
+          <p class="highlight-note">Across the Seine · The Impressionists in their natural light · Closed Mondays — today's the day</p>
+        </div>
+        <div class="paris-dinner">
+          <p class="paris-dinner-label">Dinner · Night Two</p>
+          <p class="paris-dinner-text">Brasserie Bofinger <span class="chip-tbc">TBC</span></p>
+          <p class="paris-dinner-sub">Marais · Belle Époque dining room · Open Sundays · Choucroute and the proper carafe</p>
+        </div>
+        <span class="badge badge-paris">Paris · Night 7 of 9</span>
       </div>
     </div>
   </div>
@@ -919,7 +1021,7 @@
             <div class="phantom-venue">Her Majesty's Theatre · Haymarket · West End</div>
           </div>
         </div>
-        <span class="badge badge-london">The Savoy · West End · Night 6 of 6</span>
+        <span class="badge badge-london">The Savoy · West End · Night 8 of 9</span>
       </div>
     </div>
   </div>
@@ -937,8 +1039,13 @@
       <div class="segment-body">
         <p class="segment-type">Departure · Heathrow</p>
         <h3 class="segment-title">London <em>→</em><br>Home</h3>
-        <p class="segment-detail">Heathrow Express out of Paddington, then through the Concorde Room before a long, comfortable run east. Late evening departure, arriving home Thursday morning.</p>
-        <div class="eurostar-card">
+        <p class="segment-detail">A last unhurried lunch at Scott's, then Heathrow Express out of Paddington, through the Concorde Room before a long, comfortable run east. Late evening departure, arriving home Thursday morning.</p>
+        <div class="highlight-box">
+          <p class="highlight-label">Last Lunch</p>
+          <p class="highlight-name">Scott's <span class="chip-tbc">TBC</span></p>
+          <p class="highlight-note">Mount Street · Mayfair · Oysters &amp; champagne, the long way home</p>
+        </div>
+        <div class="eurostar-card" style="margin-top: 1rem;">
           <div class="eurostar-icon">
             <svg viewBox="0 0 36 24" width="34" height="22" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M2 18 L 3.5 8 Q 4 5 7 5 L 26 5 Q 31 5 34 12 L 34 18 Z"/>

@@ -1,5 +1,11 @@
 # Changelog
 
+## [Build 33] — 2026-05-05
+- wimbledon2026: renumber night badges to continuous &ldquo;Night N of 9&rdquo; sequence (was per-location); add missing Night 2 of 9 badge for Wimbledon day
+- wimbledon2026: fill itinerary gaps &mdash; The Painter&rsquo;s Room (6 Jul dinner), late supper at Claridge&rsquo;s (7 Jul), Wallace Collection + Bellamy&rsquo;s + Royal Academy (8 Jul), black-cab transit prose (9 Jul), Hampstead Heath + The Spaniards Inn (10 Jul), Le Bristol Paris hotel + Le Cinq dinner (11 Jul), Caf&eacute; de Flore + Mus&eacute;e d&rsquo;Orsay + Brasserie Bofinger (12 Jul), Scott&rsquo;s last lunch (14 Jul)
+- wimbledon2026: add small gold &ldquo;TBC&rdquo; pill chips next to all unconfirmed hotels and restaurants
+- wimbledon2026: add bouncing tennis-ball animation across the &ldquo;Kat &amp; Xave&rdquo; title (rally arc, looping every 4.5 s)
+
 ## [Build 32] — 2026-05-05
 - wimbledon2026: add Heathrow Express train cards on arrival (Heathrow &rarr; Paddington) and departure (Paddington &rarr; Heathrow); update prose to match
 - wimbledon2026: add &ldquo;Qantas Business &middot; Airbus A330-200&rdquo; call-out badges below the QF37 and QF36 flight cards
