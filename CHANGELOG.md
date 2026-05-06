@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 34] — 2026-05-06
+- wimbledon2026: rework tennis-ball animation &mdash; full-viewport border-to-border travel, parabolic rally arc that stays above the text, court line just above the &ldquo;July 2026 &middot; Europe&rdquo; label
+
 ## [Build 33] — 2026-05-05
 - wimbledon2026: renumber night badges to continuous &ldquo;Night N of 9&rdquo; sequence (was per-location); add missing Night 2 of 9 badge for Wimbledon day
 - wimbledon2026: fill itinerary gaps &mdash; The Painter&rsquo;s Room (6 Jul dinner), late supper at Claridge&rsquo;s (7 Jul), Wallace Collection + Bellamy&rsquo;s + Royal Academy (8 Jul), black-cab transit prose (9 Jul), Hampstead Heath + The Spaniards Inn (10 Jul), Le Bristol Paris hotel + Le Cinq dinner (11 Jul), Caf&eacute; de Flore + Mus&eacute;e d&rsquo;Orsay + Brasserie Bofinger (12 Jul), Scott&rsquo;s last lunch (14 Jul)

@@ -95,29 +95,41 @@
     color: var(--gold);
   }
 
-  .rally-zone {
-    position: relative;
-    display: inline-block;
-  }
-
   .tennis-ball {
     position: absolute;
     left: 0;
-    top: 60%;
-    width: 28px;
-    height: 28px;
-    z-index: 5;
+    top: 28vh;
+    width: 32px;
+    height: 32px;
+    z-index: 10;
     pointer-events: none;
     opacity: 0;
-    animation: tennis-fade-in 0.6s 1.4s forwards, tennis-rally 4.5s 2s ease-in-out infinite;
-    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+    animation: tennis-fade-in 0.6s 1.4s forwards, tennis-rally 5s 2s linear infinite;
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.45));
   }
 
   @keyframes tennis-rally {
-    0%, 100% { left: 0%; top: 60%; }
-    25%      { left: 50%; top: -45%; }
-    50%      { left: calc(100% - 28px); top: 60%; }
-    75%      { left: 50%; top: -45%; }
+    0%   { left: 0%;                top: 28vh; }
+    5%   { left: 10%;               top: 21vh; }
+    10%  { left: 20%;               top: 15vh; }
+    15%  { left: 30%;               top: 11vh; }
+    20%  { left: 40%;               top: 9vh;  }
+    25%  { left: 50%;               top: 8vh;  }
+    30%  { left: 60%;               top: 9vh;  }
+    35%  { left: 70%;               top: 11vh; }
+    40%  { left: 80%;               top: 15vh; }
+    45%  { left: 90%;               top: 21vh; }
+    50%  { left: calc(100% - 32px); top: 28vh; }
+    55%  { left: 90%;               top: 21vh; }
+    60%  { left: 80%;               top: 15vh; }
+    65%  { left: 70%;               top: 11vh; }
+    70%  { left: 60%;               top: 9vh;  }
+    75%  { left: 50%;               top: 8vh;  }
+    80%  { left: 40%;               top: 9vh;  }
+    85%  { left: 30%;               top: 11vh; }
+    90%  { left: 20%;               top: 15vh; }
+    95%  { left: 10%;               top: 21vh; }
+    100% { left: 0%;                top: 28vh; }
   }
 
   @keyframes tennis-fade-in {
@@ -643,11 +655,12 @@
 <header>
   <div class="map-bg"></div>
   <p class="header-label">July 2026 · Europe</p>
-  <h1><span class="rally-zone">Kat <em>&amp;</em> Xave<svg class="tennis-ball" viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" fill="#d4ec1e" stroke="#a8b81a" stroke-width="0.4"/>
-      <path d="M3 9.5 Q 12 5 21 9.5" stroke="#fff" stroke-width="0.9" fill="none" stroke-linecap="round"/>
-      <path d="M3 14.5 Q 12 19 21 14.5" stroke="#fff" stroke-width="0.9" fill="none" stroke-linecap="round"/>
-    </svg></span><br><span class="h1-sub">Strawberries, Champagne &amp; Centre Court</span></h1>
+  <svg class="tennis-ball" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" fill="#d4ec1e" stroke="#a8b81a" stroke-width="0.4"/>
+    <path d="M3 9.5 Q 12 5 21 9.5" stroke="#fff" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+    <path d="M3 14.5 Q 12 19 21 14.5" stroke="#fff" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+  </svg>
+  <h1>Kat <em>&amp;</em> Xave<br><span class="h1-sub">Strawberries, Champagne &amp; Centre Court</span></h1>
   <p class="header-sub">Wimbledon · Paris · Quiet Luxury</p>
   <div class="route-line">
     <span class="route-plane"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 13 L22 5 L17 13 L13 14 L11 22 L9 14 L4 13 Z"/></svg></span> Melbourne
