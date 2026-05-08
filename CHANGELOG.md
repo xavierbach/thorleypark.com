@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 37] — 2026-05-08
+- christmas2026: mark Traditional Christmas Pudding as Vegetarian (using vegetable suet, not beef suet)
+
 ## [Build 36] — 2026-05-08
 - christmas2026: split into multi-page layout &mdash; landing keeps just the hero, invitation prose and a six-card &ldquo;plan your visit&rdquo; grid; itinerary, menu, stay, getting-here, RSVP and secret-santa are now their own pages at `/christmas2026/<section>/`
 - christmas2026: extract shared styles to `christmas2026/styles.css`; each page links to it instead of inlining the full stylesheet
