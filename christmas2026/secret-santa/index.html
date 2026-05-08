@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Secret Santa &mdash; Christmas at Thorley Park</title>
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/christmas2026/styles.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="/christmas2026/">Thorley Park</a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <line x1="0" y1="2" x2="22" y2="2"/>
+        <line x1="0" y1="7" x2="22" y2="7"/>
+        <line x1="0" y1="12" x2="22" y2="12"/>
+      </svg>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/christmas2026/day/">Day</a></li>
+      <li><a href="/christmas2026/menu/">Menu</a></li>
+      <li><a href="/christmas2026/stay/">Stay</a></li>
+      <li><a href="/christmas2026/getting-here/">Getting Here</a></li>
+      <li><a href="/christmas2026/rsvp/">RSVP</a></li>
+      <li><a class="active" href="/christmas2026/secret-santa/">Secret Santa</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="page-header">
+  <p class="section-label">Secret Santa</p>
+  <h2 class="section-title"><em>The Draw</em></h2>
+  <p class="lead">
+    Sign up below to join the Secret Santa. On <strong style="color:var(--cream);">1 December 2026</strong>, Xavier will run the draw and send each participant a private message with the name of the person they&rsquo;re gifting. Simple.
+  </p>
+</section>
+
+<section style="padding-top:0;">
+  <div class="budget-note">
+    Suggested budget: <strong style="color:var(--cream);">$50&ndash;$80</strong>. Think something considered &mdash; a bottle of wine, a small experience, something for the home. Nothing too elaborate, nothing too forgettable.
+  </div>
+
+  <div class="santa-panel">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="santa-name">Your Name</label>
+        <input type="text" id="santa-name" placeholder="Full name" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="santa-email">Email (for your assignment)</label>
+        <input type="email" id="santa-email" placeholder="your@email.com" autocomplete="email">
+      </div>
+    </div>
+
+    <button class="btn" id="santa-submit">Join the Draw</button>
+    <div class="form-message" id="santa-msg"></div>
+
+    <div class="santa-list" id="santa-list"></div>
+
+    <div id="admin-draw-section" style="display:none;margin-top:24px;border-top:1px solid var(--border);padding-top:24px;">
+      <p style="font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Administrator &mdash; Run the Draw</p>
+      <button class="btn" id="draw-btn">Run Secret Santa Draw</button>
+      <div class="form-message" id="draw-msg"></div>
+      <div class="santa-draw-result" id="draw-result"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Thorley Park</div>
+  <p>Mount Macedon, Victoria &nbsp;&middot;&nbsp; Christmas 2026</p>
+  <div class="footer-nav">
+    <a href="/christmas2026/">Home</a>
+    <a href="/christmas2026/day/">Day</a>
+    <a href="/christmas2026/menu/">Menu</a>
+    <a href="/christmas2026/stay/">Stay</a>
+    <a href="/christmas2026/getting-here/">Getting Here</a>
+    <a href="/christmas2026/rsvp/">RSVP</a>
+  </div>
+  <p style="margin-top:16px;">This is a private page for invited guests only. Please do not share.</p>
+</footer>
+
+<script>
+  document.querySelector('.nav-toggle').addEventListener('click', e => {
+    const links = document.querySelector('.nav-links');
+    const open = links.classList.toggle('open');
+    e.currentTarget.setAttribute('aria-expanded', open);
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+  const SUPABASE_URL = 'https://jvgpiioicsqsdeurypli.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_IreojMVZ_J-crM4aKx-sKw_XZeA7NcM';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const ADMIN_TRIGGER  = 'thorleypark2026';
+  const DUPLICATE_CODE = '23505';
+
+  const $ = id => document.getElementById(id);
+
+  function showMsg(id, text, type) {
+    const el = $(id);
+    el.textContent = text;
+    el.className = 'form-message ' + type;
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    }[c]));
+  }
+
+  function setBusy(btn, busyText) {
+    btn.dataset.original = btn.dataset.original || btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>' + busyText;
+  }
+  function setDone(btn, doneText) { btn.disabled = true; btn.textContent = doneText; }
+  function setIdle(btn) { btn.disabled = false; btn.textContent = btn.dataset.original || btn.textContent; }
+
+  async function submitSanta() {
+    const name  = $('santa-name').value.trim();
+    const email = $('santa-email').value.trim();
+
+    if (!name || !email) {
+      showMsg('santa-msg', 'Please enter your name and email.', 'error');
+      return;
+    }
+
+    const btn = $('santa-submit');
+    setBusy(btn, 'Joining');
+
+    const { error } = await sb.from('xmas26_santa').insert({ name, email });
+
+    if (error) {
+      if (error.code === DUPLICATE_CODE) {
+        showMsg('santa-msg', `You're already in the draw!`, 'success');
+        setDone(btn, 'Joined');
+      } else {
+        console.error('Santa error:', error);
+        showMsg('santa-msg', 'Something went wrong. Please try again.', 'error');
+        setIdle(btn);
+        return;
+      }
+    } else {
+      showMsg('santa-msg', `${name} is in the draw! We'll be in touch on 1 December.`, 'success');
+      setDone(btn, 'Joined');
+    }
+
+    await renderSantaList();
+  }
+
+  async function renderSantaList() {
+    const { data: list, error } = await sb
+      .from('xmas26_santa')
+      .select('name, created_at')
+      .order('created_at', { ascending: true });
+
+    const el = $('santa-list');
+    if (error) { console.error('Santa list error:', error); return; }
+    if (!list || !list.length) { el.innerHTML = ''; return; }
+
+    el.innerHTML = list.map(p => `
+      <div class="santa-entry fade-in">
+        <span class="santa-entry-name">${escapeHtml(p.name)}</span>
+        <span class="santa-entry-time">Signed up</span>
+      </div>
+    `).join('');
+  }
+
+  function checkAdminMode() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('draw') === ADMIN_TRIGGER) {
+      $('admin-draw-section').style.display = 'block';
+    }
+  }
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  async function runDraw() {
+    const btn = $('draw-btn');
+    setBusy(btn, 'Drawing');
+
+    const { data: list, error } = await sb
+      .from('xmas26_santa')
+      .select('name, email')
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error('Draw load error:', error);
+      showMsg('draw-msg', 'Could not load participants. Please try again.', 'error');
+      setIdle(btn);
+      return;
+    }
+
+    if (!list || list.length < 3) {
+      showMsg('draw-msg', 'Need at least 3 participants for a valid Secret Santa draw.', 'error');
+      setIdle(btn);
+      return;
+    }
+
+    let pairings = [], assigned = false, attempts = 0;
+
+    while (!assigned && attempts < 1000) {
+      attempts++;
+      const shuffled = shuffle(list);
+      const valid = shuffled.every((p, i) => p.email !== list[i].email);
+      if (valid) {
+        pairings = list.map((giver, i) => ({
+          giver: giver.name,
+          giverEmail: giver.email,
+          receiver: shuffled[i].name
+        }));
+        assigned = true;
+      }
+    }
+
+    if (!assigned) {
+      showMsg('draw-msg', 'Could not produce a valid draw (possible odd self-pairing). Please try again.', 'error');
+      setIdle(btn);
+      return;
+    }
+
+    $('draw-result').innerHTML = `
+      <p style="font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:16px;">Draw Results &mdash; Send these privately</p>
+      ${pairings.map(p => `
+        <div class="pairing">
+          <span class="pairing-giver">${escapeHtml(p.giver)}</span>
+          <span class="pairing-arrow">&rarr;</span>
+          <span class="pairing-receiver">${escapeHtml(p.receiver)}</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:auto;word-break:break-all;">${escapeHtml(p.giverEmail)}</span>
+        </div>
+      `).join('')}
+      <p style="font-size:13px;color:var(--muted);margin-top:16px;">Email each person only their own row.</p>
+    `;
+    showMsg('draw-msg', `Draw complete — ${pairings.length} pairings generated.`, 'success');
+    setDone(btn, 'Draw Complete');
+  }
+
+  $('santa-submit').addEventListener('click', submitSanta);
+  $('draw-btn').addEventListener('click', runDraw);
+  checkAdminMode();
+  renderSantaList();
+})();
+</script>
+</body>
+</html>

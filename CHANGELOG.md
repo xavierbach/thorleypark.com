@@ -1,5 +1,10 @@
 # Changelog
 
+## [Build 36] — 2026-05-08
+- christmas2026: split into multi-page layout &mdash; landing keeps just the hero, invitation prose and a six-card &ldquo;plan your visit&rdquo; grid; itinerary, menu, stay, getting-here, RSVP and secret-santa are now their own pages at `/christmas2026/<section>/`
+- christmas2026: extract shared styles to `christmas2026/styles.css`; each page links to it instead of inlining the full stylesheet
+- christmas2026: add hamburger nav under 720px (the previous design hid the nav entirely on mobile, which broke cross-page navigation); active page is highlighted in gold
+
 ## [Build 35] — 2026-05-08
 - christmas2026: add private Christmas-lunch sub-page at `/christmas2026/` &mdash; dark/gold visual identity (Cormorant Garamond + Jost), itinerary timeline, full menu, accommodation picks, directions, RSVP form, and Secret Santa signup; share-by-link only (`noindex, nofollow`, not in sitemap, not linked from main site)
 - christmas2026: replace localStorage with Supabase persistence &mdash; new `xmas26_rsvps` and `xmas26_santa` tables with row-level security, public view `xmas26_rsvps_public` exposing only `name/adults/kids` so emails &amp; dietary notes stay private; case-insensitive email uniqueness via `lower(email)` indexes
