@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Christmas at Thorley Park &mdash; 25 December 2026</title>
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #0e0b09;
+    --bg2:      #141009;
+    --surface:  #1a1510;
+    --border:   #2e2619;
+    --gold:     #c9a84c;
+    --gold-dim: #8a6e2f;
+    --cream:    #e8dfc8;
+    --muted:    #7a6e5a;
+    --text:     #d4c9b0;
+    --white:    #f5f0e6;
+    --red:      #8b2020;
+    --green:    #1e3d2a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    font-size: 16px;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 30%, rgba(201,168,76,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(139,32,32,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 70%, rgba(30,61,42,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-ornament {
+    font-size: 13px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    opacity: 0.8;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(46px, 9vw, 110px);
+    font-weight: 300;
+    line-height: 0.92;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream);
+    opacity: 0.7;
+    margin-bottom: 40px;
+  }
+
+  .hero-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .hero-details p {
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .hero-details strong {
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  .divider-line {
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+    margin: 48px auto;
+  }
+
+  .divider-ornament {
+    text-align: center;
+    color: var(--gold-dim);
+    font-size: 18px;
+    letter-spacing: 0.5em;
+    margin: 48px 0;
+    opacity: 0.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(14, 11, 9, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── SECTIONS ── */
+  section {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 32px;
+  }
+
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .lead {
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--cream);
+    opacity: 0.85;
+    margin-bottom: 40px;
+    max-width: 640px;
+  }
+
+  /* ── ITINERARY ── */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold-dim) 10%, var(--gold-dim) 90%, transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -36px;
+    top: 8px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 12px rgba(201,168,76,0.4);
+  }
+
+  .timeline-time {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .timeline-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .timeline-desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── MENU ── */
+  .menu-grid {
+    display: grid;
+    gap: 40px;
+  }
+
+  .menu-course {
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+  }
+
+  .menu-course-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 16px;
+  }
+
+  .menu-items {
+    display: grid;
+    gap: 16px;
+  }
+
+  .menu-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .menu-item-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--white);
+  }
+
+  .menu-item-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  .menu-badge {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    border: 1px solid var(--gold-dim);
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+    opacity: 0.7;
+  }
+
+  /* ── ACCOMMODATION ── */
+  .accom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2px;
+    margin-top: 8px;
+  }
+
+  .accom-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px;
+    transition: border-color 0.2s;
+  }
+
+  .accom-card:hover { border-color: var(--gold-dim); }
+
+  .accom-tier {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .accom-tier.value { color: #6a9a6a; }
+  .accom-tier.mid { color: #c9a84c; }
+  .accom-tier.luxe { color: #c9a84c; font-weight: 500; }
+
+  .accom-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .accom-location {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .accom-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .accom-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .accom-meta span {
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0.7;
+  }
+
+  .accom-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .accom-link:hover { color: var(--gold); border-color: var(--gold-dim); }
+
+  /* ── DIRECTIONS ── */
+  .info-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold-dim);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+
+  .info-block h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .info-block p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  .info-block a {
+    color: var(--gold-dim);
+    text-decoration: none;
+  }
+
+  /* ── RSVP ── */
+  .rsvp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 40px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  input, select, textarea {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    padding: 12px 14px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    width: 100%;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold-dim);
+  }
+
+  select option { background: var(--bg); }
+
+  textarea { resize: vertical; min-height: 80px; }
+
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    accent-color: var(--gold);
+  }
+
+  .checkbox-group label {
+    font-size: 14px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--text);
+  }
+
+  .btn {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    border-radius: 2px;
+  }
+
+  .btn:hover:not(:disabled) {
+    background: var(--gold-dim);
+    color: var(--bg);
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .form-message {
+    font-size: 14px;
+    padding: 12px 16px;
+    border-radius: 2px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  .form-message.success {
+    background: rgba(30,61,42,0.4);
+    border: 1px solid #2d6040;
+    color: #7dc49a;
+    display: block;
+  }
+
+  .form-message.error {
+    background: rgba(139,32,32,0.2);
+    border: 1px solid #8b2020;
+    color: #e08080;
+    display: block;
+  }
+
+  /* ── SECRET SANTA ── */
+  .santa-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px;
+  }
+
+  .santa-list {
+    display: grid;
+    gap: 8px;
+    margin: 24px 0;
+  }
+
+  .santa-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    gap: 12px;
+  }
+
+  .santa-entry-name {
+    font-size: 15px;
+    color: var(--cream);
+  }
+
+  .santa-entry-time {
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .santa-draw-result {
+    margin-top: 24px;
+  }
+
+  .pairing {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+    border-radius: 2px;
+    flex-wrap: wrap;
+  }
+
+  .pairing-giver {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--white);
+    min-width: 140px;
+  }
+
+  .pairing-arrow { color: var(--gold-dim); font-size: 18px; }
+
+  .pairing-receiver {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .budget-note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    padding: 12px 16px;
+    border-left: 2px solid var(--gold-dim);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--gold-dim);
+    margin-bottom: 12px;
+  }
+
+  footer p {
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0.5;
+  }
+
+  /* ── RSVP LIST ── */
+  .rsvp-preview {
+    margin-top: 40px;
+    border-top: 1px solid var(--border);
+    padding-top: 32px;
+  }
+
+  .rsvp-count {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .rsvp-count-label {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .rsvp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .rsvp-chip {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--text);
+    border-radius: 2px;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: -1px;
+    margin-right: 8px;
+    opacity: 0.7;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .fade-in {
+    animation: fadeIn 0.6s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .accom-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    section { padding: 60px 20px; }
+    .hero { padding: 60px 20px; }
+    .rsvp-card { padding: 24px 20px; }
+    .santa-panel { padding: 24px 20px; }
+    .accom-card { padding: 24px 22px; }
+    .info-block { padding: 20px 22px; }
+    .timeline { padding-left: 24px; }
+    .timeline-item::before { left: -28px; }
+    .pairing-giver { min-width: 0; }
+    .btn { padding: 14px 24px; letter-spacing: 0.25em; }
+    .nav-inner { height: 52px; }
+    .hero-ornament { font-size: 11px; letter-spacing: 0.3em; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-ornament">Thorley Park &nbsp;&middot;&nbsp; Mount Macedon &nbsp;&middot;&nbsp; 2026</p>
+  <h1><em>Christmas</em><br>at Thorley Park</h1>
+  <p class="hero-sub">A garden lunch with the people who matter most.</p>
+  <div class="hero-details">
+    <p><strong>Friday, 25 December 2026</strong></p>
+    <p>49 Alton Road &nbsp;&middot;&nbsp; Mount Macedon, Victoria</p>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">Thorley Park</a>
+    <ul class="nav-links">
+      <li><a href="#itinerary">Day</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#stay">Stay</a></li>
+      <li><a href="#getting-here">Getting Here</a></li>
+      <li><a href="#rsvp">RSVP</a></li>
+      <li><a href="#secret-santa">Secret Santa</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- INTRO -->
+<section>
+  <p class="section-label">About the day</p>
+  <h2 class="section-title">A proper Christmas.<br><em>The way it should be.</em></h2>
+  <p class="lead">
+    We&rsquo;re throwing open the garden and gathering everyone for a long, slow Christmas lunch at Thorley Park. Prawns on arrival, cold drinks in hand, children running through the garden. Then a proper sit-down &mdash; turkey, ham, all the trimmings &mdash; under the trees at two o&rsquo;clock. Stay as long as you like.
+  </p>
+  <p class="lead" style="font-size:15px;">
+    This page has everything you need &mdash; the menu, the day&rsquo;s rhythm, where to stay the night before (or after), how to get here, and a Secret Santa draw for the adults. Please RSVP below so we can get the table right.
+  </p>
+</section>
+
+<div style="max-width:820px;margin:0 auto 0;padding:0 24px;">
+  <div style="height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);"></div>
+</div>
+
+<!-- ITINERARY -->
+<section id="itinerary">
+  <p class="section-label">The day</p>
+  <h2 class="section-title"><em>How the day</em><br>will unfold</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-time">11:30 am</div>
+      <div class="timeline-title">Arrive &amp; Settle In</div>
+      <div class="timeline-desc">Gates open. Find your spot in the garden, help yourself to drinks, and let the kids loose. A casual start &mdash; no rush.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">12:00 pm</div>
+      <div class="timeline-title">Champagne &amp; Canap&eacute;s</div>
+      <div class="timeline-desc">Sparkling on arrival. Fresh king prawns with cocktail sauce and lemon, cold-smoked salmon blinis, and a selection of cheeses to graze from until lunch is served.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">1:00 pm</div>
+      <div class="timeline-title">Secret Santa Draw</div>
+      <div class="timeline-desc">We&rsquo;ll gather briefly to reveal this year&rsquo;s Secret Santa pairings. Gifts are kept until after lunch &mdash; the reveal is the fun part.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">2:00 pm</div>
+      <div class="timeline-title">Lunch is Served</div>
+      <div class="timeline-desc">The main event. Everyone takes their seat for a proper sit-down feast &mdash; roast turkey, glazed ham, all the trimmings. Long table. Long afternoon.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">4:00 pm</div>
+      <div class="timeline-title">Dessert &amp; Gifts</div>
+      <div class="timeline-desc">Christmas pudding, pavlova, and the chaos of Secret Santa unwrapping. Cold drinks, comfortable chairs, and nowhere to be.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-time">Evening</div>
+      <div class="timeline-title">Stay as Long as You Like</div>
+      <div class="timeline-desc">The garden is yours. Cheese board replenished, wine flowing, kids eventually winding down. No formal finish time &mdash; Christmas ends when it ends.</div>
+    </div>
+  </div>
+</section>
+
+<div style="max-width:820px;margin:0 auto;padding:0 24px;">
+  <div style="height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);"></div>
+</div>
+
+<!-- MENU -->
+<section id="menu">
+  <p class="section-label">The menu</p>
+  <h2 class="section-title"><em>Christmas Lunch</em><br>at Thorley Park</h2>
+  <p class="lead" style="font-size:15px;margin-bottom:48px;">Prepared by Xavier. Served outdoors. Everything made with care &mdash; including full vegetarian alternatives across every course. Please note any dietary requirements in your RSVP.</p>
+
+  <div class="menu-grid">
+
+    <div class="menu-course">
+      <div class="menu-course-label">On Arrival &mdash; From 12:00 pm</div>
+      <div class="menu-items">
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">King Prawns &amp; Cocktail Sauce</div>
+            <div class="menu-item-desc">Fresh Queensland king prawns, house-made cocktail sauce, lemon, ice</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Cold-Smoked Salmon Blinis</div>
+            <div class="menu-item-desc">House-made blinis, cr&egrave;me fra&icirc;che, dill, capers, lemon</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Cheese &amp; Charcuterie Board</div>
+            <div class="menu-item-desc">Selection of Australian and French cheeses, cured meats, fruit paste, sourdough crackers, honeycomb</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Caprese with Heirloom Tomatoes</div>
+            <div class="menu-item-desc">Buffalo mozzarella, heirloom tomatoes, fresh basil, aged balsamic, Macedon olive oil</div>
+          </div>
+          <div class="menu-badge">Vegetarian</div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Cucumber &amp; Dill Tartlets</div>
+            <div class="menu-item-desc">Shortcrust pastry, cream cheese, cucumber ribbons, fresh dill</div>
+          </div>
+          <div class="menu-badge">Vegetarian</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-course">
+      <div class="menu-course-label">The Main &mdash; Served at 2:00 pm</div>
+      <div class="menu-items">
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Slow-Roasted Herb Turkey</div>
+            <div class="menu-item-desc">Whole free-range turkey, sage and brown butter baste, pan jus, served with house-made gravy</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Glazed Christmas Ham</div>
+            <div class="menu-item-desc">Leg of ham, honey, Dijon and clove glaze, slow-roasted and carved at the table</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Mushroom Wellington</div>
+            <div class="menu-item-desc">Portobello and wild mushroom duxelles, spinach, puff pastry &mdash; the vegetarian centrepiece</div>
+          </div>
+          <div class="menu-badge">Vegetarian</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-course">
+      <div class="menu-course-label">Sides &amp; Salads</div>
+      <div class="menu-items">
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Duck Fat Roast Potatoes</div>
+            <div class="menu-item-desc">Sebago potatoes, duck fat, rosemary, garlic, sea salt &mdash; properly crispy</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Roasted Honey Carrots</div>
+            <div class="menu-item-desc">Heirloom carrots, wildflower honey, thyme, toasted hazelnuts</div>
+          </div>
+          <div class="menu-badge">Vegetarian</div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Brussels Sprouts with Pancetta</div>
+            <div class="menu-item-desc">Crispy pancetta, shallots, lemon butter, parmesan</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Pea, Mint &amp; Feta Salad</div>
+            <div class="menu-item-desc">Fresh garden peas, mint, Persian feta, lemon vinaigrette, toasted pine nuts</div>
+          </div>
+          <div class="menu-badge">Vegetarian</div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Heirloom Tomato &amp; Burrata Salad</div>
+            <div class="menu-item-desc">Mixed heirloom tomatoes, fresh burrata, basil oil, toasted sourdough croutons</div>
+          </div>
+          <div class="menu-badge">Vegetarian</div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Green Bean &amp; Almond Salad</div>
+            <div class="menu-item-desc">Blanched green beans, toasted flaked almonds, shallot dressing</div>
+          </div>
+          <div class="menu-badge">Vegetarian</div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Sourdough Stuffing</div>
+            <div class="menu-item-desc">Torn sourdough, sage, onion, celery, butter &mdash; baked in the pan</div>
+          </div>
+          <div class="menu-badge">Vegetarian</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-course">
+      <div class="menu-course-label">Dessert &mdash; From 4:00 pm</div>
+      <div class="menu-items">
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Pavlova</div>
+            <div class="menu-item-desc">Meringue, double cream, summer berries, passionfruit curd, fresh mint</div>
+          </div>
+          <div class="menu-badge">Vegetarian</div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Traditional Christmas Pudding</div>
+            <div class="menu-item-desc">Served with brandy butter and thick cream</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Cheese &amp; Crackers</div>
+            <div class="menu-item-desc">Afternoon cheese board, quince paste, muscatels, water crackers</div>
+          </div>
+          <div class="menu-badge">Vegetarian</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-course">
+      <div class="menu-course-label">Drinks</div>
+      <div class="menu-items">
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Sparkling &amp; Champagne on Arrival</div>
+            <div class="menu-item-desc">House sparkling, NV Champagne, sparkling water</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">White &amp; Ros&eacute; Selection</div>
+            <div class="menu-item-desc">Macedon Ranges chardonnay, Mornington Peninsula pinot gris, dry ros&eacute;</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Red Wine</div>
+            <div class="menu-item-desc">Macedon Ranges pinot noir, Heathcote shiraz</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div>
+            <div class="menu-item-name">Non-Alcoholic &amp; Children&rsquo;s Drinks</div>
+            <div class="menu-item-desc">Sparkling water, fresh lemonade, elderflower cordial, juice, soft drinks</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div style="max-width:820px;margin:0 auto;padding:0 24px;">
+  <div style="height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);"></div>
+</div>
+
+<!-- ACCOMMODATION -->
+<section id="stay">
+  <p class="section-label">Where to stay</p>
+  <h2 class="section-title"><em>Sleep in the</em><br>Macedon Ranges</h2>
+  <p class="lead" style="font-size:15px;margin-bottom:48px;">
+    Mount Macedon is about an hour north-west of Melbourne. For interstate guests, we strongly recommend staying the night before and possibly the night after. Below are our picks across a range of budgets &mdash; all within 15 minutes of Thorley Park. Book well in advance: Christmas is popular in the Ranges.
+  </p>
+
+  <div class="accom-grid">
+
+    <div class="accom-card">
+      <div class="accom-tier luxe">Luxe</div>
+      <div class="accom-name">Mollisons Kyneton</div>
+      <div class="accom-location">Kyneton &mdash; 18 min drive</div>
+      <div class="accom-desc">The finest boutique accommodation in the region. Six hotel-style ensuite rooms and a spacious two-bedroom apartment, all individually decorated with antique pieces. Walking distance to Kyneton&rsquo;s Piper Street restaurant strip.</div>
+      <div class="accom-meta">
+        <span>Ensuite rooms from ~$240/night</span>
+        <span>Apartment from ~$320/night</span>
+      </div>
+      <a class="accom-link" href="https://www.mollisons.com.au" target="_blank" rel="noopener">mollisons.com.au &rarr;</a>
+    </div>
+
+    <div class="accom-card">
+      <div class="accom-tier luxe">Luxe</div>
+      <div class="accom-name">Hanging Rock Views</div>
+      <div class="accom-location">Near Woodend &mdash; 12 min drive</div>
+      <div class="accom-desc">Four luxury suites with spectacular Hanging Rock views, forest walks from your door, and several award-winning wineries within minutes. Stunning setting and superb quality.</div>
+      <div class="accom-meta">
+        <span>Luxury suites</span>
+        <span>Multiple wineries nearby</span>
+      </div>
+      <a class="accom-link" href="https://hangingrockviews.com.au" target="_blank" rel="noopener">hangingrockviews.com.au &rarr;</a>
+    </div>
+
+    <div class="accom-card">
+      <div class="accom-tier mid">Mid-range</div>
+      <div class="accom-name">Northfield Woodend</div>
+      <div class="accom-location">Woodend &mdash; 10 min drive</div>
+      <div class="accom-desc">Two immaculate, entirely private boutique apartments in a quiet corner of Woodend village. King beds, generous bathrooms, and a short walk to the town&rsquo;s cafes and shops. Quiet and well-appointed.</div>
+      <div class="accom-meta">
+        <span>1 bedroom per apartment</span>
+        <span>Walking distance to Woodend</span>
+      </div>
+      <a class="accom-link" href="http://northfieldwoodend.com.au" target="_blank" rel="noopener">northfieldwoodend.com.au &rarr;</a>
+    </div>
+
+    <div class="accom-card">
+      <div class="accom-tier mid">Mid-range</div>
+      <div class="accom-name">Islay House</div>
+      <div class="accom-location">Woodend &mdash; 10 min drive</div>
+      <div class="accom-desc">An iconic historic property right in the heart of Woodend. Beautifully renovated with heritage character and modern comfort. Great for families or groups wanting to be close to the village.</div>
+      <div class="accom-meta">
+        <span>Historic property</span>
+        <span>Woodend village</span>
+      </div>
+      <a class="accom-link" href="https://www.visitmacedonranges.com" target="_blank" rel="noopener">Book via Airbnb or Direct &rarr;</a>
+    </div>
+
+    <div class="accom-card">
+      <div class="accom-tier mid">Mid-range</div>
+      <div class="accom-name">Hesket Estate Cottage</div>
+      <div class="accom-location">Hesket &mdash; 15 min drive</div>
+      <div class="accom-desc">A charming self-contained rural cottage on a working vineyard, overlooking paddocks and vines. Peaceful, private, and genuinely beautiful. Perfect for couples wanting a proper country escape.</div>
+      <div class="accom-meta">
+        <span>Self-contained</span>
+        <span>Vineyard setting</span>
+      </div>
+      <a class="accom-link" href="https://www.hesketestate.com.au" target="_blank" rel="noopener">hesketestate.com.au &rarr;</a>
+    </div>
+
+    <div class="accom-card">
+      <div class="accom-tier value">Value</div>
+      <div class="accom-name">The Black Forest Motel</div>
+      <div class="accom-location">Woodend &mdash; 10 min drive</div>
+      <div class="accom-desc">A fastidiously renovated boutique motel with genuine character &mdash; the &ldquo;think motel, think again&rdquo; option. Great value, clean, and well-located in Woodend. Excellent reviews for comfort and friendliness.</div>
+      <div class="accom-meta">
+        <span>Boutique motel</span>
+        <span>Great value</span>
+      </div>
+      <a class="accom-link" href="https://www.visitmacedonranges.com/where-to-stay/" target="_blank" rel="noopener">Search via Visit Macedon Ranges &rarr;</a>
+    </div>
+
+    <div class="accom-card" style="grid-column:1/-1;background:transparent;border-style:dashed;">
+      <div class="accom-tier value">Browse More</div>
+      <div class="accom-name">Visit Macedon Ranges</div>
+      <div class="accom-location">Full accommodation directory</div>
+      <div class="accom-desc">The official regional directory lists every property in the Macedon Ranges &mdash; houses, cottages, B&amp;Bs, and boutique hotels &mdash; with filters for budget, size, and village.</div>
+      <a class="accom-link" href="https://www.visitmacedonranges.com/where-to-stay/" target="_blank" rel="noopener">visitmacedonranges.com/where-to-stay &rarr;</a>
+    </div>
+
+  </div>
+</section>
+
+<div style="max-width:820px;margin:0 auto;padding:0 24px;">
+  <div style="height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);"></div>
+</div>
+
+<!-- GETTING HERE -->
+<section id="getting-here">
+  <p class="section-label">Getting here</p>
+  <h2 class="section-title"><em>Finding</em><br>Thorley Park</h2>
+
+  <div class="info-block">
+    <h4>Address</h4>
+    <p>Thorley Park &mdash; 49 Alton Road, Mount Macedon VIC 3441<br>
+    <a href="https://maps.apple.com/?address=49+Alton+Road,+Mount+Macedon+VIC+3441" target="_blank" rel="noopener">Open in Apple Maps &rarr;</a> &nbsp; <a href="https://www.google.com/maps/dir/?api=1&destination=49+Alton+Road,+Mount+Macedon+VIC+3441" target="_blank" rel="noopener">Open in Google Maps &rarr;</a></p>
+  </div>
+
+  <div class="info-block">
+    <h4>By Car from Melbourne</h4>
+    <p>Take the M8 (Western Ring Road) or M1 (Calder Freeway) to Calder Park Drive, then north on the Calder Freeway to the Mount Macedon Road exit. From there, follow Mount Macedon Road up the mountain and turn onto Alton Road. Total drive time: approximately 55&ndash;70 minutes depending on traffic. We recommend giving yourself extra time on Christmas morning.</p>
+  </div>
+
+  <div class="info-block">
+    <h4>By Train</h4>
+    <p>V/Line Bendigo line trains run regularly from Southern Cross Station to Woodend Station (approx. 1 hour). From Woodend, Mount Macedon is a 10-minute taxi or rideshare. Pre-book a local taxi or rideshare app &mdash; availability may be limited on Christmas Day.</p>
+  </div>
+
+  <div class="info-block">
+    <h4>Parking</h4>
+    <p>We have ample off-street parking at the property. Drive in via the main gate on Alton Road. If you&rsquo;re planning to have a few drinks (as you should), consider staying overnight locally and leaving the car &mdash; it&rsquo;s a lovely morning drive up the mountain.</p>
+  </div>
+
+  <div class="info-block">
+    <h4>From the Airport</h4>
+    <p>Melbourne Airport (Tullamarine) is approximately 40 minutes south via the Calder Freeway. Rideshare services operate from the airport directly to Mount Macedon. If you&rsquo;re flying in for Christmas, consider arriving the day before and staying at one of the nearby properties listed above.</p>
+  </div>
+</section>
+
+<div style="max-width:820px;margin:0 auto;padding:0 24px;">
+  <div style="height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);"></div>
+</div>
+
+<!-- RSVP -->
+<section id="rsvp">
+  <p class="section-label">RSVP</p>
+  <h2 class="section-title"><em>Let us know</em><br>you&rsquo;re coming</h2>
+  <p class="lead" style="font-size:15px;margin-bottom:40px;">Please RSVP by <strong style="color:var(--cream);">Sunday 1 November 2026</strong> so we can set the table properly. One submission per family/household is fine &mdash; just include everyone&rsquo;s names and any dietary notes.</p>
+
+  <div class="rsvp-card">
+    <div class="form-grid" id="rsvp-form">
+      <div class="form-group">
+        <label for="rsvp-name">Your Name</label>
+        <input type="text" id="rsvp-name" placeholder="Full name" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="rsvp-email">Email Address</label>
+        <input type="email" id="rsvp-email" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="rsvp-adults">Number of Adults Attending</label>
+        <select id="rsvp-adults">
+          <option value="">Select</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6+</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="rsvp-kids">Number of Children (ages 1&ndash;12)</label>
+        <select id="rsvp-kids">
+          <option value="0">None</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5+</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label for="rsvp-dietary">Dietary Requirements</label>
+        <input type="text" id="rsvp-dietary" placeholder="e.g. Vegetarian, gluten-free, nut allergy &mdash; or leave blank if none">
+      </div>
+      <div class="form-group full">
+        <label for="rsvp-staying">Staying Nearby?</label>
+        <select id="rsvp-staying">
+          <option value="">Select</option>
+          <option value="yes-before">Yes &mdash; night before (24 Dec)</option>
+          <option value="yes-after">Yes &mdash; night after (25 Dec)</option>
+          <option value="yes-both">Yes &mdash; both nights</option>
+          <option value="no">No &mdash; day trip only</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label for="rsvp-notes">Anything else we should know?</label>
+        <textarea id="rsvp-notes" placeholder="A note for Xavier &amp; Kat &mdash; optional"></textarea>
+      </div>
+    </div>
+
+    <button class="btn" id="rsvp-submit">Confirm Attendance</button>
+    <div class="form-message" id="rsvp-msg"></div>
+
+    <!-- RSVP list -->
+    <div class="rsvp-preview" id="rsvp-list-section" style="display:none;">
+      <span class="rsvp-count" id="rsvp-count">0</span>
+      <div class="rsvp-count-label">guests confirmed so far</div>
+      <div class="rsvp-chips" id="rsvp-chips"></div>
+    </div>
+  </div>
+</section>
+
+<div style="max-width:820px;margin:0 auto;padding:0 24px;margin-top:80px;">
+  <div style="height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);"></div>
+</div>
+
+<!-- SECRET SANTA -->
+<section id="secret-santa">
+  <p class="section-label">Secret Santa</p>
+  <h2 class="section-title"><em>The Draw</em></h2>
+  <p class="lead" style="font-size:15px;margin-bottom:8px;">
+    Sign up below to join the Secret Santa. On <strong style="color:var(--cream);">1 December 2026</strong>, Xavier will run the draw and send each participant a private message with the name of the person they&rsquo;re gifting. Simple.
+  </p>
+
+  <div class="budget-note">
+    Suggested budget: <strong style="color:var(--cream);">$50&ndash;$80</strong>. Think something considered &mdash; a bottle of wine, a small experience, something for the home. Nothing too elaborate, nothing too forgettable.
+  </div>
+
+  <div class="santa-panel">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="santa-name">Your Name</label>
+        <input type="text" id="santa-name" placeholder="Full name" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="santa-email">Email (for your assignment)</label>
+        <input type="email" id="santa-email" placeholder="your@email.com" autocomplete="email">
+      </div>
+    </div>
+
+    <button class="btn" id="santa-submit">Join the Draw</button>
+    <div class="form-message" id="santa-msg"></div>
+
+    <div class="santa-list" id="santa-list"></div>
+
+    <!-- Admin draw &mdash; only visible with ?draw=thorleypark2026 -->
+    <div id="admin-draw-section" style="display:none;margin-top:24px;border-top:1px solid var(--border);padding-top:24px;">
+      <p style="font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Administrator &mdash; Run the Draw</p>
+      <button class="btn" id="draw-btn">Run Secret Santa Draw</button>
+      <div class="form-message" id="draw-msg"></div>
+      <div class="santa-draw-result" id="draw-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Thorley Park</div>
+  <p>Mount Macedon, Victoria &nbsp;&middot;&nbsp; Christmas 2026</p>
+  <p style="margin-top:8px;">This is a private page for invited guests only. Please do not share.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+  // ────────────────────────────────────────────────
+  // SUPABASE CLIENT
+  // ────────────────────────────────────────────────
+  const SUPABASE_URL = 'https://jvgpiioicsqsdeurypli.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_IreojMVZ_J-crM4aKx-sKw_XZeA7NcM';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const ADMIN_TRIGGER = 'thorleypark2026';
+  const DUPLICATE_CODE = '23505';
+
+  // ────────────────────────────────────────────────
+  // UTILITIES
+  // ────────────────────────────────────────────────
+  function $(id) { return document.getElementById(id); }
+
+  function showMsg(id, text, type) {
+    const el = $(id);
+    el.textContent = text;
+    el.className = 'form-message ' + type;
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    }[c]));
+  }
+
+  function setBusy(btn, busyText) {
+    btn.dataset.original = btn.dataset.original || btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>' + busyText;
+  }
+
+  function setDone(btn, doneText) {
+    btn.disabled = true;
+    btn.textContent = doneText;
+  }
+
+  function setIdle(btn) {
+    btn.disabled = false;
+    btn.textContent = btn.dataset.original || btn.textContent;
+  }
+
+  // ────────────────────────────────────────────────
+  // RSVP
+  // ────────────────────────────────────────────────
+  async function submitRsvp() {
+    const name    = $('rsvp-name').value.trim();
+    const email   = $('rsvp-email').value.trim();
+    const adultsV = $('rsvp-adults').value;
+    const kidsV   = $('rsvp-kids').value;
+    const dietary = $('rsvp-dietary').value.trim() || null;
+    const staying = $('rsvp-staying').value || null;
+    const notes   = $('rsvp-notes').value.trim() || null;
+
+    if (!name || !email || !adultsV) {
+      showMsg('rsvp-msg', 'Please fill in your name, email, and number of adults.', 'error');
+      return;
+    }
+
+    const adults = parseInt(adultsV, 10);
+    const kids   = parseInt(kidsV, 10) || 0;
+
+    const btn = $('rsvp-submit');
+    setBusy(btn, 'Submitting');
+
+    const { error } = await sb.from('xmas26_rsvps').insert({
+      name, email, adults, kids, dietary, staying, notes
+    });
+
+    if (error) {
+      if (error.code === DUPLICATE_CODE) {
+        showMsg('rsvp-msg', 'We already have you down. See you on Christmas Day!', 'success');
+        setDone(btn, 'Confirmed');
+      } else {
+        console.error('RSVP error:', error);
+        showMsg('rsvp-msg', 'Something went wrong. Please try again or text Xavier.', 'error');
+        setIdle(btn);
+        return;
+      }
+    } else {
+      showMsg('rsvp-msg', `Wonderful — we've got you down, ${name}. See you on Christmas Day!`, 'success');
+      setDone(btn, 'Confirmed');
+    }
+
+    await renderRsvpList();
+  }
+
+  async function renderRsvpList() {
+    const { data: rsvps, error } = await sb
+      .from('xmas26_rsvps_public')
+      .select('name, adults, kids, created_at')
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error('RSVP list error:', error);
+      return;
+    }
+    if (!rsvps || !rsvps.length) return;
+
+    $('rsvp-list-section').style.display = 'block';
+
+    const totalAdults = rsvps.reduce((s, r) => s + (r.adults || 0), 0);
+    const totalKids   = rsvps.reduce((s, r) => s + (r.kids   || 0), 0);
+    $('rsvp-count').textContent = totalAdults + totalKids;
+
+    $('rsvp-chips').innerHTML = rsvps.map(r => {
+      const extra = r.adults > 1 ? ' +' + (r.adults - 1) : '';
+      const kidsLabel = r.kids > 0
+        ? ` & ${r.kids} ${r.kids === 1 ? 'kid' : 'kids'}`
+        : '';
+      return `<span class="rsvp-chip">${escapeHtml(r.name)}${extra}${kidsLabel}</span>`;
+    }).join('');
+  }
+
+  // ────────────────────────────────────────────────
+  // SECRET SANTA
+  // ────────────────────────────────────────────────
+  async function submitSanta() {
+    const name  = $('santa-name').value.trim();
+    const email = $('santa-email').value.trim();
+
+    if (!name || !email) {
+      showMsg('santa-msg', 'Please enter your name and email.', 'error');
+      return;
+    }
+
+    const btn = $('santa-submit');
+    setBusy(btn, 'Joining');
+
+    const { error } = await sb.from('xmas26_santa').insert({ name, email });
+
+    if (error) {
+      if (error.code === DUPLICATE_CODE) {
+        showMsg('santa-msg', `You're already in the draw!`, 'success');
+        setDone(btn, 'Joined');
+      } else {
+        console.error('Santa error:', error);
+        showMsg('santa-msg', 'Something went wrong. Please try again.', 'error');
+        setIdle(btn);
+        return;
+      }
+    } else {
+      showMsg('santa-msg', `${name} is in the draw! We'll be in touch on 1 December.`, 'success');
+      setDone(btn, 'Joined');
+    }
+
+    await renderSantaList();
+  }
+
+  async function renderSantaList() {
+    const { data: list, error } = await sb
+      .from('xmas26_santa')
+      .select('name, created_at')
+      .order('created_at', { ascending: true });
+
+    const el = $('santa-list');
+    if (error) {
+      console.error('Santa list error:', error);
+      return;
+    }
+    if (!list || !list.length) { el.innerHTML = ''; return; }
+
+    el.innerHTML = list.map(p => `
+      <div class="santa-entry fade-in">
+        <span class="santa-entry-name">${escapeHtml(p.name)}</span>
+        <span class="santa-entry-time">Signed up</span>
+      </div>
+    `).join('');
+  }
+
+  // ────────────────────────────────────────────────
+  // ADMIN DRAW — visible at /christmas2026/?draw=thorleypark2026
+  // ────────────────────────────────────────────────
+  function checkAdminMode() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('draw') === ADMIN_TRIGGER) {
+      $('admin-draw-section').style.display = 'block';
+    }
+  }
+
+  // Fisher–Yates shuffle (in place)
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  async function runDraw() {
+    const btn = $('draw-btn');
+    setBusy(btn, 'Drawing');
+
+    const { data: list, error } = await sb
+      .from('xmas26_santa')
+      .select('name, email')
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error('Draw load error:', error);
+      showMsg('draw-msg', 'Could not load participants. Please try again.', 'error');
+      setIdle(btn);
+      return;
+    }
+
+    if (!list || list.length < 3) {
+      showMsg('draw-msg', 'Need at least 3 participants for a valid Secret Santa draw.', 'error');
+      setIdle(btn);
+      return;
+    }
+
+    let pairings = [];
+    let assigned = false;
+    let attempts = 0;
+
+    while (!assigned && attempts < 1000) {
+      attempts++;
+      const shuffled = shuffle(list);
+      const valid = shuffled.every((p, i) => p.email !== list[i].email);
+      if (valid) {
+        pairings = list.map((giver, i) => ({
+          giver: giver.name,
+          giverEmail: giver.email,
+          receiver: shuffled[i].name
+        }));
+        assigned = true;
+      }
+    }
+
+    if (!assigned) {
+      showMsg('draw-msg', 'Could not produce a valid draw (possible odd self-pairing). Please try again.', 'error');
+      setIdle(btn);
+      return;
+    }
+
+    $('draw-result').innerHTML = `
+      <p style="font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:16px;">Draw Results &mdash; Send these privately</p>
+      ${pairings.map(p => `
+        <div class="pairing">
+          <span class="pairing-giver">${escapeHtml(p.giver)}</span>
+          <span class="pairing-arrow">&rarr;</span>
+          <span class="pairing-receiver">${escapeHtml(p.receiver)}</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:auto;word-break:break-all;">${escapeHtml(p.giverEmail)}</span>
+        </div>
+      `).join('')}
+      <p style="font-size:13px;color:var(--muted);margin-top:16px;">Email each person only their own row.</p>
+    `;
+    showMsg('draw-msg', `Draw complete — ${pairings.length} pairings generated.`, 'success');
+    setDone(btn, 'Draw Complete');
+  }
+
+  // ────────────────────────────────────────────────
+  // INIT
+  // ────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    $('rsvp-submit').addEventListener('click', submitRsvp);
+    $('santa-submit').addEventListener('click', submitSanta);
+    $('draw-btn').addEventListener('click', runDraw);
+    checkAdminMode();
+    renderRsvpList();
+    renderSantaList();
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,10 @@
 # Changelog
 
+## [Build 35] — 2026-05-08
+- christmas2026: add private Christmas-lunch sub-page at `/christmas2026/` &mdash; dark/gold visual identity (Cormorant Garamond + Jost), itinerary timeline, full menu, accommodation picks, directions, RSVP form, and Secret Santa signup; share-by-link only (`noindex, nofollow`, not in sitemap, not linked from main site)
+- christmas2026: replace localStorage with Supabase persistence &mdash; new `xmas26_rsvps` and `xmas26_santa` tables with row-level security, public view `xmas26_rsvps_public` exposing only `name/adults/kids` so emails &amp; dietary notes stay private; case-insensitive email uniqueness via `lower(email)` indexes
+- christmas2026: in-browser Secret Santa draw at `?draw=thorleypark2026` reads live participants from Supabase, runs proper Fisher&ndash;Yates shuffle with no self-gifting, displays per-giver email alongside each pairing for sending privately
+
 ## [Build 34] — 2026-05-06
 - wimbledon2026: rework tennis-ball animation &mdash; full-viewport border-to-border travel, parabolic rally arc that stays above the text, court line just above the &ldquo;July 2026 &middot; Europe&rdquo; label
 
