@@ -1,5 +1,10 @@
 # Changelog
 
+## [Build 35] — 2026-06-06
+- wimbledon2026: replace Claridge's with Sanderson London (50 Berners Street, Fitzrovia) — update Jul 6 segment title, prose, hotel highlight box, dinner reference (The Painter's Room → The Long Bar); Jul 9 check-out label and prose
+- wimbledon2026: replace Le Bristol Paris (TBC) with Sofitel Paris Arc de Triomphe — Jul 11 hotel name, address (2 Rue de Beaujon, 8e), TBC chip removed
+- eurotrip: same Claridge's → Sanderson London swap (Jul 6 title, prose, highlight box; Jul 9 check-out label and prose)
+
 ## [Build 34] — 2026-05-06
 - wimbledon2026: rework tennis-ball animation &mdash; full-viewport border-to-border travel, parabolic rally arc that stays above the text, court line just above the &ldquo;July 2026 &middot; Europe&rdquo; label
 

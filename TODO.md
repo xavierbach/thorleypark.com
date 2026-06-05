@@ -6,6 +6,7 @@
 - Upload fountain logo PNG to Canva brand kit Logos section
 
 ## Done
+- wimbledon2026 / eurotrip: update hotel bookings from confirmed screenshot — Sanderson London (6–9 Jul), Sofitel Paris Arc de Triomphe (11–13 Jul), The Savoy confirmed unchanged
 - wimbledon2026: tennis-ball rally now arcs border-to-border above the title (parabolic, 5s loop)
 - wimbledon2026: gap-fill pass &mdash; hotels/restaurants/activities filled for every day, continuous &ldquo;Night N of 9&rdquo; counter, gold TBC chips on unconfirmed bookings, bouncing tennis-ball rally animation in the title
 - wimbledon2026: Heathrow Express cards both legs, Qantas Business call-out badges, line-drawn SVG icons replacing all emojis
