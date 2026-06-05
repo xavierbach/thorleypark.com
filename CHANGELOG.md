@@ -1,9 +1,22 @@
 # Changelog
 
-## [Build 35] — 2026-06-06
+## [Build 38] — 2026-06-06
 - wimbledon2026: replace Claridge's with Sanderson London (50 Berners Street, Fitzrovia) — update Jul 6 segment title, prose, hotel highlight box, dinner reference (The Painter's Room → The Long Bar); Jul 9 check-out label and prose
 - wimbledon2026: replace Le Bristol Paris (TBC) with Sofitel Paris Arc de Triomphe — Jul 11 hotel name, address (2 Rue de Beaujon, 8e), TBC chip removed
 - eurotrip: same Claridge's → Sanderson London swap (Jul 6 title, prose, highlight box; Jul 9 check-out label and prose)
+
+## [Build 37] — 2026-05-08
+- christmas2026: mark Traditional Christmas Pudding as Vegetarian (using vegetable suet, not beef suet)
+
+## [Build 36] — 2026-05-08
+- christmas2026: split into multi-page layout &mdash; landing keeps just the hero, invitation prose and a six-card &ldquo;plan your visit&rdquo; grid; itinerary, menu, stay, getting-here, RSVP and secret-santa are now their own pages at `/christmas2026/<section>/`
+- christmas2026: extract shared styles to `christmas2026/styles.css`; each page links to it instead of inlining the full stylesheet
+- christmas2026: add hamburger nav under 720px (the previous design hid the nav entirely on mobile, which broke cross-page navigation); active page is highlighted in gold
+
+## [Build 35] — 2026-05-08
+- christmas2026: add private Christmas-lunch sub-page at `/christmas2026/` &mdash; dark/gold visual identity (Cormorant Garamond + Jost), itinerary timeline, full menu, accommodation picks, directions, RSVP form, and Secret Santa signup; share-by-link only (`noindex, nofollow`, not in sitemap, not linked from main site)
+- christmas2026: replace localStorage with Supabase persistence &mdash; new `xmas26_rsvps` and `xmas26_santa` tables with row-level security, public view `xmas26_rsvps_public` exposing only `name/adults/kids` so emails &amp; dietary notes stay private; case-insensitive email uniqueness via `lower(email)` indexes
+- christmas2026: in-browser Secret Santa draw at `?draw=thorleypark2026` reads live participants from Supabase, runs proper Fisher&ndash;Yates shuffle with no self-gifting, displays per-giver email alongside each pairing for sending privately
 
 ## [Build 34] — 2026-05-06
 - wimbledon2026: rework tennis-ball animation &mdash; full-viewport border-to-border travel, parabolic rally arc that stays above the text, court line just above the &ldquo;July 2026 &middot; Europe&rdquo; label

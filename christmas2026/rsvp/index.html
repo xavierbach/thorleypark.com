@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>RSVP &mdash; Christmas at Thorley Park</title>
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/christmas2026/styles.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="/christmas2026/">Thorley Park</a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <line x1="0" y1="2" x2="22" y2="2"/>
+        <line x1="0" y1="7" x2="22" y2="7"/>
+        <line x1="0" y1="12" x2="22" y2="12"/>
+      </svg>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/christmas2026/day/">Day</a></li>
+      <li><a href="/christmas2026/menu/">Menu</a></li>
+      <li><a href="/christmas2026/stay/">Stay</a></li>
+      <li><a href="/christmas2026/getting-here/">Getting Here</a></li>
+      <li><a class="active" href="/christmas2026/rsvp/">RSVP</a></li>
+      <li><a href="/christmas2026/secret-santa/">Secret Santa</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="page-header">
+  <p class="section-label">RSVP</p>
+  <h2 class="section-title"><em>Let us know</em><br>you&rsquo;re coming</h2>
+  <p class="lead">Please RSVP by <strong style="color:var(--cream);">Sunday 1 November 2026</strong> so we can set the table properly. One submission per family/household is fine &mdash; just include everyone&rsquo;s names and any dietary notes.</p>
+</section>
+
+<section style="padding-top:0;">
+  <div class="rsvp-card">
+    <div class="form-grid" id="rsvp-form">
+      <div class="form-group">
+        <label for="rsvp-name">Your Name</label>
+        <input type="text" id="rsvp-name" placeholder="Full name" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="rsvp-email">Email Address</label>
+        <input type="email" id="rsvp-email" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="rsvp-adults">Number of Adults Attending</label>
+        <select id="rsvp-adults">
+          <option value="">Select</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6+</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="rsvp-kids">Number of Children (ages 1&ndash;12)</label>
+        <select id="rsvp-kids">
+          <option value="0">None</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5+</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label for="rsvp-dietary">Dietary Requirements</label>
+        <input type="text" id="rsvp-dietary" placeholder="e.g. Vegetarian, gluten-free, nut allergy &mdash; or leave blank if none">
+      </div>
+      <div class="form-group full">
+        <label for="rsvp-staying">Staying Nearby?</label>
+        <select id="rsvp-staying">
+          <option value="">Select</option>
+          <option value="yes-before">Yes &mdash; night before (24 Dec)</option>
+          <option value="yes-after">Yes &mdash; night after (25 Dec)</option>
+          <option value="yes-both">Yes &mdash; both nights</option>
+          <option value="no">No &mdash; day trip only</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label for="rsvp-notes">Anything else we should know?</label>
+        <textarea id="rsvp-notes" placeholder="A note for Xavier &amp; Kat &mdash; optional"></textarea>
+      </div>
+    </div>
+
+    <button class="btn" id="rsvp-submit">Confirm Attendance</button>
+    <div class="form-message" id="rsvp-msg"></div>
+
+    <div class="rsvp-preview" id="rsvp-list-section" style="display:none;">
+      <span class="rsvp-count" id="rsvp-count">0</span>
+      <div class="rsvp-count-label">guests confirmed so far</div>
+      <div class="rsvp-chips" id="rsvp-chips"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Thorley Park</div>
+  <p>Mount Macedon, Victoria &nbsp;&middot;&nbsp; Christmas 2026</p>
+  <div class="footer-nav">
+    <a href="/christmas2026/">Home</a>
+    <a href="/christmas2026/day/">Day</a>
+    <a href="/christmas2026/menu/">Menu</a>
+    <a href="/christmas2026/stay/">Stay</a>
+    <a href="/christmas2026/getting-here/">Getting Here</a>
+    <a href="/christmas2026/secret-santa/">Secret Santa</a>
+  </div>
+  <p style="margin-top:16px;">This is a private page for invited guests only. Please do not share.</p>
+</footer>
+
+<script>
+  document.querySelector('.nav-toggle').addEventListener('click', e => {
+    const links = document.querySelector('.nav-links');
+    const open = links.classList.toggle('open');
+    e.currentTarget.setAttribute('aria-expanded', open);
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(() => {
+  const SUPABASE_URL = 'https://jvgpiioicsqsdeurypli.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_IreojMVZ_J-crM4aKx-sKw_XZeA7NcM';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const DUPLICATE_CODE = '23505';
+
+  const $ = id => document.getElementById(id);
+
+  function showMsg(id, text, type) {
+    const el = $(id);
+    el.textContent = text;
+    el.className = 'form-message ' + type;
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    }[c]));
+  }
+
+  function setBusy(btn, busyText) {
+    btn.dataset.original = btn.dataset.original || btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>' + busyText;
+  }
+  function setDone(btn, doneText) { btn.disabled = true; btn.textContent = doneText; }
+  function setIdle(btn) { btn.disabled = false; btn.textContent = btn.dataset.original || btn.textContent; }
+
+  async function submitRsvp() {
+    const name    = $('rsvp-name').value.trim();
+    const email   = $('rsvp-email').value.trim();
+    const adultsV = $('rsvp-adults').value;
+    const kidsV   = $('rsvp-kids').value;
+    const dietary = $('rsvp-dietary').value.trim() || null;
+    const staying = $('rsvp-staying').value || null;
+    const notes   = $('rsvp-notes').value.trim() || null;
+
+    if (!name || !email || !adultsV) {
+      showMsg('rsvp-msg', 'Please fill in your name, email, and number of adults.', 'error');
+      return;
+    }
+
+    const adults = parseInt(adultsV, 10);
+    const kids   = parseInt(kidsV, 10) || 0;
+    const btn    = $('rsvp-submit');
+    setBusy(btn, 'Submitting');
+
+    const { error } = await sb.from('xmas26_rsvps').insert({
+      name, email, adults, kids, dietary, staying, notes
+    });
+
+    if (error) {
+      if (error.code === DUPLICATE_CODE) {
+        showMsg('rsvp-msg', 'We already have you down. See you on Christmas Day!', 'success');
+        setDone(btn, 'Confirmed');
+      } else {
+        console.error('RSVP error:', error);
+        showMsg('rsvp-msg', 'Something went wrong. Please try again or text Xavier.', 'error');
+        setIdle(btn);
+        return;
+      }
+    } else {
+      showMsg('rsvp-msg', `Wonderful — we've got you down, ${name}. See you on Christmas Day!`, 'success');
+      setDone(btn, 'Confirmed');
+    }
+
+    await renderRsvpList();
+  }
+
+  async function renderRsvpList() {
+    const { data: rsvps, error } = await sb
+      .from('xmas26_rsvps_public')
+      .select('name, adults, kids, created_at')
+      .order('created_at', { ascending: true });
+
+    if (error) { console.error('RSVP list error:', error); return; }
+    if (!rsvps || !rsvps.length) return;
+
+    $('rsvp-list-section').style.display = 'block';
+    const totalAdults = rsvps.reduce((s, r) => s + (r.adults || 0), 0);
+    const totalKids   = rsvps.reduce((s, r) => s + (r.kids   || 0), 0);
+    $('rsvp-count').textContent = totalAdults + totalKids;
+
+    $('rsvp-chips').innerHTML = rsvps.map(r => {
+      const extra = r.adults > 1 ? ' +' + (r.adults - 1) : '';
+      const kidsLabel = r.kids > 0
+        ? ` & ${r.kids} ${r.kids === 1 ? 'kid' : 'kids'}`
+        : '';
+      return `<span class="rsvp-chip">${escapeHtml(r.name)}${extra}${kidsLabel}</span>`;
+    }).join('');
+  }
+
+  $('rsvp-submit').addEventListener('click', submitRsvp);
+  renderRsvpList();
+})();
+</script>
+</body>
+</html>
