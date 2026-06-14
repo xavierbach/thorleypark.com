@@ -312,30 +312,74 @@ function bubbleColumn(grp, x, y, z, h, n, r) {
 }
 
 // --- Fish (faces +Z) ---
+// Wet, slightly iridescent scales with a clearcoat sheen.
+function fishMat(color, o) {
+    return new THREE.MeshPhysicalMaterial(Object.assign({
+        color, roughness: 0.3, metalness: 0.0, clearcoat: 1, clearcoatRoughness: 0.25,
+        sheen: 0.7, sheenRoughness: 0.5, sheenColor: new THREE.Color(0xffffff),
+        iridescence: 0.4, iridescenceIOR: 1.3, envMapIntensity: 1.35
+    }, o || {}));
+}
+// Thin, translucent fin membrane.
+function finMat(color) {
+    return new THREE.MeshPhysicalMaterial({ color, roughness: 0.45, transmission: 0.35, thickness: 0.6, transparent: true, opacity: 0.94, side: THREE.DoubleSide, clearcoat: 0.6, clearcoatRoughness: 0.4, sheen: 0.6, envMapIntensity: 1.1 });
+}
+// A flat fin from a 2D outline, laid into the fish's z/y plane (x = thin axis).
+function finFromShape(pts, color) {
+    const sh = new THREE.Shape();
+    pts.forEach((p, i) => i ? sh.lineTo(p[0], p[1]) : sh.moveTo(p[0], p[1]));
+    sh.closePath();
+    const m = new THREE.Mesh(new THREE.ShapeGeometry(sh, 12), finMat(color));
+    m.rotation.y = -Math.PI / 2; m.castShadow = true; return m;
+}
 function fish3(o) {
     o = o || {};
     const grp = new THREE.Group();
-    const len = o.len || 9, tall = o.tall || 1;
-    const body = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 14), mat(o.body, { roughness: 0.4, metalness: 0.05 }));
-    body.scale.set(len * 0.2, len * 0.26 * tall, len * 0.5); body.castShadow = true; grp.add(body);
-    const belly = new THREE.Mesh(new THREE.SphereGeometry(1, 18, 12), mat(o.belly || 0xf4f4f0, { roughness: 0.5 }));
-    belly.scale.set(len * 0.19, len * 0.18 * tall, len * 0.46); belly.position.y = -len * 0.07; grp.add(belly);
-    // tail
-    const tailPivot = new THREE.Group(); tailPivot.position.z = -len * 0.45; grp.add(tailPivot);
-    const tail = new THREE.Mesh(new THREE.ConeGeometry(len * 0.24 * tall, len * 0.34, 4), mat(o.fin || o.body, { side: THREE.DoubleSide, roughness: 0.5 }));
-    tail.rotation.x = -Math.PI / 2; tail.scale.x = 0.15; tail.position.z = -len * 0.15; tailPivot.add(tail);
-    // dorsal
-    const dorsal = new THREE.Mesh(new THREE.ConeGeometry(len * 0.12, len * 0.3, 4), mat(o.fin || o.body, { side: THREE.DoubleSide }));
-    dorsal.rotation.x = Math.PI; dorsal.scale.z = 0.1; dorsal.position.set(0, len * 0.22 * tall, 0); grp.add(dorsal);
-    // bands
-    (o.bands || []).forEach(b => {
-        const ring = new THREE.Mesh(new THREE.TorusGeometry(1, 0.12, 8, 20), mat(b.c, { roughness: 0.5 }));
-        ring.scale.set(len * 0.21, len * 0.27 * tall, 1); ring.position.z = b.z * len; grp.add(ring);
-    });
-    // eyes
+    const len = o.len || 9, tall = o.tall || 1, fin = o.fin || o.body;
+    // smooth tear-drop body
+    const bg = new THREE.SphereGeometry(1, 72, 44), bp = bg.attributes.position, v = new THREE.Vector3();
+    for (let i = 0; i < bp.count; i++) {
+        v.fromBufferAttribute(bp, i);
+        const a = v.z; // -1 tail .. +1 head
+        const r = a < 0 ? Math.pow(Math.max(0, 1 + a), 0.55) : Math.sqrt(Math.max(0, 1 - a * a * 0.22));
+        v.x *= r; v.y *= r;
+        if (a > 0) v.y += a * 0.04;            // slight head lift
+        v.y -= (1 - Math.abs(a)) * 0.05;        // gently rounded belly
+        bp.setXYZ(i, v.x, v.y, v.z);
+    }
+    bg.computeVertexNormals();
+    const body = new THREE.Mesh(bg, fishMat(o.body));
+    body.scale.set(len * 0.2, len * 0.27 * tall, len * 0.5); body.castShadow = true; grp.add(body);
+    // counter-shaded belly
+    const belly = new THREE.Mesh(bg, fishMat(o.belly || 0xf7f5ef, { iridescence: 0.12, clearcoat: 0.5, sheen: 0.3 }));
+    belly.scale.set(len * 0.193, len * 0.2 * tall, len * 0.485); belly.position.y = -len * 0.09; grp.add(belly);
+    // caudal (tail) fin — forked fan that wags
+    const tailPivot = new THREE.Group(); tailPivot.position.z = -len * 0.46; grp.add(tailPivot);
+    const L = len * 0.4, H = len * 0.33 * tall;
+    tailPivot.add(finFromShape([[0, 0], [-L, H], [-L * 0.6, 0], [-L, -H]], fin));
+    // dorsal fin
+    const dorsal = finFromShape([[len * 0.18, 0], [len * 0.02, len * 0.22 * tall], [-len * 0.22, 0]], fin);
+    dorsal.position.y = len * 0.24 * tall; grp.add(dorsal);
+    // anal fin (underside)
+    const anal = finFromShape([[-len * 0.05, 0], [-len * 0.2, -len * 0.12 * tall], [-len * 0.28, 0]], fin);
+    anal.position.y = -len * 0.2 * tall; grp.add(anal);
+    // pectoral fins (one each side, swept back)
     [-1, 1].forEach(s => {
-        const e = new THREE.Mesh(new THREE.SphereGeometry(len * 0.05, 8, 8), new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.3 }));
-        e.position.set(s * len * 0.13, len * 0.04, len * 0.34); grp.add(e);
+        const pec = finFromShape([[0, 0], [-len * 0.18, len * 0.04], [-len * 0.16, -len * 0.1]], fin);
+        pec.position.set(s * len * 0.16, -len * 0.02, len * 0.12);
+        pec.rotation.z = s * 0.5; pec.rotation.x = s * 0.3; grp.add(pec);
+    });
+    // bands / stripes
+    (o.bands || []).forEach(b => {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(1, 0.1, 10, 28), fishMat(b.c, { iridescence: 0.15 }));
+        ring.scale.set(len * 0.205, len * 0.275 * tall, 1); ring.position.z = b.z * len; grp.add(ring);
+    });
+    // eyes — glossy with a catch-light
+    [-1, 1].forEach(s => {
+        const sock = new THREE.Mesh(new THREE.SphereGeometry(len * 0.058, 18, 14), new THREE.MeshPhysicalMaterial({ color: 0x0a0a0c, roughness: 0.08, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.6 }));
+        sock.position.set(s * len * 0.125, len * 0.05, len * 0.33); grp.add(sock);
+        const hi = new THREE.Mesh(new THREE.SphereGeometry(len * 0.018, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+        hi.position.set(s * len * 0.135, len * 0.075, len * 0.365); grp.add(hi);
     });
     grp.scale.setScalar(1);
     const sp = 0.35 + Math.random() * 0.4, ph = Math.random() * 6.28, rx = len + 5, rz = len + 6;
@@ -909,6 +953,18 @@ function animate() {
 // Plants, hardscape and decor may rise up out of the water; everything else stays wet.
 function canExitWater(item) { return item.cat === 'plants' || item.cat === 'hardscape' || item.cat === 'decor'; }
 
+// Give every placed model a touch more environment reflection (wet look),
+// and make plant/coral surfaces a little glossier.
+function enhanceMaterials(group, item) {
+    group.traverse(o => {
+        if (!o.isMesh || !o.material) return;
+        const m = o.material;
+        if ('envMapIntensity' in m) m.envMapIntensity = Math.max(m.envMapIntensity || 1, 1.25);
+        if (item.cat === 'plants' && m.roughness != null) m.roughness = Math.min(m.roughness, 0.5);
+        if (item.cat === 'corals' && m.roughness != null) m.roughness = Math.min(m.roughness, 0.45);
+    });
+}
+
 function measureHalf(group) {
     const box = new THREE.Box3().setFromObject(group);
     if (!isFinite(box.min.x)) return { hx: 2, hz: 2, hy: 4 };
@@ -948,6 +1004,7 @@ function addItem(itemId, pos) {
     const group = item.make();
     group.userData.root = true;
     group.traverse(o => { if (o.isMesh && o.castShadow === undefined) o.castShadow = true; });
+    enhanceMaterials(group, item);
     const h = measureHalf(group);
     const p = { uid: uidSeq++, itemId, x: 0, y: 0, z: 0, scale: 1, rotX: 0, rotY: Math.random() * Math.PI * 2 };
     group.userData.uid = p.uid;
@@ -1245,6 +1302,8 @@ function loadFrom(data) {
         if (!ITEM_BY_ID[d.itemId]) return;
         const item = ITEM_BY_ID[d.itemId];
         const group = item.make(); group.userData.root = true;
+        group.traverse(o => { if (o.isMesh && o.castShadow === undefined) o.castShadow = true; });
+        enhanceMaterials(group, item);
         const h = measureHalf(group);
         const p = { uid: uidSeq++, itemId: d.itemId, x: d.x, y: d.y, z: d.z, scale: d.scale ?? 1, rotX: d.rotX ?? 0, rotY: d.rotY ?? 0 };
         group.userData.uid = p.uid;
