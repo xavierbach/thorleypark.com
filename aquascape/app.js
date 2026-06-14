@@ -200,16 +200,17 @@ function leaf(h, w, color, curve, rough) {
 function plant3(color, dark, opt) {
     opt = opt || {};
     const grp = new THREE.Group();
+    const pivot = new THREE.Group(); grp.add(pivot); // sways independently of user rotation
     const n = opt.blades || 9, H = opt.h || 18, W = opt.w || 3.4;
     for (let i = 0; i < n; i++) {
         const l = leaf(H * (0.7 + (i % 3) * 0.18), W, i % 2 ? dark : color, opt.curve ?? 5);
         l.rotation.y = (i / n) * Math.PI * 2;
         l.rotation.x = (opt.spread ?? 0.4) * (0.5 + (i % 2));
         l.position.y = 0.2;
-        grp.add(l);
+        pivot.add(l);
     }
     const ph = Math.random() * 6.28;
-    grp.userData.update = t => { grp.rotation.z = Math.sin(t * 1.2 + ph) * (opt.sway ?? 0.05); grp.rotation.x = Math.cos(t * 0.9 + ph) * (opt.sway ?? 0.05) * 0.7; };
+    grp.userData.update = t => { pivot.rotation.z = Math.sin(t * 1.2 + ph) * (opt.sway ?? 0.05); pivot.rotation.x = Math.cos(t * 0.9 + ph) * (opt.sway ?? 0.05) * 0.7; };
     return grp;
 }
 function carpet3(color, dark) {
@@ -247,10 +248,11 @@ function branchTo(grp, from, dir, len, rad, depth, color) {
 }
 function coralBranch3(color, dark, size) {
     const grp = new THREE.Group();
-    branchTo(grp, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 1, 0), size * 0.5, size * 0.09, 3, color);
-    grp.traverse(o => { if (o.material) { o.material.emissive = new THREE.Color(color).multiplyScalar(0.18); } });
+    const pivot = new THREE.Group(); grp.add(pivot); // sways independently of user rotation
+    branchTo(pivot, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 1, 0), size * 0.5, size * 0.09, 3, color);
+    pivot.traverse(o => { if (o.material) { o.material.emissive = new THREE.Color(color).multiplyScalar(0.18); } });
     const ph = Math.random() * 6.28;
-    grp.userData.update = t => { grp.rotation.z = Math.sin(t * 0.8 + ph) * 0.02; };
+    grp.userData.update = t => { pivot.rotation.z = Math.sin(t * 0.8 + ph) * 0.02; };
     return grp;
 }
 function coralBlob3(color, dark, size, folds) {
@@ -339,12 +341,21 @@ function fish3(o) {
     const sp = 0.35 + Math.random() * 0.4, ph = Math.random() * 6.28, rx = len + 5, rz = len + 6;
     const tmp = new THREE.Vector3();
     grp.userData.swim = true;
+    const half = len * 0.55;
     grp.userData.update = t => {
         const home = grp.userData.home || grp.position;
         const a = t * sp + ph;
-        const x = home.x + Math.cos(a) * rx, z = home.z + Math.sin(a) * rz, y = home.y + Math.sin(a * 0.8) * len * 0.25;
+        let x = home.x + Math.cos(a) * rx, z = home.z + Math.sin(a) * rz, y = home.y + Math.sin(a * 0.8) * len * 0.25;
+        let tx = home.x + Math.cos(a + 0.06) * rx, tz = home.z + Math.sin(a + 0.06) * rz;
+        if (interior.ready) { // keep the whole fish inside the glass at all times
+            const minX = interior.minX + half, maxX = interior.maxX - half;
+            const minZ = interior.minZ + half, maxZ = interior.maxZ - half;
+            x = Math.min(maxX, Math.max(minX, x)); z = Math.min(maxZ, Math.max(minZ, z));
+            tx = Math.min(maxX, Math.max(minX, tx)); tz = Math.min(maxZ, Math.max(minZ, tz));
+            y = Math.min(interior.waterTop - half * 0.7, Math.max(groundY(x, z) + half, y));
+        }
         grp.position.set(x, y, z);
-        tmp.set(home.x + Math.cos(a + 0.06) * rx, y, home.z + Math.sin(a + 0.06) * rz);
+        tmp.set(tx, y, tz);
         grp.lookAt(tmp);
         tailPivot.rotation.y = Math.sin(t * 9 + ph) * 0.5;
     };
@@ -384,7 +395,14 @@ function star3(color, dark) {
 }
 
 // --- Equipment ---
-function glassMat(tint) { return new THREE.MeshPhysicalMaterial({ color: tint || 0xdfeef5, transmission: 0.9, thickness: 1, roughness: 0.08, metalness: 0, ior: 1.4, transparent: true, opacity: 0.5 }); }
+function glassMat(tint) {
+    return new THREE.MeshPhysicalMaterial({
+        color: tint || 0xeaf7fc, transmission: 1.0, thickness: 3.2,
+        roughness: 0.015, metalness: 0, ior: 1.5, transparent: true, opacity: 1,
+        clearcoat: 1, clearcoatRoughness: 0.02, reflectivity: 0.5,
+        envMapIntensity: 1.5, attenuationColor: new THREE.Color(0x8fd4e6), attenuationDistance: 480
+    });
+}
 function heater3() {
     const grp = new THREE.Group();
     const tube = new THREE.Mesh(new THREE.CylinderGeometry(1.4, 1.4, 22, 16), glassMat()); tube.position.y = 11; grp.add(tube);
@@ -593,12 +611,24 @@ const TANKS = {
     large:    { label: 'Large',    litres: 240, W: 120, H: 50, D: 42 },
     xl:       { label: 'XL Reef',  litres: 450, W: 150, H: 60, D: 52 }
 };
+/* Substrate looks — base colour + a few grain tints + grain size + roughness.
+   `mode` hints which water type it suits (used by the randomizer). */
+const SUBSTRATES = {
+    aquasoil:    { label: 'Aqua Soil',      mode: 'fresh', base: '#3a2c20', grains: ['#2a1f15', '#4c3a2a', '#241a12'], grain: 2.0, rough: 0.96 },
+    natgravel:   { label: 'Natural Gravel', mode: 'fresh', base: '#b49a68', grains: ['#8c724a', '#cdb486', '#6f5836', '#d8c89a'], grain: 3.2, rough: 0.9 },
+    rivergravel: { label: 'River Gravel',   mode: 'fresh', base: '#9aa0a2', grains: ['#6f7678', '#b9bfc0', '#7e6f57', '#c9c2b2'], grain: 3.6, rough: 0.85 },
+    blacksand:   { label: 'Black Sand',     mode: 'both',  base: '#26282c', grains: ['#16181b', '#34373c', '#1d1f22'], grain: 1.6, rough: 0.95 },
+    whitesand:   { label: 'White Sand',     mode: 'both',  base: '#e9e3cf', grains: ['#d8cfb4', '#f3eedd', '#cfc6a8'], grain: 1.5, rough: 0.8 },
+    coralsand:   { label: 'Coral Sand',     mode: 'salt',  base: '#ece3d2', grains: ['#dccdb2', '#f6efe0', '#cbb999', '#e0d0bb'], grain: 1.8, rough: 0.82 },
+    pinksand:    { label: 'Pink Sand',      mode: 'salt',  base: '#e6cabb', grains: ['#d6b0a0', '#f1ddd1', '#cf9f8e'], grain: 1.7, rough: 0.82 },
+    crushedcoral:{ label: 'Crushed Coral',  mode: 'salt',  base: '#dad2c0', grains: ['#bfb49b', '#efe9da', '#a89a7c', '#cabfa6'], grain: 4.2, rough: 0.88 }
+};
 
 /* =========================================================================
    PART D — State
    ========================================================================= */
 const SAVE_KEY = 'tp_aquascape_3d_v1';
-const state = { mode: 'fresh', tank: 'standard', substrate: 18, water: 92, bubbles: true, placed: [], sel: null };
+const state = { mode: 'fresh', tank: 'standard', substrate: 18, subType: 'aquasoil', slope: 0, slopeDir: 'back', water: 92, bubbles: true, placed: [], sel: null };
 let uidSeq = 1;
 const placedMap = new Map(); // uid -> { p, group, item }
 
@@ -609,8 +639,17 @@ const $ = s => document.querySelector(s);
    ========================================================================= */
 const container = $('#stage3d');
 let renderer, scene, camera, controls, dirLight, tankGroup, waterMesh, floorMesh, causticTex, selBox, hemi;
+let godrays = [];
 const clock = new THREE.Clock();
-const interior = { x: 0, zNeg: 0, zPos: 0, subTop: 0, waterTop: 0, floatY: 0 };
+const interior = { x: 0, zNeg: 0, zPos: 0, subTop: 0, waterTop: 0, floatY: 0, H: 0,
+    minX: 0, maxX: 0, minZ: 0, maxZ: 0, slopeTan: 0, dx: 0, dz: 0, sMin: 0, ready: false };
+
+/* Height of the substrate surface at a given x,z (accounts for the slope). */
+function groundY(x, z) {
+    if (!interior.slopeTan) return interior.subTop;
+    const proj = x * interior.dx + z * interior.dz;
+    return interior.subTop + (proj - interior.sMin) * interior.slopeTan;
+}
 
 function dims() { return TANKS[state.tank]; }
 
@@ -636,11 +675,54 @@ function makeCaustics() {
     return t;
 }
 
+/* Build a colour map + matching normal map for a substrate spec by stippling
+   thousands of little grains, then deriving surface normals from brightness. */
+let _subTexCache = {};
+function makeSubstrateTextures(spec) {
+    if (_subTexCache[spec._key]) return _subTexCache[spec._key];
+    const s = 512, col = document.createElement('canvas'); col.width = col.height = s;
+    const cx = col.getContext('2d');
+    cx.fillStyle = spec.base; cx.fillRect(0, 0, s, s);
+    const grains = spec.grains, gr = spec.grain || 2.5;
+    const N = Math.round(26000 / gr);
+    for (let i = 0; i < N; i++) {
+        const x = Math.random() * s, y = Math.random() * s;
+        const r = gr * (0.5 + Math.random());
+        cx.fillStyle = grains[(Math.random() * grains.length) | 0];
+        cx.globalAlpha = 0.55 + Math.random() * 0.45;
+        cx.beginPath(); cx.ellipse(x, y, r, r * (0.7 + Math.random() * 0.5), Math.random() * 3.14, 0, 6.28); cx.fill();
+    }
+    cx.globalAlpha = 1;
+    const map = new THREE.CanvasTexture(col); map.wrapS = map.wrapT = THREE.RepeatWrapping; map.colorSpace = THREE.SRGBColorSpace;
+
+    // derive a normal map from the luminance of the colour map (grains => bumps)
+    const src = cx.getImageData(0, 0, s, s).data;
+    const nrm = document.createElement('canvas'); nrm.width = nrm.height = s;
+    const nctx = nrm.getContext('2d'), nimg = nctx.createImageData(s, s);
+    const lum = (x, y) => { const i = ((y & (s - 1)) * s + (x & (s - 1))) * 4; return (src[i] * 0.3 + src[i + 1] * 0.59 + src[i + 2] * 0.11) / 255; };
+    const str = 2.2;
+    for (let y = 0; y < s; y++) for (let x = 0; x < s; x++) {
+        const dx = (lum(x - 1, y) - lum(x + 1, y)) * str;
+        const dy = (lum(x, y - 1) - lum(x, y + 1)) * str;
+        const nz = 1, inv = 1 / Math.hypot(dx, dy, nz);
+        const i = (y * s + x) * 4;
+        nimg.data[i] = (dx * inv * 0.5 + 0.5) * 255;
+        nimg.data[i + 1] = (dy * inv * 0.5 + 0.5) * 255;
+        nimg.data[i + 2] = (nz * inv * 0.5 + 0.5) * 255;
+        nimg.data[i + 3] = 255;
+    }
+    nctx.putImageData(nimg, 0, 0);
+    const normalMap = new THREE.CanvasTexture(nrm); normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
+    const out = { map, normalMap };
+    _subTexCache[spec._key] = out;
+    return out;
+}
+
 function initThree() {
-    renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.12;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.appendChild(renderer.domElement);
 
@@ -656,12 +738,15 @@ function initThree() {
     controls.maxPolarAngle = Math.PI * 0.5; controls.minDistance = 30; controls.maxDistance = 600;
 
     hemi = new THREE.HemisphereLight(0xbfe6ff, 0x20303a, 0.7); scene.add(hemi);
-    dirLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    dirLight.position.set(40, 120, 60); dirLight.castShadow = true;
-    dirLight.shadow.mapSize.set(1024, 1024);
-    const sc = dirLight.shadow.camera; sc.near = 10; sc.far = 400; sc.left = -120; sc.right = 120; sc.top = 120; sc.bottom = -120;
+    dirLight = new THREE.DirectionalLight(0xffffff, 2.4);
+    dirLight.position.set(40, 130, 60); dirLight.castShadow = true;
+    dirLight.shadow.mapSize.set(2048, 2048);
+    dirLight.shadow.bias = -0.0006; dirLight.shadow.normalBias = 0.4; dirLight.shadow.radius = 3;
+    const sc = dirLight.shadow.camera; sc.near = 10; sc.far = 500; sc.left = -140; sc.right = 140; sc.top = 140; sc.bottom = -140;
     scene.add(dirLight);
-    scene.add(new THREE.AmbientLight(0x88aacc, 0.3));
+    // cool fill from the opposite side to soften shadows like room light through glass
+    const fill = new THREE.DirectionalLight(0x9fc4e0, 0.5); fill.position.set(-70, 50, -40); scene.add(fill);
+    scene.add(new THREE.AmbientLight(0x88aacc, 0.28));
 
     selBox = new THREE.BoxHelper(new THREE.Object3D(), 0x3fb6c9); selBox.visible = false; scene.add(selBox);
 
@@ -675,52 +760,109 @@ function initThree() {
     animate();
 }
 
+// direction unit vector for the substrate's "high" side
+function slopeVector(dir) {
+    const m = { back: [0, -1], front: [0, 1], left: [-1, 0], right: [1, 0],
+        bl: [-1, -1], br: [1, -1], fl: [-1, 1], fr: [1, 1] }[dir] || [0, -1];
+    const L = Math.hypot(m[0], m[1]) || 1; return [m[0] / L, m[1] / L];
+}
+
 function buildTank() {
     while (tankGroup.children.length) { const c = tankGroup.children.pop(); c.traverse(o => { o.geometry && o.geometry.dispose(); }); }
+    godrays = [];
     const d = dims();
     const W = d.W, H = d.H, D = d.D, t = 0.6;
+    interior.H = H;
     interior.x = W / 2 - 3; interior.zNeg = -D / 2 + 3; interior.zPos = D / 2 - 3;
+    interior.minX = -(W / 2 - t - 0.4); interior.maxX = W / 2 - t - 0.4;
+    interior.minZ = -(D / 2 - t - 0.4); interior.maxZ = D / 2 - t - 0.4;
     interior.subTop = (state.substrate / 100) * H;
     interior.waterTop = (state.water / 100) * H;
     interior.floatY = interior.subTop + (interior.waterTop - interior.subTop) * 0.55;
 
+    // slope set-up (high toward slopeDir; low edge stays at subTop)
+    const [dx, dz] = slopeVector(state.slopeDir);
+    interior.dx = dx; interior.dz = dz;
+    interior.slopeTan = state.slope ? Math.tan(state.slope * Math.PI / 180) : 0;
+    const hx = W / 2 - t, hz = D / 2 - t;
+    let sMin = Infinity, sMax = -Infinity;
+    [[-hx, -hz], [hx, -hz], [-hx, hz], [hx, hz]].forEach(([x, z]) => { const p = x * dx + z * dz; sMin = Math.min(sMin, p); sMax = Math.max(sMax, p); });
+    interior.sMin = sMin;
+    interior.ready = true;
+
     const isSalt = state.mode === 'salt';
+    const spec = SUBSTRATES[state.subType] || SUBSTRATES.aquasoil; spec._key = state.subType;
+
     // background + fog
     scene.background = makeGradientTex(isSalt ? '#0a3f72' : '#1d5b62', isSalt ? '#04172e' : '#0a2528');
-    scene.fog = new THREE.Fog(isSalt ? 0x0a4f86 : 0x16545c, W * 1.1, W * 3.4);
+    scene.fog = new THREE.Fog(isSalt ? 0x0a4f86 : 0x16545c, W * 1.4, W * 4.2);
 
     // base / stand
-    const stand = new THREE.Mesh(new THREE.BoxGeometry(W + 6, 4, D + 6), mat(0x1a1d22, { roughness: 0.6 }));
+    const stand = new THREE.Mesh(new THREE.BoxGeometry(W + 6, 4, D + 6), mat(0x16191e, { roughness: 0.55, metalness: 0.1 }));
     stand.position.y = -2; stand.receiveShadow = true; tankGroup.add(stand);
 
     // bottom glass
     const bottom = new THREE.Mesh(new THREE.BoxGeometry(W, t, D), glassMat(0xbfe3ef)); bottom.position.y = -t / 2; tankGroup.add(bottom);
 
-    // substrate
-    const subMat = new THREE.MeshStandardMaterial({ color: isSalt ? 0xe7dcc0 : 0xd9c79a, roughness: 1, map: null, emissive: 0xffffff, emissiveIntensity: 0.18, emissiveMap: causticTex });
-    floorMesh = new THREE.Mesh(new THREE.BoxGeometry(W - t, interior.subTop, D - t), subMat);
+    // substrate — a box whose top surface follows the slope, textured per type
+    const tex = makeSubstrateTextures(spec);
+    const rep = Math.max(2, Math.round(W / 22));
+    tex.map.repeat.set(rep, rep * D / W); tex.normalMap.repeat.set(rep, rep * D / W);
+    const subMat = new THREE.MeshStandardMaterial({
+        map: tex.map, normalMap: tex.normalMap, normalScale: new THREE.Vector2(0.8, 0.8),
+        roughness: spec.rough, metalness: 0.02,
+        emissive: 0xffffff, emissiveIntensity: 0.16, emissiveMap: causticTex
+    });
+    const sw = W - t, sd = D - t;
+    const sg = new THREE.BoxGeometry(sw, interior.subTop, sd, 40, 1, 40);
+    const sp = sg.attributes.position, sv = new THREE.Vector3(), topY = interior.subTop / 2;
+    for (let i = 0; i < sp.count; i++) {
+        sv.fromBufferAttribute(sp, i);
+        if (sv.y > topY - 0.001) { // top vertices follow the slope + a little dune noise
+            const off = (sv.x * dx + sv.z * dz - sMin) * interior.slopeTan + noise(sv.x * 0.12, 0, sv.z * 0.12) * (interior.subTop * 0.05);
+            sp.setY(i, sv.y + off);
+        }
+    }
+    sg.computeVertexNormals();
+    floorMesh = new THREE.Mesh(sg, subMat);
     floorMesh.position.y = interior.subTop / 2; floorMesh.receiveShadow = true; tankGroup.add(floorMesh);
-    // scattered pebbles
+    // scattered pebbles sitting on the (possibly sloped) surface
     const peb = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(0.6, 0), mat(isSalt ? 0xcdbf9a : 0xc2ad7d, { flatShading: true }), 60);
     const m4 = new THREE.Matrix4();
-    for (let i = 0; i < 60; i++) { m4.makeTranslation((Math.random() - 0.5) * (W - 6), interior.subTop + 0.2, (Math.random() - 0.5) * (D - 6)); m4.scale(new THREE.Vector3(1, 0.5, 1)); peb.setMatrixAt(i, m4); }
+    for (let i = 0; i < 60; i++) {
+        const px = (Math.random() - 0.5) * (W - 6), pz = (Math.random() - 0.5) * (D - 6);
+        m4.makeTranslation(px, groundY(px, pz) + 0.2, pz); m4.scale(new THREE.Vector3(1, 0.5, 1)); peb.setMatrixAt(i, m4);
+    }
     peb.receiveShadow = true; tankGroup.add(peb);
 
     // glass walls
-    const gm = glassMat(0xdfeef5);
+    const gm = glassMat(0xeaf7fc);
     const back = new THREE.Mesh(new THREE.BoxGeometry(W, H, t), gm); back.position.set(0, H / 2, -D / 2); tankGroup.add(back);
     const front = new THREE.Mesh(new THREE.BoxGeometry(W, H, t), gm); front.position.set(0, H / 2, D / 2); tankGroup.add(front);
     const left = new THREE.Mesh(new THREE.BoxGeometry(t, H, D), gm); left.position.set(-W / 2, H / 2, 0); tankGroup.add(left);
     const right = new THREE.Mesh(new THREE.BoxGeometry(t, H, D), gm); right.position.set(W / 2, H / 2, 0); tankGroup.add(right);
 
     // silicone rim frame
-    const rimMat = mat(0x111417, { roughness: 0.7 });
+    const rimMat = mat(0x0d0f12, { roughness: 0.6 });
     [[0, H, -D / 2], [0, H, D / 2]].forEach(([x, y, z]) => { const r = new THREE.Mesh(new THREE.BoxGeometry(W + 1, 1.4, 1.6), rimMat); r.position.set(x, y, z); tankGroup.add(r); });
     [[-W / 2, H, 0], [W / 2, H, 0]].forEach(([x, y, z]) => { const r = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.4, D + 1), rimMat); r.position.set(x, y, z); tankGroup.add(r); });
 
+    // god rays — faint additive shafts of light from the surface
+    const rayMat = new THREE.MeshBasicMaterial({ color: isSalt ? 0xbfe6ff : 0xcfeede, transparent: true, opacity: 0.05, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide });
+    const nRays = Math.max(3, Math.round(W / 26));
+    for (let i = 0; i < nRays; i++) {
+        const rayH = interior.waterTop * 0.95;
+        const cone = new THREE.Mesh(new THREE.ConeGeometry(W * 0.05, rayH, 4, 1, true), rayMat);
+        cone.position.set((i / (nRays - 1) - 0.5) * W * 0.8, interior.waterTop - rayH / 2, (Math.random() - 0.5) * D * 0.5);
+        cone.rotation.z = 0.12; cone.userData.ph = Math.random() * 6.28; tankGroup.add(cone); godrays.push(cone);
+    }
+
     // water surface
-    const wg = new THREE.PlaneGeometry(W - t, D - t, 24, 24); wg.rotateX(-Math.PI / 2);
-    waterMesh = new THREE.Mesh(wg, new THREE.MeshPhysicalMaterial({ color: isSalt ? 0x1f7fc8 : 0x2a9ca0, transparent: true, opacity: 0.22, roughness: 0.15, metalness: 0, transmission: 0.4, side: THREE.DoubleSide }));
+    const wg = new THREE.PlaneGeometry(W - t, D - t, 28, 28); wg.rotateX(-Math.PI / 2);
+    waterMesh = new THREE.Mesh(wg, new THREE.MeshPhysicalMaterial({
+        color: isSalt ? 0x1f7fc8 : 0x2a9ca0, transparent: true, opacity: 0.14, roughness: 0.06,
+        metalness: 0, transmission: 0.6, ior: 1.33, thickness: 4, envMapIntensity: 1.4, side: THREE.DoubleSide
+    }));
     waterMesh.position.y = interior.waterTop; tankGroup.add(waterMesh);
     waterMesh.geometry.userData.base = Float32Array.from(wg.attributes.position.array);
 
@@ -750,12 +892,13 @@ function animate() {
         const pos = waterMesh.geometry.attributes.position, base = waterMesh.geometry.userData.base;
         for (let i = 0; i < pos.count; i++) {
             const x = base[i * 3], z = base[i * 3 + 2];
-            pos.setY(i, Math.sin(x * 0.15 + t * 1.5) * 0.4 + Math.cos(z * 0.2 + t * 1.2) * 0.4);
+            pos.setY(i, Math.sin(x * 0.15 + t * 1.5) * 0.4 + Math.cos(z * 0.2 + t * 1.2) * 0.4 + Math.sin((x + z) * 0.08 + t * 0.8) * 0.3);
         }
-        pos.needsUpdate = true;
+        pos.needsUpdate = true; waterMesh.geometry.computeVertexNormals();
     }
     if (causticTex) { causticTex.offset.x = t * 0.012; causticTex.offset.y = t * 0.008; }
-    placedMap.forEach(rec => { if (rec.group.userData.update) rec.group.userData.update(t, dt); });
+    for (let i = 0; i < godrays.length; i++) { const g = godrays[i]; g.material.opacity = 0.035 + Math.sin(t * 0.6 + g.userData.ph) * 0.02; g.rotation.z = 0.12 + Math.sin(t * 0.3 + g.userData.ph) * 0.05; }
+    placedMap.forEach(rec => { const u = rec.group.userData.update; if (u) u(t, dt); });
     if (state.sel != null) { const r = placedMap.get(state.sel); if (r) selBox.setFromObject(r.group); }
     renderer.render(scene, camera);
 }
@@ -763,26 +906,58 @@ function animate() {
 /* =========================================================================
    PART F — Placing items
    ========================================================================= */
+// Plants, hardscape and decor may rise up out of the water; everything else stays wet.
+function canExitWater(item) { return item.cat === 'plants' || item.cat === 'hardscape' || item.cat === 'decor'; }
+
+function measureHalf(group) {
+    const box = new THREE.Box3().setFromObject(group);
+    if (!isFinite(box.min.x)) return { hx: 2, hz: 2, hy: 4 };
+    return { hx: (box.max.x - box.min.x) / 2, hz: (box.max.z - box.min.z) / 2, hy: box.max.y - box.min.y };
+}
+
+// Keep a placed item fully inside the glass (and the right height for its anchor).
+function contain(p, item, rec) {
+    const s = p.scale || 1;
+    const hx = (rec ? rec.hx : 1.5) * s, hz = (rec ? rec.hz : 1.5) * s;
+    const minX = interior.minX + hx, maxX = interior.maxX - hx;
+    const minZ = interior.minZ + hz, maxZ = interior.maxZ - hz;
+    p.x = minX > maxX ? 0 : Math.min(maxX, Math.max(minX, p.x));
+    p.z = minZ > maxZ ? 0 : Math.min(maxZ, Math.max(minZ, p.z));
+    const gy = groundY(p.x, p.z);
+    const top = canExitWater(item) ? interior.H + (rec ? rec.hy * s : 6) : interior.waterTop - 1;
+    if (item.anchor === 'rim') p.y = interior.waterTop;
+    else if (item.anchor === 'floor') p.y = (p.y > gy + 0.5) ? Math.min(top, Math.max(gy, p.y)) : gy; // rests on the substrate, or floats if raised
+    else {
+        const bottom = gy + (item.anchor === 'wall' ? 2 : 1);
+        p.y = Math.min(top, Math.max(bottom, p.y));
+    }
+}
+
 function defaultPos(item) {
-    const rx = (Math.random() - 0.5) * interior.x * 1.2;
-    const rz = (Math.random() - 0.5) * (interior.zPos - interior.zNeg) * 0.7;
-    if (item.anchor === 'rim') return { x: rx, y: interior.waterTop, z: interior.zNeg + 1 };
-    if (item.anchor === 'wall') return { x: rx, y: interior.subTop + 2, z: interior.zNeg + 2 };
+    const rx = (Math.random() - 0.5) * (interior.maxX - interior.minX) * 0.8;
+    const rz = (Math.random() - 0.5) * (interior.maxZ - interior.minZ) * 0.7;
+    if (item.anchor === 'rim') return { x: rx, y: interior.waterTop, z: interior.minZ + 1 };
+    if (item.anchor === 'wall') return { x: rx, y: groundY(rx, interior.minZ + 2) + 4, z: interior.minZ + 2 };
     if (item.anchor === 'float') return { x: rx, y: interior.floatY, z: rz };
-    return { x: rx, y: interior.subTop, z: rz };
+    return { x: rx, y: groundY(rx, rz), z: rz };
 }
 
 function addItem(itemId, pos) {
     const item = ITEM_BY_ID[itemId];
     if (!item) return;
-    pos = pos || defaultPos(item);
-    const p = { uid: uidSeq++, itemId, x: pos.x, y: pos.y, z: pos.z, scale: 1, rotY: Math.random() * Math.PI * 2 };
     const group = item.make();
-    group.userData.root = true; group.userData.uid = p.uid;
+    group.userData.root = true;
     group.traverse(o => { if (o.isMesh && o.castShadow === undefined) o.castShadow = true; });
+    const h = measureHalf(group);
+    const p = { uid: uidSeq++, itemId, x: 0, y: 0, z: 0, scale: 1, rotX: 0, rotY: Math.random() * Math.PI * 2 };
+    group.userData.uid = p.uid;
+    const rec = { p, group, item, hx: h.hx, hz: h.hz, hy: h.hy };
+    const start = pos || defaultPos(item);
+    p.x = start.x; p.y = start.y; p.z = start.z;
+    contain(p, item, rec);
     applyTransform(group, p, item);
     scene.add(group);
-    placedMap.set(p.uid, { p, group, item });
+    placedMap.set(p.uid, rec);
     state.placed.push(p);
     select(p.uid);
     updateReadout(); persist();
@@ -790,13 +965,13 @@ function addItem(itemId, pos) {
 
 function applyTransform(group, p, item) {
     group.position.set(p.x, p.y, p.z);
-    group.rotation.y = p.rotY;
+    // actively-swimming fish are oriented by their swim update; everything else uses user rotation
+    if (!(group.userData.swim && group.userData.update)) group.rotation.set(p.rotX || 0, p.rotY || 0, 0);
     group.scale.setScalar(p.scale);
-    if (group.userData.home) group.userData.home.set(p.x, p.y, p.z);
-    else group.userData.home = new THREE.Vector3(p.x, p.y, p.z);
+    (group.userData.home || (group.userData.home = new THREE.Vector3())).set(p.x, p.y, p.z);
 }
 
-function rebuildItem(rec) { applyTransform(rec.group, rec.p, rec.item); }
+function rebuildItem(rec) { contain(rec.p, rec.item, rec); applyTransform(rec.group, rec.p, rec.item); }
 
 /* =========================================================================
    PART G — Selection & item toolbar
@@ -810,6 +985,7 @@ function select(uid) {
     $('#itembarName').textContent = rec.item.name;
     $('#scaleSlider').value = rec.p.scale;
     $('#rotSlider').value = rec.p.rotY;
+    $('#tiltSlider').value = rec.p.rotX || 0;
 }
 function deselect() { state.sel = null; $('#itembar').classList.remove('on'); selBox.visible = false; }
 function selRec() { return placedMap.get(state.sel); }
@@ -823,11 +999,11 @@ function removeSel() {
 function duplicateSel() {
     const rec = selRec(); if (!rec) return;
     const p = rec.p;
-    addItem(p.itemId, { x: clampX(p.x + 5), y: p.y, z: clampZ(p.z + 4) });
-    const np = placedMap.get(state.sel); np.p.scale = p.scale; np.p.rotY = p.rotY; rebuildItem(np); persist();
+    addItem(p.itemId, { x: p.x + 6, y: p.y, z: p.z + 5 });
+    const np = placedMap.get(state.sel); np.p.scale = p.scale; np.p.rotX = p.rotX; np.p.rotY = p.rotY; rebuildItem(np); persist();
 }
-function clampX(x) { return Math.max(-interior.x, Math.min(interior.x, x)); }
-function clampZ(z) { return Math.max(interior.zNeg, Math.min(interior.zPos, z)); }
+function clampX(x) { return Math.max(interior.minX, Math.min(interior.maxX, x)); }
+function clampZ(z) { return Math.max(interior.minZ, Math.min(interior.maxZ, z)); }
 
 /* =========================================================================
    PART H — Pointer interaction (select + drag, vs orbit)
@@ -867,8 +1043,8 @@ function setupPointer() {
         setNdc(e); ray.setFromCamera(ndc, camera);
         if (ray.ray.intersectPlane(dragPlane, dragHit)) {
             const np = dragHit.add(dragOff);
-            dragging.p.x = clampX(np.x); dragging.p.z = clampZ(np.z);
-            rebuildItem(dragging);
+            dragging.p.x = np.x; dragging.p.z = np.z;
+            rebuildItem(dragging); // contain() clamps to the glass and rides the slope
         }
     });
     const end = e => { if (dragging) { dragging = null; controls.enabled = true; persist(); } };
@@ -978,9 +1154,59 @@ function setMode(mode) {
         }
     });
     state.mode = mode;
+    // swap to a fitting substrate if the current one belongs to the other water type
+    if (SUBSTRATES[state.subType].mode === (mode === 'salt' ? 'fresh' : 'salt')) state.subType = mode === 'salt' ? 'coralsand' : 'aquasoil';
     document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('on', b.dataset.mode === mode));
     if ((activeCat === 'plants' && mode === 'salt') || (activeCat === 'corals' && mode === 'fresh')) activeCat = 'all';
-    buildTank(); buildCats(); buildPalette(); deselect(); updateReadout(); persist();
+    buildTank(); buildCats(); buildPalette(); deselect(); updateReadout(); syncControls(); persist();
+}
+
+/* =========================================================================
+   PART K2 — Auto-scape randomizer
+   ========================================================================= */
+const pick = arr => arr[(Math.random() * arr.length) | 0];
+const randInt = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+
+function randomScape() {
+    placedMap.forEach(rec => scene.remove(rec.group)); placedMap.clear(); state.placed = []; deselect();
+    const salt = state.mode === 'salt', tank = dims();
+    // substrate look + a gentle natural slope
+    const subOpts = Object.keys(SUBSTRATES).filter(k => { const m = SUBSTRATES[k].mode; return m === 'both' || m === state.mode; });
+    state.subType = pick(subOpts);
+    state.slope = randInt(5, 16);
+    state.slopeDir = pick(['back', 'back', 'bl', 'br', 'left', 'right']);
+    state.substrate = randInt(15, 26);
+    state.water = randInt(90, 97);
+    syncControls(); buildTank();
+
+    const spanX = interior.maxX - interior.minX, spanZ = interior.maxZ - interior.minZ;
+    const placeFloor = (id, xf, zf, scale) => {
+        const x = interior.minX + spanX * xf + (Math.random() - 0.5) * 4;
+        const z = interior.minZ + spanZ * zf + (Math.random() - 0.5) * 4;
+        addItem(id, { x, y: groundY(x, z), z });
+        if (scale) { const r = selRec(); if (r) { r.p.scale = scale; r.p.rotY = Math.random() * 6.28; rebuildItem(r); } }
+    };
+    // hardscape spine
+    const hard = ITEMS.filter(i => i.cat === 'hardscape' && (i.mode === 'both' || i.mode === state.mode)).map(i => i.id);
+    const nHard = randInt(2, 3);
+    for (let i = 0; i < nHard; i++) placeFloor(pick(hard), 0.22 + i * 0.28 + Math.random() * 0.08, 0.32 + Math.random() * 0.4, 0.8 + Math.random() * 0.8);
+    // planting / corals
+    const flora = ITEMS.filter(i => (salt ? i.cat === 'corals' : i.cat === 'plants') && (i.mode === 'both' || i.mode === state.mode)).map(i => i.id);
+    const nFlora = randInt(6, 10);
+    for (let i = 0; i < nFlora; i++) placeFloor(pick(flora), 0.06 + Math.random() * 0.88, 0.12 + Math.random() * 0.74, 0.7 + Math.random() * 0.7);
+    // essential gear for a "ready" tank
+    const gear = salt ? ['led', 'skimmer', 'powerhead', 'heater'] : ['led', 'filterbox', 'heater'];
+    if (!salt && Math.random() < 0.6) gear.push('co2');
+    gear.forEach(id => addItem(id));
+    if (salt) addItem('liverock');
+    // livestock up to ~75% of capacity, schooling the small ones
+    const fishPool = ITEMS.filter(i => i.cat === 'fish' && (i.mode === 'both' || i.mode === state.mode));
+    const capacity = tank.litres / 4; let load = 0, guard = 0;
+    while (load < capacity * 0.7 && guard++ < 40) {
+        const f = pick(fishPool), shoal = (f.bioload || 1) <= 1 ? randInt(3, 6) : 1;
+        for (let k = 0; k < shoal && load < capacity * 0.82; k++) { addItem(f.id); load += f.bioload || 1; }
+    }
+    deselect(); frameCamera(); buildCats(); buildPalette(); updateReadout(); persist();
 }
 
 function changeTank() {
@@ -988,37 +1214,42 @@ function changeTank() {
     buildTank(); frameCamera(); repositionAll(); $('#tankMeta').textContent = `${dims().label} · ~${dims().litres} L`; updateReadout(); persist();
 }
 function repositionAll() {
-    placedMap.forEach(rec => {
-        const p = rec.p, anchor = rec.item.anchor;
-        if (anchor === 'floor') p.y = interior.subTop;
-        else if (anchor === 'rim') p.y = interior.waterTop;
-        else if (anchor === 'wall') { p.y = Math.max(interior.subTop + 2, Math.min(p.y, interior.waterTop - 4)); p.z = interior.zNeg + 2; }
-        else p.y = Math.max(interior.subTop + 3, Math.min(p.y, interior.waterTop - 3));
-        p.x = clampX(p.x); p.z = clampZ(p.z);
-        rebuildItem(rec);
-    });
+    placedMap.forEach(rec => { contain(rec.p, rec.item, rec); applyTransform(rec.group, rec.p, rec.item); });
 }
 
 /* =========================================================================
    PART L — Persistence, import/export, PNG
    ========================================================================= */
-function snapshot() { return { mode: state.mode, tank: state.tank, substrate: state.substrate, water: state.water, bubbles: state.bubbles, placed: state.placed.map(p => ({ itemId: p.itemId, x: p.x, y: p.y, z: p.z, scale: p.scale, rotY: p.rotY })) }; }
+function snapshot() { return { mode: state.mode, tank: state.tank, substrate: state.substrate, subType: state.subType, slope: state.slope, slopeDir: state.slopeDir, water: state.water, bubbles: state.bubbles, placed: state.placed.map(p => ({ itemId: p.itemId, x: p.x, y: p.y, z: p.z, scale: p.scale, rotX: p.rotX || 0, rotY: p.rotY })) }; }
 function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(snapshot())); } catch (e) {} }
+
+function syncControls() {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('on', b.dataset.mode === state.mode));
+    $('#tankSize').value = state.tank; $('#subSlider').value = state.substrate; $('#waterSlider').value = state.water; $('#bubbleToggle').checked = state.bubbles;
+    if ($('#subType')) $('#subType').value = state.subType;
+    if ($('#slopeSlider')) $('#slopeSlider').value = state.slope;
+    if ($('#slopeDir')) $('#slopeDir').value = state.slopeDir;
+    if ($('#slopeVal')) $('#slopeVal').textContent = state.slope + '°';
+}
 
 function loadFrom(data) {
     if (!data) return false;
     placedMap.forEach(rec => scene.remove(rec.group)); placedMap.clear(); state.placed = [];
     state.mode = data.mode || 'fresh'; state.tank = data.tank || 'standard';
-    state.substrate = data.substrate ?? 18; state.water = data.water ?? 92; state.bubbles = data.bubbles ?? true;
-    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('on', b.dataset.mode === state.mode));
-    $('#tankSize').value = state.tank; $('#subSlider').value = state.substrate; $('#waterSlider').value = state.water; $('#bubbleToggle').checked = state.bubbles;
+    state.substrate = data.substrate ?? 18; state.subType = SUBSTRATES[data.subType] ? data.subType : 'aquasoil';
+    state.slope = data.slope ?? 0; state.slopeDir = data.slopeDir || 'back';
+    state.water = data.water ?? 92; state.bubbles = data.bubbles ?? true;
+    syncControls();
     buildTank(); frameCamera();
     (data.placed || []).forEach(d => {
         if (!ITEM_BY_ID[d.itemId]) return;
         const item = ITEM_BY_ID[d.itemId];
-        const p = { uid: uidSeq++, itemId: d.itemId, x: d.x, y: d.y, z: d.z, scale: d.scale ?? 1, rotY: d.rotY ?? 0 };
-        const group = item.make(); group.userData.root = true; group.userData.uid = p.uid;
-        applyTransform(group, p, item); scene.add(group); placedMap.set(p.uid, { p, group, item }); state.placed.push(p);
+        const group = item.make(); group.userData.root = true;
+        const h = measureHalf(group);
+        const p = { uid: uidSeq++, itemId: d.itemId, x: d.x, y: d.y, z: d.z, scale: d.scale ?? 1, rotX: d.rotX ?? 0, rotY: d.rotY ?? 0 };
+        group.userData.uid = p.uid;
+        const rec = { p, group, item, hx: h.hx, hz: h.hz, hy: h.hy };
+        applyTransform(group, p, item); scene.add(group); placedMap.set(p.uid, rec); state.placed.push(p);
     });
     $('#tankMeta').textContent = `${dims().label} · ~${dims().litres} L`;
     buildCats(); buildPalette(); deselect(); updateReadout();
@@ -1038,13 +1269,26 @@ function exportPNG() { selBox.visible = false; renderer.render(scene, camera); r
 /* =========================================================================
    PART M — Wire up DOM
    ========================================================================= */
+function populateSubstrate() {
+    const sel = $('#subType'); if (!sel) return;
+    sel.innerHTML = '';
+    Object.entries(SUBSTRATES).forEach(([id, s]) => {
+        const o = document.createElement('option'); o.value = id; o.textContent = s.label; sel.appendChild(o);
+    });
+    sel.value = state.subType;
+}
+
 function wire() {
     document.querySelectorAll('.mode-btn').forEach(b => b.onclick = () => setMode(b.dataset.mode));
     $('#tankSize').onchange = changeTank;
     $('#subSlider').oninput = e => { state.substrate = +e.target.value; buildTank(); repositionAll(); persist(); };
     $('#waterSlider').oninput = e => { state.water = +e.target.value; buildTank(); repositionAll(); persist(); };
     $('#bubbleToggle').onchange = e => { state.bubbles = e.target.checked; persist(); };
+    $('#subType').onchange = e => { state.subType = e.target.value; buildTank(); repositionAll(); persist(); };
+    $('#slopeSlider').oninput = e => { state.slope = +e.target.value; $('#slopeVal').textContent = state.slope + '°'; buildTank(); repositionAll(); persist(); };
+    $('#slopeDir').onchange = e => { state.slopeDir = e.target.value; buildTank(); repositionAll(); persist(); };
     $('#search').oninput = buildPalette;
+    $('#btnRandom').onclick = () => { if (!state.placed.length || confirm('Generate a fresh random scape? This replaces the current tank.')) randomScape(); };
     $('#btnClear').onclick = clearAll;
     $('#btnPng').onclick = exportPNG;
     $('#btnJson').onclick = exportJSON;
@@ -1053,8 +1297,9 @@ function wire() {
 
     $('#scaleSlider').oninput = e => { const r = selRec(); if (r) { r.p.scale = +e.target.value; rebuildItem(r); persist(); } };
     $('#rotSlider').oninput = e => { const r = selRec(); if (r) { r.p.rotY = +e.target.value; rebuildItem(r); persist(); } };
-    $('#btnRaise').onclick = () => { const r = selRec(); if (r) { r.p.y = Math.min(r.p.y + 3, dims().H); rebuildItem(r); persist(); } };
-    $('#btnLower').onclick = () => { const r = selRec(); if (r) { r.p.y = Math.max(r.p.y - 3, interior.subTop); rebuildItem(r); persist(); } };
+    $('#tiltSlider').oninput = e => { const r = selRec(); if (r) { r.p.rotX = +e.target.value; rebuildItem(r); persist(); } };
+    $('#btnRaise').onclick = () => { const r = selRec(); if (r) { r.p.y += 3; rebuildItem(r); persist(); } };
+    $('#btnLower').onclick = () => { const r = selRec(); if (r) { r.p.y -= 3; rebuildItem(r); persist(); } };
     $('#btnDup').onclick = duplicateSel;
     $('#btnDel').onclick = removeSel;
 
@@ -1078,13 +1323,11 @@ function wire() {
 function boot() {
     wire();
     initThree();
+    populateSubstrate();
     let saved = null; try { saved = JSON.parse(localStorage.getItem(SAVE_KEY)); } catch (e) {}
-    if (!loadFrom(saved)) { buildCats(); buildPalette(); updateReadout(); }
-    // seed a sample scape on first ever visit
-    if (!saved && !state.placed.length) {
-        addItem('seiryu'); addItem('javafern'); addItem('amazonsword'); addItem('led');
-        addItem('heater'); addItem('filterbox'); ['neon', 'neon', 'neon', 'guppy'].forEach(id => addItem(id));
-        deselect();
-    }
+    if (!loadFrom(saved)) { syncControls(); buildCats(); buildPalette(); updateReadout(); }
+    populateSubstrate();
+    // auto-generate a fully ready sample scape on first ever visit
+    if (!saved && !state.placed.length) randomScape();
 }
 boot();

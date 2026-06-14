@@ -62,7 +62,7 @@
             <div>
                 <span class="aq-eyebrow">Free design tool · by Thorley Park Devs</span>
                 <h1 class="aq-title">Aquascape Studio</h1>
-                <p class="aq-lede">Lay out a freshwater or saltwater aquarium before you buy a single thing. Drag in hardscape, plants, corals, fish and gear, then watch the live stocking and care score react.</p>
+                <p class="aq-lede">Lay out a freshwater or saltwater aquarium before you buy a single thing. Hit <b>Randomize</b> for an instant, fully-stocked tank — or build your own: drag in hardscape, plants, corals, fish and gear, slope the substrate, then watch the live stocking and care score react.</p>
             </div>
         </div>
 
@@ -82,9 +82,30 @@
                         <option value="xl">XL Reef (~450 L)</option>
                     </select>
                 </label>
+                <label class="tb-field">
+                    <span>Substrate type</span>
+                    <select id="subType"></select>
+                </label>
                 <label class="tb-field tb-slider">
-                    <span>Substrate</span>
+                    <span>Depth</span>
                     <input type="range" id="subSlider" min="6" max="40" value="18">
+                </label>
+                <label class="tb-field tb-slider">
+                    <span>Slope <b id="slopeVal">0°</b></span>
+                    <input type="range" id="slopeSlider" min="0" max="30" value="0">
+                </label>
+                <label class="tb-field">
+                    <span>Slope up to</span>
+                    <select id="slopeDir">
+                        <option value="back" selected>Back</option>
+                        <option value="front">Front</option>
+                        <option value="left">Left</option>
+                        <option value="right">Right</option>
+                        <option value="bl">Back-left</option>
+                        <option value="br">Back-right</option>
+                        <option value="fl">Front-left</option>
+                        <option value="fr">Front-right</option>
+                    </select>
                 </label>
                 <label class="tb-field tb-slider">
                     <span>Water</span>
@@ -95,6 +116,7 @@
                 </label>
             </div>
             <div class="tb-group tb-actions">
+                <button class="tb-btn accent" id="btnRandom" title="Auto-fill the tank with a ready-made scape">🎲 Randomize</button>
                 <button class="tb-btn" id="btnReset" title="Reset camera view">⟲ View</button>
                 <button class="tb-btn" id="btnPng" title="Download a PNG image">⬇ PNG</button>
                 <button class="tb-btn" id="btnJson" title="Save design as a file">Save</button>
@@ -168,8 +190,11 @@
                     <label class="itembar-scale">Size
                         <input type="range" id="scaleSlider" min="0.4" max="3" step="0.01" value="1">
                     </label>
-                    <label class="itembar-scale">Rotate
+                    <label class="itembar-scale">Spin
                         <input type="range" id="rotSlider" min="0" max="6.283" step="0.01" value="0">
+                    </label>
+                    <label class="itembar-scale">Tilt
+                        <input type="range" id="tiltSlider" min="-1.57" max="1.57" step="0.01" value="0">
                     </label>
                     <div class="itembar-btns">
                         <button id="btnRaise" title="Raise">⤒ Raise</button>
@@ -185,7 +210,7 @@
             <h2>How it works</h2>
             <div class="about-grid">
                 <div class="about-card"><span class="about-num">1</span><h3>Pick your water</h3><p>Switch between freshwater and saltwater. The palette and the tank water change to match — plants and tropical fish on one side, corals and reef fish on the other.</p></div>
-                <div class="about-card"><span class="about-num">2</span><h3>Build the scape</h3><p>Drop in hardscape, plants or corals, livestock, equipment and decor. Orbit the camera in full 3D, then drag, resize, rotate and raise each piece into place.</p></div>
+                <div class="about-card"><span class="about-num">2</span><h3>Build the scape</h3><p>Drop in hardscape, plants or corals, livestock, equipment and decor. Choose a substrate, slope it toward any corner, then orbit in full 3D and drag, resize, spin, tilt and raise each piece — everything stays inside the glass.</p></div>
                 <div class="about-card"><span class="about-num">3</span><h3>Check the build</h3><p>The build report tracks your stocking level against the tank size and runs a care checklist — heater, lighting, filtration, flow, skimmer and more.</p></div>
                 <div class="about-card"><span class="about-num">4</span><h3>Save &amp; share</h3><p>Your layout auto-saves in your browser. Export a PNG to share the look, or save a file you can reload later.</p></div>
             </div>
