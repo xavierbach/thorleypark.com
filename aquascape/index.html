@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aquascape Studio — Design Your Aquarium | Thorley Park</title>
+    <meta name="description" content="A free in-browser aquascaping tool. Design freshwater and saltwater aquariums — drag in plants, corals, fish, hardscape and equipment, then check your stocking and care score. By Thorley Park Devs.">
+    <link rel="canonical" href="https://thorleypark.com/aquascape/">
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Aquascape Studio — Design Your Aquarium">
+    <meta property="og:description" content="A free browser tool to design freshwater & saltwater aquariums. Drag in plants, corals, fish and equipment and get a live care score.">
+    <meta property="og:url" content="https://thorleypark.com/aquascape/">
+    <meta property="og:image" content="https://thorleypark.com/images/og-image.png">
+    <meta property="og:site_name" content="Thorley Park">
+    <meta property="og:locale" content="en_AU">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Aquascape Studio — Design Your Aquarium">
+    <meta name="twitter:description" content="Free browser tool to design freshwater & saltwater aquariums with a live care score.">
+    <meta name="twitter:image" content="https://thorleypark.com/images/og-image.png">
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Aquascape Studio",
+        "url": "https://thorleypark.com/aquascape/",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "AUD" },
+        "description": "A free browser-based tool to design freshwater and saltwater aquariums with plants, corals, fish, hardscape and equipment, plus a live stocking and care score.",
+        "publisher": { "@type": "Organization", "name": "Thorley Park Devs" }
+    }
+    </script>
+</head>
+<body class="page-aqua">
+
+    <header>
+        <nav class="nav">
+            <a href="/" class="nav-logo">Thorley Park</a>
+            <div class="nav-links">
+                <a href="/garden.html">The Garden</a>
+                <a href="/devs.html">The Studio</a>
+                <a href="/aquascape/" class="active" aria-current="page">Aquascape</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="aq-main">
+        <div class="aq-intro">
+            <div>
+                <span class="aq-eyebrow">Free design tool · by Thorley Park Devs</span>
+                <h1 class="aq-title">Aquascape Studio</h1>
+                <p class="aq-lede">Lay out a freshwater or saltwater aquarium before you buy a single thing. Drag in hardscape, plants, corals, fish and gear, then watch the live stocking and care score react.</p>
+            </div>
+        </div>
+
+        <!-- Top toolbar -->
+        <div class="aq-toolbar">
+            <div class="mode-switch" role="tablist" aria-label="Water type">
+                <button class="mode-btn on" data-mode="fresh">🌿 Freshwater</button>
+                <button class="mode-btn" data-mode="salt">🪸 Saltwater</button>
+            </div>
+            <div class="tb-group">
+                <label class="tb-field">
+                    <span>Tank</span>
+                    <select id="tankSize">
+                        <option value="nano">Nano (~35 L)</option>
+                        <option value="standard" selected>Standard (~110 L)</option>
+                        <option value="large">Large (~240 L)</option>
+                        <option value="xl">XL Reef (~450 L)</option>
+                    </select>
+                </label>
+                <label class="tb-field tb-slider">
+                    <span>Substrate</span>
+                    <input type="range" id="subSlider" min="6" max="40" value="18">
+                </label>
+                <label class="tb-field tb-slider">
+                    <span>Water</span>
+                    <input type="range" id="waterSlider" min="60" max="99" value="92">
+                </label>
+                <label class="tb-check">
+                    <input type="checkbox" id="bubbleToggle" checked> Bubbles
+                </label>
+            </div>
+            <div class="tb-group tb-actions">
+                <button class="tb-btn" id="btnReset" title="Reset camera view">⟲ View</button>
+                <button class="tb-btn" id="btnPng" title="Download a PNG image">⬇ PNG</button>
+                <button class="tb-btn" id="btnJson" title="Save design as a file">Save</button>
+                <label class="tb-btn" title="Open a saved design">Load<input type="file" id="fileJson" accept="application/json" hidden></label>
+                <button class="tb-btn danger" id="btnClear" title="Empty the tank">Clear</button>
+            </div>
+        </div>
+
+        <div class="aq-workspace">
+            <!-- Left: item palette -->
+            <aside class="aq-side aq-palette-side">
+                <div class="side-tabs">
+                    <button class="side-tab on" data-pane="paneItems">Items</button>
+                    <button class="side-tab" data-pane="paneReport">Build report</button>
+                </div>
+
+                <div class="side-pane on" id="paneItems">
+                    <input type="search" id="search" placeholder="Search items…" autocomplete="off">
+                    <div class="cats" id="cats"></div>
+                    <div class="palette" id="palette"></div>
+                    <p class="pal-hint">Tap an item to drop it in · drag to reposition · scroll/​pinch to resize</p>
+                </div>
+
+                <div class="side-pane" id="paneReport">
+                    <div class="report-card score-card">
+                        <div class="care-ring" id="careRing"><span id="careScore">0%</span></div>
+                        <div>
+                            <h3>Care score</h3>
+                            <p class="muted">How complete your setup is for healthy livestock.</p>
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <div class="stock-head">
+                            <h3>Stocking</h3>
+                            <span class="badge ok" id="stockLabel">Empty</span>
+                        </div>
+                        <div class="bar"><div class="bar-fill ok" id="stockBar" style="width:0"></div></div>
+                        <div class="mini-stats">
+                            <span><b id="countFish">0</b> livestock</span>
+                            <span><b id="countPlants">0</b> plants</span>
+                            <span><b id="countHard">0</b> hardscape</span>
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Checklist</h3>
+                        <ul class="checks" id="checks"></ul>
+                    </div>
+                    <div class="report-card">
+                        <h3>Livestock</h3>
+                        <ul class="stock-list" id="stockList"><li class="muted">No livestock yet</li></ul>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Center: the tank -->
+            <section class="aq-stage">
+                <div class="tank-wrap">
+                    <div class="tank" id="tank">
+                        <div id="stage3d"></div>
+                        <div class="stage-hint">Drag to orbit · scroll to zoom · drag an item to move it</div>
+                    </div>
+                    <div class="tank-foot">
+                        <span id="tankMeta">Standard · ~110 L</span>
+                        <span class="foot-hint">Click an item to select · empty space to deselect</span>
+                    </div>
+                </div>
+
+                <!-- Selected item toolbar -->
+                <div class="itembar" id="itembar">
+                    <span class="itembar-name" id="itembarName">Item</span>
+                    <label class="itembar-scale">Size
+                        <input type="range" id="scaleSlider" min="0.4" max="3" step="0.01" value="1">
+                    </label>
+                    <label class="itembar-scale">Rotate
+                        <input type="range" id="rotSlider" min="0" max="6.283" step="0.01" value="0">
+                    </label>
+                    <div class="itembar-btns">
+                        <button id="btnRaise" title="Raise">⤒ Raise</button>
+                        <button id="btnLower" title="Lower">⤓ Lower</button>
+                        <button id="btnDup" title="Duplicate (D)">⧉ Copy</button>
+                        <button id="btnDel" class="danger" title="Delete (Del)">🗑 Delete</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <section class="aq-about container">
+            <h2>How it works</h2>
+            <div class="about-grid">
+                <div class="about-card"><span class="about-num">1</span><h3>Pick your water</h3><p>Switch between freshwater and saltwater. The palette and the tank water change to match — plants and tropical fish on one side, corals and reef fish on the other.</p></div>
+                <div class="about-card"><span class="about-num">2</span><h3>Build the scape</h3><p>Drop in hardscape, plants or corals, livestock, equipment and decor. Orbit the camera in full 3D, then drag, resize, rotate and raise each piece into place.</p></div>
+                <div class="about-card"><span class="about-num">3</span><h3>Check the build</h3><p>The build report tracks your stocking level against the tank size and runs a care checklist — heater, lighting, filtration, flow, skimmer and more.</p></div>
+                <div class="about-card"><span class="about-num">4</span><h3>Save &amp; share</h3><p>Your layout auto-saves in your browser. Export a PNG to share the look, or save a file you can reload later.</p></div>
+            </div>
+            <p class="aq-disclaimer">A planning aid for fun and inspiration — always research the specific care needs and compatibility of any livestock before you buy. Stocking estimates are rough guides, not gospel.</p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <nav class="footer-nav">
+                <a href="/">Home</a>
+                <a href="/garden.html">The Garden</a>
+                <a href="/devs.html">The Studio</a>
+                <a href="/aquascape/">Aquascape</a>
+                <a href="mailto:hello@thorleypark.com">Contact</a>
+            </nav>
+            <p>&copy; 2026 Thorley Park</p>
+            <p class="footer-location">Mount Macedon, Victoria, Australia</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js" defer></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "./vendor/three.module.js",
+            "three/addons/controls/OrbitControls.js": "./vendor/OrbitControls.js"
+        }
+    }
+    </script>
+    <noscript><p style="text-align:center;color:#8ca3b5;padding:20px">Aquascape Studio needs JavaScript enabled.</p></noscript>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
