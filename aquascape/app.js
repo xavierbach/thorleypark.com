@@ -684,6 +684,7 @@ const $ = s => document.querySelector(s);
 const container = $('#stage3d');
 let renderer, scene, camera, controls, dirLight, tankGroup, waterMesh, floorMesh, causticTex, selBox, hemi;
 let godrays = [];
+let composer = null, bloomPass = null;
 const clock = new THREE.Clock();
 const interior = { x: 0, zNeg: 0, zPos: 0, subTop: 0, waterTop: 0, floatY: 0, H: 0,
     minX: 0, maxX: 0, minZ: 0, maxZ: 0, slopeTan: 0, dx: 0, dz: 0, sMin: 0, ready: false };
@@ -703,6 +704,38 @@ function makeGradientTex(top, bottom) {
     g.addColorStop(0, top); g.addColorStop(1, bottom);
     const ctx = c.getContext('2d'); ctx.fillStyle = g; ctx.fillRect(0, 0, 4, 256);
     const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+// A soft "studio" environment so glass, water and fish pick up realistic highlights.
+function makeEnvTex() {
+    const c = document.createElement('canvas'); c.width = 1024; c.height = 512;
+    const x = c.getContext('2d');
+    const g = x.createLinearGradient(0, 0, 0, 512);
+    g.addColorStop(0, '#36454f'); g.addColorStop(0.40, '#5e7c89'); g.addColorStop(0.5, '#dcedf3');
+    g.addColorStop(0.60, '#5a7884'); g.addColorStop(1, '#161f26');
+    x.fillStyle = g; x.fillRect(0, 0, 1024, 512);
+    // overhead soft-box light strips => crisp catch-lights on wet surfaces
+    [[512, 140, 300, 70], [300, 120, 130, 44], [760, 120, 130, 44], [512, 120, 520, 30]].forEach(([cx, cy, rw, rh]) => {
+        const rg = x.createRadialGradient(cx, cy, 0, cx, cy, rw);
+        rg.addColorStop(0, 'rgba(255,255,255,0.95)'); rg.addColorStop(1, 'rgba(255,255,255,0)');
+        x.fillStyle = rg; x.beginPath(); x.ellipse(cx, cy, rw, rh, 0, 0, 6.28); x.fill();
+    });
+    const t = new THREE.CanvasTexture(c); t.mapping = THREE.EquirectangularReflectionMapping; t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+// Bloom + filmic output, loaded lazily so a failure can never block the app.
+function setupPostFX() {
+    Promise.all([
+        import('three/addons/postprocessing/EffectComposer.js'),
+        import('three/addons/postprocessing/RenderPass.js'),
+        import('three/addons/postprocessing/UnrealBloomPass.js'),
+        import('three/addons/postprocessing/OutputPass.js')
+    ]).then(([{ EffectComposer }, { RenderPass }, { UnrealBloomPass }, { OutputPass }]) => {
+        const c = new EffectComposer(renderer);
+        c.addPass(new RenderPass(scene, camera));
+        bloomPass = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.55, 0.6, 0.82);
+        c.addPass(bloomPass);
+        c.addPass(new OutputPass());
+        composer = c; onResize();
+    }).catch(e => { composer = null; console.warn('Post-processing unavailable, using direct render.', e); });
 }
 function makeCaustics() {
     const s = 256, c = document.createElement('canvas'); c.width = c.height = s;
@@ -773,8 +806,7 @@ function initThree() {
     scene = new THREE.Scene();
     // environment for glass/fish reflections
     const pmrem = new THREE.PMREMGenerator(renderer);
-    const envTex = makeGradientTex('#bfe6ff', '#10314a'); envTex.mapping = THREE.EquirectangularReflectionMapping;
-    scene.environment = pmrem.fromEquirectangular(envTex).texture;
+    scene.environment = pmrem.fromEquirectangular(makeEnvTex()).texture;
 
     camera = new THREE.PerspectiveCamera(45, 1, 0.1, 2000);
     controls = new OrbitControls(camera, renderer.domElement);
@@ -799,6 +831,7 @@ function initThree() {
 
     buildTank();
     frameCamera();
+    setupPostFX();
     window.addEventListener('resize', onResize); onResize();
     setupPointer();
     animate();
@@ -924,6 +957,8 @@ function frameCamera() {
 function onResize() {
     const w = container.clientWidth, h = container.clientHeight || w * 0.6;
     renderer.setSize(w, h, false);
+    if (composer) composer.setSize(w, h);
+    if (bloomPass) bloomPass.setSize(w, h);
     camera.aspect = w / h; camera.updateProjectionMatrix();
 }
 
@@ -944,7 +979,7 @@ function animate() {
     for (let i = 0; i < godrays.length; i++) { const g = godrays[i]; g.material.opacity = 0.035 + Math.sin(t * 0.6 + g.userData.ph) * 0.02; g.rotation.z = 0.12 + Math.sin(t * 0.3 + g.userData.ph) * 0.05; }
     placedMap.forEach(rec => { const u = rec.group.userData.update; if (u) u(t, dt); });
     if (state.sel != null) { const r = placedMap.get(state.sel); if (r) selBox.setFromObject(r.group); }
-    renderer.render(scene, camera);
+    if (composer) composer.render(); else renderer.render(scene, camera);
 }
 
 /* =========================================================================
@@ -1323,7 +1358,7 @@ function download(name, type, data) {
 }
 function exportJSON() { download('aquascape.json', 'application/json', JSON.stringify(snapshot(), null, 2)); }
 function importJSON(file) { const fr = new FileReader(); fr.onload = () => { try { loadFrom(JSON.parse(fr.result)); persist(); } catch (e) { alert('Could not read that file.'); } }; fr.readAsText(file); }
-function exportPNG() { selBox.visible = false; renderer.render(scene, camera); renderer.domElement.toBlob(b => { download('aquascape.png', 'image/png', b); if (state.sel != null) selBox.visible = true; }, 'image/png'); }
+function exportPNG() { selBox.visible = false; if (composer) composer.render(); else renderer.render(scene, camera); renderer.domElement.toBlob(b => { download('aquascape.png', 'image/png', b); if (state.sel != null) selBox.visible = true; }, 'image/png'); }
 
 /* =========================================================================
    PART M — Wire up DOM
