@@ -237,6 +237,10 @@ body {
   white-space: nowrap;
 }
 
+.summary-grid .tag.confirmed {
+  color: var(--forest);
+}
+
 /* ============================================
    Day blocks
    ============================================ */
@@ -328,6 +332,20 @@ body {
   font-size: 9px;
   letter-spacing: 0.2em;
   background: var(--gold);
+  color: var(--paper);
+  padding: 2px 7px;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-left: 8px;
+  font-weight: 700;
+}
+
+.activity-title .confirmed {
+  display: inline-block;
+  font-family: 'Inter Tight', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  background: var(--forest);
   color: var(--paper);
   padding: 2px 7px;
   border-radius: 2px;
