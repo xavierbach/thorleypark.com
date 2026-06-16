@@ -721,6 +721,25 @@ function makeEnvTex() {
     });
     const t = new THREE.CanvasTexture(c); t.mapping = THREE.EquirectangularReflectionMapping; t.colorSpace = THREE.SRGBColorSpace; return t;
 }
+// Real-world image-based lighting from a vendored HDRI (falls back to the canvas env).
+function loadHDRI() {
+    import('three/addons/loaders/RGBELoader.js').then(({ RGBELoader }) => {
+        new RGBELoader().load('vendor/hdri/studio_1k.hdr', hdr => {
+            hdr.mapping = THREE.EquirectangularReflectionMapping;
+            const pm = new THREE.PMREMGenerator(renderer);
+            scene.environment = pm.fromEquirectangular(hdr).texture;
+            hdr.dispose(); pm.dispose();
+        }, undefined, e => console.warn('HDRI load failed, keeping canvas env.', e));
+    }).catch(e => console.warn('RGBELoader unavailable.', e));
+}
+// Shared, animated water normal map for a realistic rippling surface.
+let waterNormalTex = null;
+function getWaterNormal() {
+    if (waterNormalTex) return waterNormalTex;
+    waterNormalTex = new THREE.TextureLoader().load('vendor/waternormals.jpg');
+    waterNormalTex.wrapS = waterNormalTex.wrapT = THREE.RepeatWrapping;
+    return waterNormalTex;
+}
 // Bloom + filmic output, loaded lazily so a failure can never block the app.
 function setupPostFX() {
     Promise.all([
@@ -806,7 +825,8 @@ function initThree() {
     scene = new THREE.Scene();
     // environment for glass/fish reflections
     const pmrem = new THREE.PMREMGenerator(renderer);
-    scene.environment = pmrem.fromEquirectangular(makeEnvTex()).texture;
+    scene.environment = pmrem.fromEquirectangular(makeEnvTex()).texture; // instant fallback
+    loadHDRI(); // upgrade to real HDRI lighting when it arrives
 
     camera = new THREE.PerspectiveCamera(45, 1, 0.1, 2000);
     controls = new OrbitControls(camera, renderer.domElement);
@@ -934,11 +954,13 @@ function buildTank() {
         cone.rotation.z = 0.12; cone.userData.ph = Math.random() * 6.28; tankGroup.add(cone); godrays.push(cone);
     }
 
-    // water surface
+    // water surface — real normal-mapped ripples + transmission
+    const wnorm = getWaterNormal(); wnorm.repeat.set(Math.max(2, Math.round(W / 30)), Math.max(2, Math.round(D / 30)));
     const wg = new THREE.PlaneGeometry(W - t, D - t, 28, 28); wg.rotateX(-Math.PI / 2);
     waterMesh = new THREE.Mesh(wg, new THREE.MeshPhysicalMaterial({
-        color: isSalt ? 0x1f7fc8 : 0x2a9ca0, transparent: true, opacity: 0.14, roughness: 0.06,
-        metalness: 0, transmission: 0.6, ior: 1.33, thickness: 4, envMapIntensity: 1.4, side: THREE.DoubleSide
+        color: isSalt ? 0x1f7fc8 : 0x2a9ca0, transparent: true, opacity: 0.16, roughness: 0.04,
+        metalness: 0, transmission: 0.5, ior: 1.33, thickness: 6, envMapIntensity: 1.6,
+        normalMap: wnorm, normalScale: new THREE.Vector2(0.28, 0.28), side: THREE.DoubleSide
     }));
     waterMesh.position.y = interior.waterTop; tankGroup.add(waterMesh);
     waterMesh.geometry.userData.base = Float32Array.from(wg.attributes.position.array);
@@ -974,6 +996,7 @@ function animate() {
             pos.setY(i, Math.sin(x * 0.15 + t * 1.5) * 0.4 + Math.cos(z * 0.2 + t * 1.2) * 0.4 + Math.sin((x + z) * 0.08 + t * 0.8) * 0.3);
         }
         pos.needsUpdate = true; waterMesh.geometry.computeVertexNormals();
+        const wn = waterMesh.material.normalMap; if (wn) wn.offset.set((t * 0.018) % 1, (t * 0.012) % 1);
     }
     if (causticTex) { causticTex.offset.x = t * 0.012; causticTex.offset.y = t * 0.008; }
     for (let i = 0; i < godrays.length; i++) { const g = godrays[i]; g.material.opacity = 0.035 + Math.sin(t * 0.6 + g.userData.ph) * 0.02; g.rotation.z = 0.12 + Math.sin(t * 0.3 + g.userData.ph) * 0.05; }
