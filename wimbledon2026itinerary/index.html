@@ -37,7 +37,7 @@
 
   /* HEADER */
   header {
-    min-height: 70vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -95,6 +95,47 @@
     color: var(--gold);
   }
 
+  .tennis-ball {
+    position: absolute;
+    left: 0;
+    top: 28vh;
+    width: 32px;
+    height: 32px;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    animation: tennis-fade-in 0.6s 1.4s forwards, tennis-rally 5s 2s linear infinite;
+    filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.45));
+  }
+
+  @keyframes tennis-rally {
+    0%   { left: 0%;                top: 28vh; }
+    5%   { left: 10%;               top: 21vh; }
+    10%  { left: 20%;               top: 15vh; }
+    15%  { left: 30%;               top: 11vh; }
+    20%  { left: 40%;               top: 9vh;  }
+    25%  { left: 50%;               top: 8vh;  }
+    30%  { left: 60%;               top: 9vh;  }
+    35%  { left: 70%;               top: 11vh; }
+    40%  { left: 80%;               top: 15vh; }
+    45%  { left: 90%;               top: 21vh; }
+    50%  { left: calc(100% - 32px); top: 28vh; }
+    55%  { left: 90%;               top: 21vh; }
+    60%  { left: 80%;               top: 15vh; }
+    65%  { left: 70%;               top: 11vh; }
+    70%  { left: 60%;               top: 9vh;  }
+    75%  { left: 50%;               top: 8vh;  }
+    80%  { left: 40%;               top: 9vh;  }
+    85%  { left: 30%;               top: 11vh; }
+    90%  { left: 20%;               top: 15vh; }
+    95%  { left: 10%;               top: 21vh; }
+    100% { left: 0%;                top: 28vh; }
+  }
+
+  @keyframes tennis-fade-in {
+    to { opacity: 1; }
+  }
+
   h1 .h1-sub {
     font-size: 0.32em;
     letter-spacing: 0.05em;
@@ -128,6 +169,33 @@
   }
 
   .route-line span { color: var(--gold); font-size: 1rem; }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1s 1.4s forwards;
+  }
+
+  .scroll-hint p {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 3rem;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s 1.4s infinite;
+  }
 
   /* TIMELINE */
   .timeline {
@@ -538,6 +606,11 @@
     to { opacity: 1; }
   }
 
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
   /* ICONS */
   .lounge-icon,
   .eurostar-icon,
@@ -576,6 +649,11 @@
 <header>
   <div class="map-bg"></div>
   <p class="header-label">5–16 July 2026</p>
+  <svg class="tennis-ball" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" fill="#d4ec1e" stroke="#a8b81a" stroke-width="0.4"/>
+    <path d="M3 9.5 Q 12 5 21 9.5" stroke="#fff" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+    <path d="M3 14.5 Q 12 19 21 14.5" stroke="#fff" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+  </svg>
   <h1>Kat <em>&amp;</em> Xave<br><span class="h1-sub">Itinerary &amp; Logistics</span></h1>
   <p class="header-sub">London · Paris · 9 Nights</p>
   <div class="route-line">
@@ -586,6 +664,10 @@
     <span>·</span> London
     <span>·</span> Singapore
     <span>·</span> Melbourne <span class="route-plane"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 13 L22 5 L17 13 L13 14 L11 22 L9 14 L4 13 Z"/></svg></span>
+  </div>
+  <div class="scroll-hint">
+    <p>Scroll</p>
+    <div class="scroll-line"></div>
   </div>
 </header>
 
