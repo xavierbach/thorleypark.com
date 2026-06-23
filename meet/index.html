@@ -169,10 +169,20 @@
   .mt-intro { text-align: center; margin-bottom: 40px; }
   .mt-intro p { color: var(--mt-mid); max-width: 600px; margin: 0 auto; font-size: 0.95rem; }
 
-  /* Compact hero for this tool page so the planner is visible straight away */
-  .mt-hero { min-height: auto; padding-top: 96px; padding-bottom: 42px; }
-  .mt-hero h1 { margin-bottom: 14px; }
-  .mt-hero .divider { margin: 18px auto; }
+  /* Slim hero + tight section so the planner is visible the moment the page loads */
+  .mt-hero { min-height: auto; padding: 88px 32px 22px; }
+  .mt-hero h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); margin-bottom: 6px; }
+  .mt-hero .page-hero-label { margin-bottom: 10px; }
+  .mt-hero .divider { display: none; }
+  .mt-hero p { font-size: 1.05rem; }
+  .mt-section { padding: 32px 0 60px; }
+  .mt-intro { margin-bottom: 26px; }
+  .mt-intro .section-title { font-size: 1.7rem; margin-bottom: 8px; }
+  .mt-intro p { font-size: 0.9rem; }
+  @media (max-width: 640px) {
+    .mt-hero { padding-top: 80px; }
+    .mt-intro { display: none; }
+  }
 
   .mt-toast {
     position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
@@ -213,7 +223,7 @@
             </div>
         </section>
 
-        <section class="content-section alt-bg-devs">
+        <section class="content-section alt-bg-devs mt-section">
             <div class="container mt">
 
                 <div class="mt-intro">
