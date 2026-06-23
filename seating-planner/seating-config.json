@@ -13,20 +13,7 @@
     "shapes": ["rectangle", "square", "round"],
     "seats": { "min": 2, "max": 24 }
   },
-  "guests": [
-    "Katherine",
-    "Xavier",
-    "Erin O'G",
-    "Daniel",
-    "Erin H",
-    "Claire",
-    "Jeremy",
-    "Amelia",
-    "Emile",
-    "Brooke",
-    "Nicholas",
-    "Susie"
-  ],
+  "guests": [],
   "savedPlans": [],
   "design": {
     "colors": {

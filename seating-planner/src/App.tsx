@@ -419,6 +419,55 @@ export default function App() {
       </header>
 
       <main className="layout">
+        {/* Setup controls — kept above the table, outside the capture region. */}
+        <section className="panel" aria-label="Table setup">
+          <div className="panel-head">
+            <h2>Table</h2>
+          </div>
+          <div className="field">
+            <span className="field-label">Shape</span>
+            <div className="segmented" role="group" aria-label="Table shape">
+              {config.constraints.shapes.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`seg ${shape === s ? 'seg-on' : ''}`}
+                  onClick={() => changeShape(s)}
+                  aria-pressed={shape === s}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="field">
+            <span className="field-label" id="seats-label">
+              Seats
+            </span>
+            <div className="stepper" role="group" aria-labelledby="seats-label">
+              <button
+                type="button"
+                onClick={() => changeSeats(seats - 1)}
+                disabled={seats <= config.constraints.seats.min}
+                aria-label="Remove a seat"
+              >
+                −
+              </button>
+              <span className="stepper-value" aria-live="polite">
+                {seats}
+              </span>
+              <button
+                type="button"
+                onClick={() => changeSeats(seats + 1)}
+                disabled={seats >= config.constraints.seats.max}
+                aria-label="Add a seat"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </section>
+
         {/* Capture region: header + table only, no buttons. */}
         <div className="capture" ref={captureRef}>
           <div className="event-header">
@@ -544,55 +593,6 @@ export default function App() {
             </button>
           </p>
         )}
-
-        {/* Setup controls */}
-        <section className="panel" aria-label="Table setup">
-          <div className="panel-head">
-            <h2>Table</h2>
-          </div>
-          <div className="field">
-            <span className="field-label">Shape</span>
-            <div className="segmented" role="group" aria-label="Table shape">
-              {config.constraints.shapes.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  className={`seg ${shape === s ? 'seg-on' : ''}`}
-                  onClick={() => changeShape(s)}
-                  aria-pressed={shape === s}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="field">
-            <span className="field-label" id="seats-label">
-              Seats
-            </span>
-            <div className="stepper" role="group" aria-labelledby="seats-label">
-              <button
-                type="button"
-                onClick={() => changeSeats(seats - 1)}
-                disabled={seats <= config.constraints.seats.min}
-                aria-label="Remove a seat"
-              >
-                −
-              </button>
-              <span className="stepper-value" aria-live="polite">
-                {seats}
-              </span>
-              <button
-                type="button"
-                onClick={() => changeSeats(seats + 1)}
-                disabled={seats >= config.constraints.seats.max}
-                aria-label="Add a seat"
-              >
-                +
-              </button>
-            </div>
-          </div>
-        </section>
 
         {/* Saved plans */}
         <section className="panel" aria-label="Saved plans">
