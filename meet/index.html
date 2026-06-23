@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meeting Time — Timezone Meeting Planner | Thorley Park Devs</title>
-<meta name="description" content="A fast, free meeting time planner. Add cities, pick a date, and instantly see the best overlapping time to meet across timezones. A web app by Thorley Park Devs.">
+<meta name="description" content="A fast, free meeting time planner. Add cities and instantly see the best overlapping time to meet across timezones. A web app by Thorley Park Devs.">
 <link rel="canonical" href="https://thorleypark.com/meet/">
 <!-- Favicon -->
 <link rel="icon" href="/favicon.ico" sizes="32x32">
@@ -12,14 +12,14 @@
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Meeting Time — Timezone Meeting Planner">
-<meta property="og:description" content="Add cities, pick a date, and instantly see the best time to meet across timezones.">
+<meta property="og:description" content="Add cities and instantly see the best time to meet across timezones.">
 <meta property="og:url" content="https://thorleypark.com/meet/">
 <meta property="og:image" content="https://thorleypark.com/images/og-image.png">
 <meta property="og:locale" content="en_AU">
 <meta property="og:site_name" content="Thorley Park">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Meeting Time — Timezone Meeting Planner">
-<meta name="twitter:description" content="Add cities, pick a date, and find the best time to meet across timezones.">
+<meta name="twitter:description" content="Add cities and find the best time to meet across timezones.">
 <meta name="twitter:image" content="https://thorleypark.com/images/og-image.png">
 <!-- Styles -->
 <link rel="stylesheet" href="/css/style.css">
@@ -58,11 +58,10 @@
   }
   .mt-field { display: flex; flex-direction: column; gap: 7px; }
   .mt-field label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mt-light); font-weight: 600; }
-  .mt input[type="date"], .mt input[type="text"] {
+  .mt input[type="text"] {
     font-family: inherit; font-size: 0.95rem; color: var(--mt-ink);
     padding: 11px 13px; border: 1px solid var(--mt-line); border-radius: 10px; background: #fff;
   }
-  .mt input[type="date"] { min-width: 175px; }
   .mt input:focus { outline: none; border-color: var(--devs-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14); }
 
   .mt-add { position: relative; flex: 1 1 280px; min-width: 240px; }
@@ -228,15 +227,10 @@
 
                 <div class="mt-intro">
                     <h2 class="section-title">Plan across timezones</h2>
-                    <p>Add the cities your people are in, pick a date, and we'll highlight the best overlapping time to meet. Everything runs in your browser — daylight saving is handled automatically.</p>
+                    <p>Add the cities your people are in and we'll highlight the best overlapping time to meet. Times are shown for today, so daylight saving is always handled correctly.</p>
                 </div>
 
                 <div class="mt-controls">
-                    <div class="mt-field">
-                        <label for="date">Date</label>
-                        <input type="date" id="date">
-                    </div>
-
                     <div class="mt-field mt-add">
                         <label for="citySearch">Add a city or timezone</label>
                         <input type="text" id="citySearch" placeholder="e.g. London, Tokyo, New York…" autocomplete="off">
@@ -392,7 +386,6 @@
 
   /* ---------- State ---------- */
   var state = {
-    date: null,            // "YYYY-MM-DD" in reference (home) local terms
     fmt: "12",
     locations: [],         // { name, sub, tz }
     homeIndex: 0,
@@ -460,7 +453,6 @@
   /* ---------- URL state ---------- */
   function loadFromURL() {
     var q = new URLSearchParams(location.search);
-    var d = q.get("d");
     var z = q.get("z");
     var f = q.get("f");
     if (f === "24" || f === "12") state.fmt = f;
@@ -473,21 +465,13 @@
         else state.locations.push({ name: tz.split("/").pop().replace(/_/g, " "), sub: tz.split("/")[0], tz: tz });
       });
     }
-    if (d && /^\d{4}-\d{2}-\d{2}$/.test(d)) state.date = d;
   }
 
   function syncURL() {
     var q = new URLSearchParams();
-    if (state.date) q.set("d", state.date);
     if (state.locations.length) q.set("z", state.locations.map(function (l) { return l.tz; }).join(","));
     if (state.fmt !== "12") q.set("f", state.fmt);
     history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q.toString() : ""));
-  }
-
-  /* ---------- Defaults ---------- */
-  function todayInTz(tz) {
-    var p = partsIn(tz, new Date());
-    return p.y + "-" + String(p.mo).padStart(2, "0") + "-" + String(p.d).padStart(2, "0");
   }
 
   function init() {
@@ -505,9 +489,6 @@
       });
     }
 
-    if (!state.date) state.date = todayInTz(state.locations[0].tz);
-
-    $("date").value = state.date;
     document.querySelectorAll("#fmtToggle button").forEach(function (b) {
       b.classList.toggle("active", b.dataset.fmt === state.fmt);
     });
@@ -518,12 +499,12 @@
 
   /* ---------- Rendering ---------- */
   function buildColumns() {
-    // 24 instants based on the home location's local hours 0..23 of selected date
+    // 24 instants for the home location's local hours 0..23, based on today's
+    // date in that zone — so the current DST offset is always applied.
     var home = state.locations[state.homeIndex] || state.locations[0];
-    var parts = state.date.split("-");
-    var y = +parts[0], m = +parts[1], d = +parts[2];
+    var t = partsIn(home.tz, new Date());
     var cols = [];
-    for (var h = 0; h < 24; h++) cols.push(wallToInstant(home.tz, y, m, d, h));
+    for (var h = 0; h < 24; h++) cols.push(wallToInstant(home.tz, t.y, t.mo, t.d, h));
     return cols;
   }
 
@@ -720,10 +701,6 @@
 
   /* ---------- Controls ---------- */
   function bindControls() {
-    $("date").addEventListener("change", function () {
-      if (/^\d{4}-\d{2}-\d{2}$/.test(this.value)) { state.date = this.value; state.selectedCol = null; render(); }
-    });
-
     var search = $("citySearch");
     var box = $("suggestions");
     search.addEventListener("input", function () { renderSuggestions(this.value); });

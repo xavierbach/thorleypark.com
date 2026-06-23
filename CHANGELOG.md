@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 43] — 2026-06-23
+- meet: remove the date picker &mdash; the grid now always renders against today's date in the reference zone, so the current daylight-saving offset is applied automatically; dropped the `d` URL parameter and tidied the related copy/styles
+
 ## [Build 42] — 2026-06-23
 - meet: make the planner visible the moment the page loads &mdash; slimmer hero (no divider, smaller title), tighter section padding (`.mt-section`), and a condensed intro that's hidden on mobile; controls, best-overlap callout and grid now sit above the fold on desktop and mobile
 
