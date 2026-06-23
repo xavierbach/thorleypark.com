@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 42] — 2026-06-23
+- meet: make the planner visible the moment the page loads &mdash; slimmer hero (no divider, smaller title), tighter section padding (`.mt-section`), and a condensed intro that's hidden on mobile; controls, best-overlap callout and grid now sit above the fold on desktop and mobile
+
 ## [Build 41] — 2026-06-23
 - meet: shorten the hero on the planner page (scoped `.mt-hero` override) so the controls and grid are visible straight away without scrolling; title still clears the fixed nav
 
