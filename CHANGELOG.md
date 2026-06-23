@@ -1,5 +1,9 @@
 # Changelog
 
+## [Build 40] — 2026-06-23
+- meet: restyle the planner to the Thorley Park Devs look &mdash; now uses the shared `/css/style.css` chrome (fixed nav, dark devs hero, devs footer) with the tool recoloured to the blue devs palette; tool styles scoped under `.mt` so they don't collide with the global stylesheet
+- devs: feature Meeting Time as a Web App project card (new `images/meet-icon.svg` clock/globe icon), placed beside Aquascape before the &ldquo;More to come&rdquo; card
+
 ## [Build 39] — 2026-06-22
 - Add `meet/` — a meeting-time planner tool at `/meet/`, a simpler take on timeanddate.com's meeting planner: searchable city/timezone picker, colour-coded 24-hour grid (working / fringe / out-of-hours), automatic best-overlap highlight, click any column to lock in a slot and see every city's local time, 12/24h toggle, and a shareable URL that encodes the cities and date. All times computed in-browser via `Intl` with daylight-saving handled automatically; no dependencies. Added to sitemap.
 

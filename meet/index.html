@@ -3,288 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meeting Time — Find the best time across timezones | Thorley Park</title>
-<meta name="description" content="A simple, fast meeting time planner. Add cities, pick a date, and instantly see the best overlapping time to meet across timezones.">
+<title>Meeting Time — Timezone Meeting Planner | Thorley Park Devs</title>
+<meta name="description" content="A fast, free meeting time planner. Add cities, pick a date, and instantly see the best overlapping time to meet across timezones. A web app by Thorley Park Devs.">
 <link rel="canonical" href="https://thorleypark.com/meet/">
+<!-- Favicon -->
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Meeting Time — Find the best time across timezones">
+<meta property="og:title" content="Meeting Time — Timezone Meeting Planner">
 <meta property="og:description" content="Add cities, pick a date, and instantly see the best time to meet across timezones.">
 <meta property="og:url" content="https://thorleypark.com/meet/">
 <meta property="og:image" content="https://thorleypark.com/images/og-image.png">
+<meta property="og:locale" content="en_AU">
 <meta property="og:site_name" content="Thorley Park">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Meeting Time — Timezone Meeting Planner">
+<meta name="twitter:description" content="Add cities, pick a date, and find the best time to meet across timezones.">
+<meta name="twitter:image" content="https://thorleypark.com/images/og-image.png">
+<!-- Styles -->
+<link rel="stylesheet" href="/css/style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --green: #1a3a0a;
-    --green-mid: #2d5016;
-    --gold: #c4a44a;
-    --gold-soft: rgba(196,164,74,0.14);
-    --gold-line: rgba(196,164,74,0.4);
-    --bg: #faf8f4;
-    --card: #ffffff;
-    --ink: #1a1a1a;
-    --mid: #555;
-    --light: #8a8a8a;
-    --line: #e8e3da;
-    /* hour quality */
-    --great: #cfe6c2;
-    --great-edge: #6fae4e;
-    --ok: #f3e6b8;
-    --ok-edge: #d9b84a;
-    --bad: #e9e4dc;
-    --bad-text: #b0a895;
-    --radius: 14px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.05), 0 8px 28px rgba(26,58,10,0.06);
+  /* ==========================================================================
+     Meeting Time — tool styles (Thorley Park Devs palette)
+     Chrome (nav, hero, footer) comes from /css/style.css
+     ========================================================================== */
+  .mt {
+    --mt-card: #ffffff;
+    --mt-line: rgba(15, 23, 42, 0.09);
+    --mt-ink: #0f172a;
+    --mt-mid: #475569;
+    --mt-light: #94a3b8;
+    --mt-radius: 14px;
+    --mt-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 12px 32px rgba(15, 23, 42, 0.06);
+    --mt-great: #dcf2e3;
+    --mt-great-edge: #41a05f;
+    --mt-great-text: #1f7a3d;
+    --mt-ok: #fdeecb;
+    --mt-ok-edge: #e0b13a;
+    --mt-ok-text: #946a0c;
+    --mt-bad: #eef1f6;
+    --mt-bad-edge: #d8dee7;
+    --mt-bad-text: #9aa6b6;
   }
-
-  html { -webkit-font-smoothing: antialiased; }
-
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: var(--ink);
-    background: var(--bg);
-    line-height: 1.55;
-    min-height: 100vh;
-  }
-
-  h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 500; line-height: 1.1; }
-
-  a { color: inherit; text-decoration: none; }
-
-  /* --- Top bar --- */
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 24px; border-bottom: 1px solid var(--line);
-    background: rgba(250,248,244,0.85); backdrop-filter: blur(8px);
-    position: sticky; top: 0; z-index: 50;
-  }
-  .brand { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--green); letter-spacing: 0.02em; }
-  .brand span { color: var(--gold); }
-  .topbar a.home { font-size: 0.8rem; color: var(--mid); letter-spacing: 0.04em; }
-  .topbar a.home:hover { color: var(--green); }
-
-  /* --- Header --- */
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
-  header.hero { text-align: center; padding: 46px 24px 26px; }
-  header.hero .eyebrow { font-size: 0.72rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
-  header.hero h1 { font-size: clamp(2.3rem, 6vw, 3.4rem); color: var(--green); margin: 8px 0 6px; }
-  header.hero .gold-line { width: 54px; height: 2px; background: var(--gold); margin: 14px auto; border-radius: 2px; }
-  header.hero p { color: var(--mid); max-width: 560px; margin: 0 auto; font-size: 0.98rem; }
 
   /* --- Controls --- */
-  .controls {
-    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-    box-shadow: var(--shadow); padding: 20px; margin-bottom: 22px;
+  .mt-controls {
+    background: var(--mt-card); border: 1px solid var(--mt-line); border-radius: var(--mt-radius);
+    box-shadow: var(--mt-shadow); padding: 22px; margin-bottom: 22px;
     display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-end;
   }
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); font-weight: 600; }
-  input[type="date"], input[type="text"], select {
-    font-family: inherit; font-size: 0.95rem; color: var(--ink);
-    padding: 10px 12px; border: 1px solid var(--line); border-radius: 9px;
-    background: #fff; min-width: 0;
+  .mt-field { display: flex; flex-direction: column; gap: 7px; }
+  .mt-field label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mt-light); font-weight: 600; }
+  .mt input[type="date"], .mt input[type="text"] {
+    font-family: inherit; font-size: 0.95rem; color: var(--mt-ink);
+    padding: 11px 13px; border: 1px solid var(--mt-line); border-radius: 10px; background: #fff;
   }
-  input[type="date"] { min-width: 170px; }
-  input:focus, select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-soft); }
+  .mt input[type="date"] { min-width: 175px; }
+  .mt input:focus { outline: none; border-color: var(--devs-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14); }
 
-  .add-city { position: relative; flex: 1 1 280px; min-width: 240px; }
-  .add-city input { width: 100%; }
-  .suggestions {
-    position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 30;
-    background: #fff; border: 1px solid var(--line); border-radius: 11px;
-    box-shadow: 0 10px 36px rgba(0,0,0,0.12); max-height: 290px; overflow-y: auto;
-    display: none;
+  .mt-add { position: relative; flex: 1 1 280px; min-width: 240px; }
+  .mt-add input { width: 100%; }
+  .mt-suggestions {
+    position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 30;
+    background: #fff; border: 1px solid var(--mt-line); border-radius: 12px;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.14); max-height: 290px; overflow-y: auto; display: none;
   }
-  .suggestions.open { display: block; }
-  .suggestion { padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
-  .suggestion:hover, .suggestion.active { background: var(--gold-soft); }
-  .suggestion .city { font-weight: 500; }
-  .suggestion .meta { font-size: 0.78rem; color: var(--light); white-space: nowrap; }
+  .mt-suggestions.open { display: block; }
+  .mt-suggestion { padding: 11px 15px; cursor: pointer; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .mt-suggestion:hover, .mt-suggestion.active { background: rgba(59, 130, 246, 0.07); }
+  .mt-suggestion .city { font-weight: 500; color: var(--mt-ink); }
+  .mt-suggestion .meta { font-size: 0.78rem; color: var(--mt-light); white-space: nowrap; }
 
-  .toggle-group { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; }
-  .toggle-group button { font-family: inherit; font-size: 0.85rem; padding: 9px 14px; background: #fff; border: none; cursor: pointer; color: var(--mid); }
-  .toggle-group button.active { background: var(--green); color: #fff; }
+  .mt-toggle { display: inline-flex; border: 1px solid var(--mt-line); border-radius: 10px; overflow: hidden; }
+  .mt-toggle button { font-family: inherit; font-size: 0.85rem; padding: 10px 15px; background: #fff; border: none; cursor: pointer; color: var(--mt-mid); transition: background 0.2s, color 0.2s; }
+  .mt-toggle button.active { background: var(--devs-blue); color: #fff; }
 
-  .spacer { flex: 1 1 auto; }
+  .mt-spacer { flex: 1 1 auto; }
 
-  .btn {
+  .mt-share {
     font-family: inherit; font-size: 0.85rem; font-weight: 500; cursor: pointer;
-    padding: 10px 16px; border-radius: 9px; border: 1px solid var(--line);
-    background: #fff; color: var(--mid); display: inline-flex; align-items: center; gap: 7px;
-    transition: all 0.2s ease;
+    padding: 11px 18px; border-radius: 10px; border: 1px solid var(--devs-blue);
+    background: var(--devs-blue); color: #fff; display: inline-flex; align-items: center; gap: 8px;
+    transition: background 0.2s ease;
   }
-  .btn:hover { border-color: var(--gold); color: var(--green); }
-  .btn.primary { background: var(--green); color: #fff; border-color: var(--green); }
-  .btn.primary:hover { background: var(--green-mid); color: #fff; }
+  .mt-share:hover { background: var(--devs-blue-light); }
 
   /* --- Best slot callout --- */
-  .best {
-    background: linear-gradient(180deg,#fff, #fcfaf4); border: 1px solid var(--gold-line);
-    border-radius: var(--radius); padding: 16px 20px; margin-bottom: 20px;
+  .mt-best {
+    background: linear-gradient(180deg, #fff, #f6f9ff); border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: var(--mt-radius); padding: 18px 22px; margin-bottom: 22px;
     display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
   }
-  .best .tag { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
-  .best .headline { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--green); }
-  .best .sub { color: var(--mid); font-size: 0.88rem; }
-  .best.none { color: var(--mid); font-size: 0.9rem; }
+  .mt-best .tag { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--devs-blue); font-weight: 700; }
+  .mt-best .headline { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; color: var(--mt-ink); font-weight: 500; }
+  .mt-best .sub { color: var(--mt-mid); font-size: 0.9rem; }
+  .mt-best.none { display: none; }
 
   /* --- Grid --- */
-  .grid-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 26px; }
-  .grid-scroll { overflow-x: auto; }
-  table.grid { border-collapse: collapse; width: 100%; min-width: 860px; }
-  table.grid th, table.grid td { text-align: center; }
+  .mt-grid-card { background: var(--mt-card); border: 1px solid var(--mt-line); border-radius: var(--mt-radius); box-shadow: var(--mt-shadow); overflow: hidden; margin-bottom: 26px; }
+  .mt-grid-scroll { overflow-x: auto; }
+  table.mt-grid { border-collapse: collapse; width: 100%; min-width: 880px; }
+  table.mt-grid th, table.mt-grid td { text-align: center; }
 
-  .row-head {
-    text-align: left; padding: 12px 16px; position: sticky; left: 0; z-index: 5;
-    background: var(--card); border-right: 1px solid var(--line); min-width: 190px;
+  .mt-grid .row-head {
+    text-align: left; padding: 13px 18px; position: sticky; left: 0; z-index: 5;
+    background: var(--mt-card); border-right: 1px solid var(--mt-line); min-width: 195px;
   }
-  thead .row-head { background: #fbf9f5; }
-  tbody tr:nth-child(even) .row-head { background: #fbf9f5; }
-  .row-head .city-name { font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
-  .row-head .city-sub { font-size: 0.74rem; color: var(--light); }
-  .row-head .home-pill { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--gold-line); border-radius: 20px; padding: 1px 7px; }
-  .row-head .actions { display: inline-flex; gap: 6px; margin-left: auto; }
-  .row-head .mini { border: none; background: none; cursor: pointer; color: var(--light); font-size: 0.85rem; line-height: 1; padding: 2px; border-radius: 5px; }
-  .row-head .mini:hover { color: var(--green); background: var(--gold-soft); }
+  .mt-grid thead .row-head { background: #f8fafc; }
+  .mt-grid tbody tr:nth-child(even) .row-head { background: #f8fafc; }
+  .mt-grid .city-name { font-weight: 600; font-size: 0.95rem; color: var(--mt-ink); display: flex; align-items: center; gap: 8px; }
+  .mt-grid .city-sub { font-size: 0.73rem; color: var(--mt-light); }
+  .mt-grid .home-pill { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--devs-blue); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 20px; padding: 1px 7px; }
+  .mt-grid .actions { display: inline-flex; gap: 6px; margin-left: auto; }
+  .mt-grid .mini { border: none; background: none; cursor: pointer; color: var(--mt-light); font-size: 0.9rem; line-height: 1; padding: 2px 4px; border-radius: 6px; }
+  .mt-grid .mini:hover { color: var(--devs-blue); background: rgba(59, 130, 246, 0.08); }
 
-  thead th.hour { padding: 8px 0; font-size: 0.72rem; font-weight: 500; color: var(--light); cursor: pointer; border-bottom: 1px solid var(--line); }
-  thead th.hour .daylabel { display: block; font-size: 0.6rem; color: var(--gold); font-weight: 600; }
-  thead th.hour:hover { background: var(--gold-soft); }
+  .mt-grid thead th.hour { padding: 9px 0; font-size: 0.72rem; font-weight: 500; color: var(--mt-light); cursor: pointer; border-bottom: 1px solid var(--mt-line); }
+  .mt-grid thead th.hour .daylabel { display: block; font-size: 0.58rem; color: var(--devs-blue); font-weight: 600; }
+  .mt-grid thead th.hour .ampm { font-size: 0.6rem; opacity: 0.7; }
+  .mt-grid thead th.hour:hover { background: rgba(59, 130, 246, 0.06); }
+  .mt-grid thead th.hour.is-best { color: var(--mt-ink); font-weight: 700; }
+  .mt-grid thead th.hour.is-best .star { color: var(--devs-blue); }
+  .mt-grid thead th.hour.is-selected { background: var(--devs-dark); color: #fff; border-radius: 7px 7px 0 0; }
+  .mt-grid thead th.hour.is-selected .daylabel { color: var(--devs-blue-light); }
 
-  td.cell { padding: 0; cursor: pointer; border-right: 1px solid #f3f0ea; height: 46px; position: relative; }
-  td.cell .h { font-size: 0.78rem; font-weight: 500; }
-  td.cell .ampm { font-size: 0.6rem; opacity: 0.7; }
-  td.cell .nextday { position: absolute; top: 2px; right: 3px; font-size: 0.52rem; color: var(--gold); font-weight: 700; }
-  td.cell.great { background: var(--great); }
-  td.cell.great .h { color: #2f5a18; }
-  td.cell.ok { background: var(--ok); }
-  td.cell.ok .h { color: #7a5f12; }
-  td.cell.bad { background: var(--bad); }
-  td.cell.bad .h { color: var(--bad-text); }
-
-  th.hour.is-best { color: var(--green); font-weight: 700; }
-  th.hour.is-best .star { color: var(--gold); }
-
-  td.cell.sel { outline: 2px solid var(--green); outline-offset: -2px; z-index: 2; }
-  th.hour.is-selected { background: var(--green); color: #fff; border-radius: 6px 6px 0 0; }
-  th.hour.is-selected .daylabel { color: #e7d9a3; }
+  .mt-grid td.cell { padding: 0; cursor: pointer; border-right: 1px solid #f1f4f8; height: 48px; position: relative; }
+  .mt-grid td.cell .h { font-size: 0.78rem; font-weight: 500; }
+  .mt-grid td.cell .ampm { font-size: 0.58rem; opacity: 0.7; }
+  .mt-grid td.cell .nextday { position: absolute; top: 2px; right: 4px; font-size: 0.5rem; color: var(--devs-blue); font-weight: 700; }
+  .mt-grid td.cell.great { background: var(--mt-great); }
+  .mt-grid td.cell.great .h { color: var(--mt-great-text); }
+  .mt-grid td.cell.ok { background: var(--mt-ok); }
+  .mt-grid td.cell.ok .h { color: var(--mt-ok-text); }
+  .mt-grid td.cell.bad { background: var(--mt-bad); }
+  .mt-grid td.cell.bad .h { color: var(--mt-bad-text); }
+  .mt-grid td.cell.sel { outline: 2px solid var(--devs-blue); outline-offset: -2px; z-index: 2; }
 
   /* --- Legend --- */
-  .legend { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; font-size: 0.82rem; color: var(--mid); padding: 4px 2px 30px; }
-  .legend .key { display: inline-flex; align-items: center; gap: 7px; }
-  .legend .sw { width: 16px; height: 16px; border-radius: 4px; display: inline-block; }
-  .legend .sw.great { background: var(--great); border: 1px solid var(--great-edge); }
-  .legend .sw.ok { background: var(--ok); border: 1px solid var(--ok-edge); }
-  .legend .sw.bad { background: var(--bad); border: 1px solid #cfc8ba; }
+  .mt-legend { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; font-size: 0.82rem; color: var(--mt-mid); padding: 2px 2px 32px; }
+  .mt-legend .key { display: inline-flex; align-items: center; gap: 8px; }
+  .mt-legend .sw { width: 16px; height: 16px; border-radius: 4px; display: inline-block; }
+  .mt-legend .sw.great { background: var(--mt-great); border: 1px solid var(--mt-great-edge); }
+  .mt-legend .sw.ok { background: var(--mt-ok); border: 1px solid var(--mt-ok-edge); }
+  .mt-legend .sw.bad { background: var(--mt-bad); border: 1px solid var(--mt-bad-edge); }
+  .mt-legend .tip { margin-left: auto; color: var(--mt-light); }
 
   /* --- Selected summary --- */
-  .summary { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; margin-bottom: 40px; }
-  .summary h3 { font-size: 1.5rem; color: var(--green); margin-bottom: 4px; }
-  .summary .when { color: var(--mid); font-size: 0.9rem; margin-bottom: 16px; }
-  .summary ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px 18px; }
-  .summary li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
-  .summary li .c { font-weight: 500; }
-  .summary li .t { font-variant-numeric: tabular-nums; }
-  .summary li.s-great .t { color: #3a6b1d; }
-  .summary li.s-ok .t { color: #9a7a14; }
-  .summary li.s-bad .t { color: var(--light); }
-  .summary .empty { color: var(--light); font-size: 0.9rem; }
+  .mt-summary { background: var(--mt-card); border: 1px solid var(--mt-line); border-radius: var(--mt-radius); box-shadow: var(--mt-shadow); padding: 24px; margin-bottom: 10px; }
+  .mt-summary h3 { font-size: 1.7rem; color: var(--mt-ink); margin-bottom: 4px; font-weight: 500; }
+  .mt-summary .when { color: var(--mt-mid); font-size: 0.9rem; margin-bottom: 18px; }
+  .mt-summary ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 4px 22px; }
+  .mt-summary li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--mt-line); }
+  .mt-summary li .c { font-weight: 500; color: var(--mt-ink); }
+  .mt-summary li .t { font-variant-numeric: tabular-nums; color: var(--mt-mid); }
+  .mt-summary li.s-great .t { color: var(--mt-great-text); font-weight: 500; }
+  .mt-summary li.s-ok .t { color: var(--mt-ok-text); }
+  .mt-summary li.s-bad .t { color: var(--mt-light); }
 
-  footer { text-align: center; padding: 30px 24px 50px; color: var(--light); font-size: 0.8rem; }
-  footer a { color: var(--gold); }
+  .mt-empty { text-align: center; padding: 50px 20px; color: var(--mt-light); }
 
-  .empty-state { text-align: center; padding: 50px 20px; color: var(--light); }
+  .mt-intro { text-align: center; margin-bottom: 40px; }
+  .mt-intro p { color: var(--mt-mid); max-width: 600px; margin: 0 auto; font-size: 0.95rem; }
 
-  .toast {
-    position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: var(--green); color: #fff; padding: 11px 20px; border-radius: 30px;
-    font-size: 0.85rem; box-shadow: 0 8px 30px rgba(0,0,0,0.2); opacity: 0;
-    pointer-events: none; transition: all 0.3s ease; z-index: 100;
+  .mt-toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--devs-dark); color: #fff; padding: 12px 22px; border-radius: 30px;
+    font-size: 0.85rem; box-shadow: 0 10px 34px rgba(15, 23, 42, 0.25); opacity: 0;
+    pointer-events: none; transition: all 0.3s ease; z-index: 200;
   }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .mt-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   @media (max-width: 640px) {
-    .controls { padding: 16px; gap: 14px 18px; }
-    .summary ul { grid-template-columns: 1fr; }
-    header.hero { padding: 32px 18px 20px; }
+    .mt-controls { padding: 18px; gap: 14px 18px; }
+    .mt-summary ul { grid-template-columns: 1fr; }
   }
 </style>
 </head>
-<body>
+<body class="page-devs">
 
-<div class="topbar">
-  <a href="/" class="brand">Thorley <span>Park</span></a>
-  <a href="/" class="home">&larr; Home</a>
-</div>
+    <header>
+        <nav class="nav">
+            <a href="/" class="nav-logo">Thorley Park</a>
+            <div class="nav-links">
+                <a href="/garden.html">The Garden</a>
+                <a href="/devs.html">Devs</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
 
-<header class="hero">
-  <span class="eyebrow">A Thorley Park tool</span>
-  <h1>Meeting Time</h1>
-  <div class="gold-line"></div>
-  <p>Add the cities your people are in, pick a date, and find the time that works for everyone. We highlight the best overlap automatically.</p>
-</header>
+    <main>
+        <section class="page-hero devs-hero">
+            <div class="page-hero-content">
+                <span class="page-hero-label">A Thorley Park Devs web app</span>
+                <h1>Meeting Time</h1>
+                <div class="divider"></div>
+                <p>Find a time that works for everyone.</p>
+            </div>
+        </section>
 
-<main class="wrap">
+        <section class="content-section alt-bg-devs">
+            <div class="container mt">
 
-  <div class="controls">
-    <div class="field">
-      <label for="date">Date</label>
-      <input type="date" id="date">
-    </div>
+                <div class="mt-intro">
+                    <h2 class="section-title">Plan across timezones</h2>
+                    <p>Add the cities your people are in, pick a date, and we'll highlight the best overlapping time to meet. Everything runs in your browser — daylight saving is handled automatically.</p>
+                </div>
 
-    <div class="field add-city">
-      <label for="citySearch">Add a city or timezone</label>
-      <input type="text" id="citySearch" placeholder="e.g. London, Tokyo, New York…" autocomplete="off">
-      <div class="suggestions" id="suggestions"></div>
-    </div>
+                <div class="mt-controls">
+                    <div class="mt-field">
+                        <label for="date">Date</label>
+                        <input type="date" id="date">
+                    </div>
 
-    <div class="field">
-      <label>Time format</label>
-      <div class="toggle-group" id="fmtToggle">
-        <button data-fmt="12" class="active">12h</button>
-        <button data-fmt="24">24h</button>
-      </div>
-    </div>
+                    <div class="mt-field mt-add">
+                        <label for="citySearch">Add a city or timezone</label>
+                        <input type="text" id="citySearch" placeholder="e.g. London, Tokyo, New York…" autocomplete="off">
+                        <div class="mt-suggestions" id="suggestions"></div>
+                    </div>
 
-    <div class="spacer"></div>
+                    <div class="mt-field">
+                        <label>Time format</label>
+                        <div class="mt-toggle" id="fmtToggle">
+                            <button data-fmt="12" class="active">12h</button>
+                            <button data-fmt="24">24h</button>
+                        </div>
+                    </div>
 
-    <button class="btn" id="shareBtn" title="Copy a shareable link">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
-      Share
-    </button>
-  </div>
+                    <div class="mt-spacer"></div>
 
-  <div id="best" class="best none"></div>
+                    <button class="mt-share" id="shareBtn" title="Copy a shareable link">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
+                        Share
+                    </button>
+                </div>
 
-  <div class="grid-card">
-    <div class="grid-scroll">
-      <table class="grid" id="grid"></table>
-    </div>
-  </div>
+                <div id="best" class="mt-best none"></div>
 
-  <div class="legend">
-    <span class="key"><span class="sw great"></span> Working hours (9am–5pm)</span>
-    <span class="key"><span class="sw ok"></span> Fringe (7–9am, 5–10pm)</span>
-    <span class="key"><span class="sw bad"></span> Out of hours</span>
-    <span class="key" style="margin-left:auto;color:var(--light)">Tip: click any column to lock in a meeting time.</span>
-  </div>
+                <div class="mt-grid-card">
+                    <div class="mt-grid-scroll">
+                        <table class="mt-grid" id="grid"></table>
+                    </div>
+                </div>
 
-  <div class="summary" id="summary" style="display:none"></div>
+                <div class="mt-legend">
+                    <span class="key"><span class="sw great"></span> Working hours (9am–5pm)</span>
+                    <span class="key"><span class="sw ok"></span> Fringe (7–9am, 5–10pm)</span>
+                    <span class="key"><span class="sw bad"></span> Out of hours</span>
+                    <span class="key tip">Tip: click any column to lock in a meeting time.</span>
+                </div>
 
-</main>
+                <div class="mt-summary" id="summary" style="display:none"></div>
 
-<footer>
-  Built at <a href="/">Thorley Park</a> &middot; All times calculated in your browser &middot; Daylight saving handled automatically
-</footer>
+            </div>
+        </section>
+    </main>
 
-<div class="toast" id="toast"></div>
+    <footer class="footer footer-devs">
+        <div class="footer-inner">
+            <nav class="footer-nav">
+                <a href="/">Home</a>
+                <a href="/garden.html">The Garden</a>
+                <a href="/devs.html">The Studio</a>
+                <a href="mailto:hello@thorleypark.com">Contact</a>
+            </nav>
+            <p>&copy; 2026 Thorley Park Devs</p>
+            <p class="footer-location">All times calculated in your browser &middot; Daylight saving handled automatically</p>
+        </div>
+    </footer>
 
+    <div class="mt-toast" id="toast"></div>
+
+<script src="/js/main.js" defer></script>
 <script>
 (function () {
   "use strict";
@@ -521,8 +517,8 @@
     grid.innerHTML = "";
 
     if (state.locations.length === 0) {
-      grid.innerHTML = '<tbody><tr><td><div class="empty-state">Add a city above to get started.</div></td></tr></tbody>';
-      $("best").className = "best none";
+      grid.innerHTML = '<tbody><tr><td><div class="mt-empty">Add a city above to get started.</div></td></tr></tbody>';
+      $("best").className = "mt-best none";
       $("best").textContent = "";
       $("summary").style.display = "none";
       syncURL();
@@ -613,19 +609,19 @@
 
   function renderBest(cols, bestCols) {
     var el = $("best");
-    if (!bestCols.length) { el.className = "best none"; el.textContent = ""; return; }
+    if (!bestCols.length) { el.className = "mt-best none"; el.textContent = ""; return; }
     // Pick the middle best column as the headline suggestion
     var pick = bestCols[Math.floor(bestCols.length / 2)];
     var home = state.locations[state.homeIndex];
     var hp = partsIn(home.tz, cols[pick]);
     var f = fmtHour(hp.h, 0);
     var allGreat = state.locations.every(function (l) { return quality(partsIn(l.tz, cols[pick]).h) === "great"; });
-    el.className = "best";
+    el.className = "mt-best";
     el.innerHTML =
       '<span class="tag">Best overlap</span>' +
       '<span class="headline">' + f.h + (state.fmt === "12" ? f.ampm : "") + ' in ' + escapeHtml(home.name) + '</span>' +
       '<span class="sub">' + (allGreat ? "Within working hours for everyone." : "The least disruptive slot for the group.") +
-        ' &nbsp;<a href="#" id="useBest" style="color:var(--gold);font-weight:500">Lock it in &rarr;</a></span>';
+        ' &nbsp;<a href="#" id="useBest" style="color:var(--devs-blue);font-weight:500">Lock it in &rarr;</a></span>';
     document.getElementById("useBest").addEventListener("click", function (e) { e.preventDefault(); selectColumn(pick); });
   }
 
@@ -692,11 +688,11 @@
     activeSuggestion = -1;
     if (!results.length) { box.classList.remove("open"); box.innerHTML = ""; return; }
     box.innerHTML = results.map(function (c, idx) {
-      return '<div class="suggestion" data-idx="' + idx + '"><span class="city">' + escapeHtml(c[0]) +
+      return '<div class="mt-suggestion" data-idx="' + idx + '"><span class="city">' + escapeHtml(c[0]) +
         '</span><span class="meta">' + escapeHtml(c[1]) + '</span></div>';
     }).join("");
     box.classList.add("open");
-    box.querySelectorAll(".suggestion").forEach(function (node, idx) {
+    box.querySelectorAll(".mt-suggestion").forEach(function (node, idx) {
       node.addEventListener("mousedown", function (e) {
         e.preventDefault();
         addLocation(results[idx]);
@@ -719,7 +715,7 @@
     search.addEventListener("focus", function () { if (this.value) renderSuggestions(this.value); });
     search.addEventListener("blur", function () { setTimeout(function () { box.classList.remove("open"); }, 120); });
     search.addEventListener("keydown", function (e) {
-      var items = box.querySelectorAll(".suggestion");
+      var items = box.querySelectorAll(".mt-suggestion");
       if (!items.length) return;
       if (e.key === "ArrowDown") { e.preventDefault(); activeSuggestion = Math.min(activeSuggestion + 1, items.length - 1); }
       else if (e.key === "ArrowUp") { e.preventDefault(); activeSuggestion = Math.max(activeSuggestion - 1, 0); }
