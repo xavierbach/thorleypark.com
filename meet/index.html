@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meeting Time — Timezone Meeting Planner | Thorley Park Devs</title>
+<meta name="description" content="A fast, free meeting time planner. Add cities, pick a date, and instantly see the best overlapping time to meet across timezones. A web app by Thorley Park Devs.">
+<link rel="canonical" href="https://thorleypark.com/meet/">
+<!-- Favicon -->
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Meeting Time — Timezone Meeting Planner">
+<meta property="og:description" content="Add cities, pick a date, and instantly see the best time to meet across timezones.">
+<meta property="og:url" content="https://thorleypark.com/meet/">
+<meta property="og:image" content="https://thorleypark.com/images/og-image.png">
+<meta property="og:locale" content="en_AU">
+<meta property="og:site_name" content="Thorley Park">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Meeting Time — Timezone Meeting Planner">
+<meta name="twitter:description" content="Add cities, pick a date, and find the best time to meet across timezones.">
+<meta name="twitter:image" content="https://thorleypark.com/images/og-image.png">
+<!-- Styles -->
+<link rel="stylesheet" href="/css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ==========================================================================
+     Meeting Time — tool styles (Thorley Park Devs palette)
+     Chrome (nav, hero, footer) comes from /css/style.css
+     ========================================================================== */
+  .mt {
+    --mt-card: #ffffff;
+    --mt-line: rgba(15, 23, 42, 0.09);
+    --mt-ink: #0f172a;
+    --mt-mid: #475569;
+    --mt-light: #94a3b8;
+    --mt-radius: 14px;
+    --mt-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 12px 32px rgba(15, 23, 42, 0.06);
+    --mt-great: #dcf2e3;
+    --mt-great-edge: #41a05f;
+    --mt-great-text: #1f7a3d;
+    --mt-ok: #fdeecb;
+    --mt-ok-edge: #e0b13a;
+    --mt-ok-text: #946a0c;
+    --mt-bad: #eef1f6;
+    --mt-bad-edge: #d8dee7;
+    --mt-bad-text: #9aa6b6;
+  }
+
+  /* --- Controls --- */
+  .mt-controls {
+    background: var(--mt-card); border: 1px solid var(--mt-line); border-radius: var(--mt-radius);
+    box-shadow: var(--mt-shadow); padding: 22px; margin-bottom: 22px;
+    display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-end;
+  }
+  .mt-field { display: flex; flex-direction: column; gap: 7px; }
+  .mt-field label { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mt-light); font-weight: 600; }
+  .mt input[type="date"], .mt input[type="text"] {
+    font-family: inherit; font-size: 0.95rem; color: var(--mt-ink);
+    padding: 11px 13px; border: 1px solid var(--mt-line); border-radius: 10px; background: #fff;
+  }
+  .mt input[type="date"] { min-width: 175px; }
+  .mt input:focus { outline: none; border-color: var(--devs-blue); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14); }
+
+  .mt-add { position: relative; flex: 1 1 280px; min-width: 240px; }
+  .mt-add input { width: 100%; }
+  .mt-suggestions {
+    position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 30;
+    background: #fff; border: 1px solid var(--mt-line); border-radius: 12px;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.14); max-height: 290px; overflow-y: auto; display: none;
+  }
+  .mt-suggestions.open { display: block; }
+  .mt-suggestion { padding: 11px 15px; cursor: pointer; display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .mt-suggestion:hover, .mt-suggestion.active { background: rgba(59, 130, 246, 0.07); }
+  .mt-suggestion .city { font-weight: 500; color: var(--mt-ink); }
+  .mt-suggestion .meta { font-size: 0.78rem; color: var(--mt-light); white-space: nowrap; }
+
+  .mt-toggle { display: inline-flex; border: 1px solid var(--mt-line); border-radius: 10px; overflow: hidden; }
+  .mt-toggle button { font-family: inherit; font-size: 0.85rem; padding: 10px 15px; background: #fff; border: none; cursor: pointer; color: var(--mt-mid); transition: background 0.2s, color 0.2s; }
+  .mt-toggle button.active { background: var(--devs-blue); color: #fff; }
+
+  .mt-spacer { flex: 1 1 auto; }
+
+  .mt-share {
+    font-family: inherit; font-size: 0.85rem; font-weight: 500; cursor: pointer;
+    padding: 11px 18px; border-radius: 10px; border: 1px solid var(--devs-blue);
+    background: var(--devs-blue); color: #fff; display: inline-flex; align-items: center; gap: 8px;
+    transition: background 0.2s ease;
+  }
+  .mt-share:hover { background: var(--devs-blue-light); }
+
+  /* --- Best slot callout --- */
+  .mt-best {
+    background: linear-gradient(180deg, #fff, #f6f9ff); border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: var(--mt-radius); padding: 18px 22px; margin-bottom: 22px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .mt-best .tag { font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--devs-blue); font-weight: 700; }
+  .mt-best .headline { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; color: var(--mt-ink); font-weight: 500; }
+  .mt-best .sub { color: var(--mt-mid); font-size: 0.9rem; }
+  .mt-best.none { display: none; }
+
+  /* --- Grid --- */
+  .mt-grid-card { background: var(--mt-card); border: 1px solid var(--mt-line); border-radius: var(--mt-radius); box-shadow: var(--mt-shadow); overflow: hidden; margin-bottom: 26px; }
+  .mt-grid-scroll { overflow-x: auto; }
+  table.mt-grid { border-collapse: collapse; width: 100%; min-width: 880px; }
+  table.mt-grid th, table.mt-grid td { text-align: center; }
+
+  .mt-grid .row-head {
+    text-align: left; padding: 13px 18px; position: sticky; left: 0; z-index: 5;
+    background: var(--mt-card); border-right: 1px solid var(--mt-line); min-width: 195px;
+  }
+  .mt-grid thead .row-head { background: #f8fafc; }
+  .mt-grid tbody tr:nth-child(even) .row-head { background: #f8fafc; }
+  .mt-grid .city-name { font-weight: 600; font-size: 0.95rem; color: var(--mt-ink); display: flex; align-items: center; gap: 8px; }
+  .mt-grid .city-sub { font-size: 0.73rem; color: var(--mt-light); }
+  .mt-grid .home-pill { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--devs-blue); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 20px; padding: 1px 7px; }
+  .mt-grid .actions { display: inline-flex; gap: 6px; margin-left: auto; }
+  .mt-grid .mini { border: none; background: none; cursor: pointer; color: var(--mt-light); font-size: 0.9rem; line-height: 1; padding: 2px 4px; border-radius: 6px; }
+  .mt-grid .mini:hover { color: var(--devs-blue); background: rgba(59, 130, 246, 0.08); }
+
+  .mt-grid thead th.hour { padding: 9px 0; font-size: 0.72rem; font-weight: 500; color: var(--mt-light); cursor: pointer; border-bottom: 1px solid var(--mt-line); }
+  .mt-grid thead th.hour .daylabel { display: block; font-size: 0.58rem; color: var(--devs-blue); font-weight: 600; }
+  .mt-grid thead th.hour .ampm { font-size: 0.6rem; opacity: 0.7; }
+  .mt-grid thead th.hour:hover { background: rgba(59, 130, 246, 0.06); }
+  .mt-grid thead th.hour.is-best { color: var(--mt-ink); font-weight: 700; }
+  .mt-grid thead th.hour.is-best .star { color: var(--devs-blue); }
+  .mt-grid thead th.hour.is-selected { background: var(--devs-dark); color: #fff; border-radius: 7px 7px 0 0; }
+  .mt-grid thead th.hour.is-selected .daylabel { color: var(--devs-blue-light); }
+
+  .mt-grid td.cell { padding: 0; cursor: pointer; border-right: 1px solid #f1f4f8; height: 48px; position: relative; }
+  .mt-grid td.cell .h { font-size: 0.78rem; font-weight: 500; }
+  .mt-grid td.cell .ampm { font-size: 0.58rem; opacity: 0.7; }
+  .mt-grid td.cell .nextday { position: absolute; top: 2px; right: 4px; font-size: 0.5rem; color: var(--devs-blue); font-weight: 700; }
+  .mt-grid td.cell.great { background: var(--mt-great); }
+  .mt-grid td.cell.great .h { color: var(--mt-great-text); }
+  .mt-grid td.cell.ok { background: var(--mt-ok); }
+  .mt-grid td.cell.ok .h { color: var(--mt-ok-text); }
+  .mt-grid td.cell.bad { background: var(--mt-bad); }
+  .mt-grid td.cell.bad .h { color: var(--mt-bad-text); }
+  .mt-grid td.cell.sel { outline: 2px solid var(--devs-blue); outline-offset: -2px; z-index: 2; }
+
+  /* --- Legend --- */
+  .mt-legend { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; font-size: 0.82rem; color: var(--mt-mid); padding: 2px 2px 32px; }
+  .mt-legend .key { display: inline-flex; align-items: center; gap: 8px; }
+  .mt-legend .sw { width: 16px; height: 16px; border-radius: 4px; display: inline-block; }
+  .mt-legend .sw.great { background: var(--mt-great); border: 1px solid var(--mt-great-edge); }
+  .mt-legend .sw.ok { background: var(--mt-ok); border: 1px solid var(--mt-ok-edge); }
+  .mt-legend .sw.bad { background: var(--mt-bad); border: 1px solid var(--mt-bad-edge); }
+  .mt-legend .tip { margin-left: auto; color: var(--mt-light); }
+
+  /* --- Selected summary --- */
+  .mt-summary { background: var(--mt-card); border: 1px solid var(--mt-line); border-radius: var(--mt-radius); box-shadow: var(--mt-shadow); padding: 24px; margin-bottom: 10px; }
+  .mt-summary h3 { font-size: 1.7rem; color: var(--mt-ink); margin-bottom: 4px; font-weight: 500; }
+  .mt-summary .when { color: var(--mt-mid); font-size: 0.9rem; margin-bottom: 18px; }
+  .mt-summary ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 4px 22px; }
+  .mt-summary li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--mt-line); }
+  .mt-summary li .c { font-weight: 500; color: var(--mt-ink); }
+  .mt-summary li .t { font-variant-numeric: tabular-nums; color: var(--mt-mid); }
+  .mt-summary li.s-great .t { color: var(--mt-great-text); font-weight: 500; }
+  .mt-summary li.s-ok .t { color: var(--mt-ok-text); }
+  .mt-summary li.s-bad .t { color: var(--mt-light); }
+
+  .mt-empty { text-align: center; padding: 50px 20px; color: var(--mt-light); }
+
+  .mt-intro { text-align: center; margin-bottom: 40px; }
+  .mt-intro p { color: var(--mt-mid); max-width: 600px; margin: 0 auto; font-size: 0.95rem; }
+
+  .mt-toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--devs-dark); color: #fff; padding: 12px 22px; border-radius: 30px;
+    font-size: 0.85rem; box-shadow: 0 10px 34px rgba(15, 23, 42, 0.25); opacity: 0;
+    pointer-events: none; transition: all 0.3s ease; z-index: 200;
+  }
+  .mt-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 640px) {
+    .mt-controls { padding: 18px; gap: 14px 18px; }
+    .mt-summary ul { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body class="page-devs">
+
+    <header>
+        <nav class="nav">
+            <a href="/" class="nav-logo">Thorley Park</a>
+            <div class="nav-links">
+                <a href="/garden.html">The Garden</a>
+                <a href="/devs.html">Devs</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-hero devs-hero">
+            <div class="page-hero-content">
+                <span class="page-hero-label">A Thorley Park Devs web app</span>
+                <h1>Meeting Time</h1>
+                <div class="divider"></div>
+                <p>Find a time that works for everyone.</p>
+            </div>
+        </section>
+
+        <section class="content-section alt-bg-devs">
+            <div class="container mt">
+
+                <div class="mt-intro">
+                    <h2 class="section-title">Plan across timezones</h2>
+                    <p>Add the cities your people are in, pick a date, and we'll highlight the best overlapping time to meet. Everything runs in your browser — daylight saving is handled automatically.</p>
+                </div>
+
+                <div class="mt-controls">
+                    <div class="mt-field">
+                        <label for="date">Date</label>
+                        <input type="date" id="date">
+                    </div>
+
+                    <div class="mt-field mt-add">
+                        <label for="citySearch">Add a city or timezone</label>
+                        <input type="text" id="citySearch" placeholder="e.g. London, Tokyo, New York…" autocomplete="off">
+                        <div class="mt-suggestions" id="suggestions"></div>
+                    </div>
+
+                    <div class="mt-field">
+                        <label>Time format</label>
+                        <div class="mt-toggle" id="fmtToggle">
+                            <button data-fmt="12" class="active">12h</button>
+                            <button data-fmt="24">24h</button>
+                        </div>
+                    </div>
+
+                    <div class="mt-spacer"></div>
+
+                    <button class="mt-share" id="shareBtn" title="Copy a shareable link">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
+                        Share
+                    </button>
+                </div>
+
+                <div id="best" class="mt-best none"></div>
+
+                <div class="mt-grid-card">
+                    <div class="mt-grid-scroll">
+                        <table class="mt-grid" id="grid"></table>
+                    </div>
+                </div>
+
+                <div class="mt-legend">
+                    <span class="key"><span class="sw great"></span> Working hours (9am–5pm)</span>
+                    <span class="key"><span class="sw ok"></span> Fringe (7–9am, 5–10pm)</span>
+                    <span class="key"><span class="sw bad"></span> Out of hours</span>
+                    <span class="key tip">Tip: click any column to lock in a meeting time.</span>
+                </div>
+
+                <div class="mt-summary" id="summary" style="display:none"></div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer footer-devs">
+        <div class="footer-inner">
+            <nav class="footer-nav">
+                <a href="/">Home</a>
+                <a href="/garden.html">The Garden</a>
+                <a href="/devs.html">The Studio</a>
+                <a href="mailto:hello@thorleypark.com">Contact</a>
+            </nav>
+            <p>&copy; 2026 Thorley Park Devs</p>
+            <p class="footer-location">All times calculated in your browser &middot; Daylight saving handled automatically</p>
+        </div>
+    </footer>
+
+    <div class="mt-toast" id="toast"></div>
+
+<script src="/js/main.js" defer></script>
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- City database (IANA timezones) ---------- */
+  var CITIES = [
+    ["Melbourne","Australia","Australia/Melbourne"],
+    ["Sydney","Australia","Australia/Sydney"],
+    ["Brisbane","Australia","Australia/Brisbane"],
+    ["Perth","Australia","Australia/Perth"],
+    ["Adelaide","Australia","Australia/Adelaide"],
+    ["Auckland","New Zealand","Pacific/Auckland"],
+    ["Wellington","New Zealand","Pacific/Auckland"],
+    ["London","United Kingdom","Europe/London"],
+    ["Dublin","Ireland","Europe/Dublin"],
+    ["Lisbon","Portugal","Europe/Lisbon"],
+    ["Madrid","Spain","Europe/Madrid"],
+    ["Barcelona","Spain","Europe/Madrid"],
+    ["Paris","France","Europe/Paris"],
+    ["Amsterdam","Netherlands","Europe/Amsterdam"],
+    ["Brussels","Belgium","Europe/Brussels"],
+    ["Berlin","Germany","Europe/Berlin"],
+    ["Munich","Germany","Europe/Berlin"],
+    ["Zurich","Switzerland","Europe/Zurich"],
+    ["Geneva","Switzerland","Europe/Zurich"],
+    ["Milan","Italy","Europe/Rome"],
+    ["Rome","Italy","Europe/Rome"],
+    ["Vienna","Austria","Europe/Vienna"],
+    ["Copenhagen","Denmark","Europe/Copenhagen"],
+    ["Stockholm","Sweden","Europe/Stockholm"],
+    ["Oslo","Norway","Europe/Oslo"],
+    ["Helsinki","Finland","Europe/Helsinki"],
+    ["Warsaw","Poland","Europe/Warsaw"],
+    ["Prague","Czechia","Europe/Prague"],
+    ["Athens","Greece","Europe/Athens"],
+    ["Istanbul","Turkey","Europe/Istanbul"],
+    ["Moscow","Russia","Europe/Moscow"],
+    ["Kyiv","Ukraine","Europe/Kyiv"],
+    ["Bucharest","Romania","Europe/Bucharest"],
+    ["Cairo","Egypt","Africa/Cairo"],
+    ["Johannesburg","South Africa","Africa/Johannesburg"],
+    ["Cape Town","South Africa","Africa/Johannesburg"],
+    ["Nairobi","Kenya","Africa/Nairobi"],
+    ["Lagos","Nigeria","Africa/Lagos"],
+    ["Dubai","UAE","Asia/Dubai"],
+    ["Abu Dhabi","UAE","Asia/Dubai"],
+    ["Tel Aviv","Israel","Asia/Jerusalem"],
+    ["Riyadh","Saudi Arabia","Asia/Riyadh"],
+    ["Karachi","Pakistan","Asia/Karachi"],
+    ["Mumbai","India","Asia/Kolkata"],
+    ["New Delhi","India","Asia/Kolkata"],
+    ["Bengaluru","India","Asia/Kolkata"],
+    ["Colombo","Sri Lanka","Asia/Colombo"],
+    ["Dhaka","Bangladesh","Asia/Dhaka"],
+    ["Bangkok","Thailand","Asia/Bangkok"],
+    ["Jakarta","Indonesia","Asia/Jakarta"],
+    ["Singapore","Singapore","Asia/Singapore"],
+    ["Kuala Lumpur","Malaysia","Asia/Kuala_Lumpur"],
+    ["Manila","Philippines","Asia/Manila"],
+    ["Hong Kong","Hong Kong","Asia/Hong_Kong"],
+    ["Shanghai","China","Asia/Shanghai"],
+    ["Beijing","China","Asia/Shanghai"],
+    ["Taipei","Taiwan","Asia/Taipei"],
+    ["Seoul","South Korea","Asia/Seoul"],
+    ["Tokyo","Japan","Asia/Tokyo"],
+    ["Osaka","Japan","Asia/Tokyo"],
+    ["Honolulu","USA","Pacific/Honolulu"],
+    ["Anchorage","USA","America/Anchorage"],
+    ["Los Angeles","USA","America/Los_Angeles"],
+    ["San Francisco","USA","America/Los_Angeles"],
+    ["Seattle","USA","America/Los_Angeles"],
+    ["Las Vegas","USA","America/Los_Angeles"],
+    ["Denver","USA","America/Denver"],
+    ["Phoenix","USA","America/Phoenix"],
+    ["Chicago","USA","America/Chicago"],
+    ["Dallas","USA","America/Chicago"],
+    ["Houston","USA","America/Chicago"],
+    ["New York","USA","America/New_York"],
+    ["Boston","USA","America/New_York"],
+    ["Washington DC","USA","America/New_York"],
+    ["Miami","USA","America/New_York"],
+    ["Atlanta","USA","America/New_York"],
+    ["Toronto","Canada","America/Toronto"],
+    ["Montreal","Canada","America/Toronto"],
+    ["Vancouver","Canada","America/Vancouver"],
+    ["Mexico City","Mexico","America/Mexico_City"],
+    ["Bogota","Colombia","America/Bogota"],
+    ["Lima","Peru","America/Lima"],
+    ["Santiago","Chile","America/Santiago"],
+    ["Buenos Aires","Argentina","America/Argentina/Buenos_Aires"],
+    ["Sao Paulo","Brazil","America/Sao_Paulo"],
+    ["Rio de Janeiro","Brazil","America/Sao_Paulo"]
+  ];
+
+  /* ---------- State ---------- */
+  var state = {
+    date: null,            // "YYYY-MM-DD" in reference (home) local terms
+    fmt: "12",
+    locations: [],         // { name, sub, tz }
+    homeIndex: 0,
+    selectedCol: null      // 0..23 or null
+  };
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- Timezone helpers (DST-aware via Intl) ---------- */
+  function tzOffsetMinutes(tz, date) {
+    var dtf = new Intl.DateTimeFormat("en-US", {
+      timeZone: tz, hourCycle: "h23",
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit"
+    });
+    var p = {};
+    dtf.formatToParts(date).forEach(function (x) { if (x.type !== "literal") p[x.type] = x.value; });
+    var asUTC = Date.UTC(+p.year, p.month - 1, +p.day, +p.hour, +p.minute, +p.second);
+    return Math.round((asUTC - date.getTime()) / 60000);
+  }
+
+  // Wall-clock time in tz -> the UTC instant
+  function wallToInstant(tz, y, m, d, h) {
+    var guess = Date.UTC(y, m - 1, d, h, 0, 0);
+    var off = tzOffsetMinutes(tz, new Date(guess));
+    var inst = guess - off * 60000;
+    off = tzOffsetMinutes(tz, new Date(inst));
+    return new Date(guess - off * 60000);
+  }
+
+  // Local parts of an instant in tz
+  function partsIn(tz, date) {
+    var dtf = new Intl.DateTimeFormat("en-US", {
+      timeZone: tz, hourCycle: "h23",
+      year: "numeric", month: "2-digit", day: "2-digit",
+      weekday: "short", hour: "2-digit", minute: "2-digit"
+    });
+    var p = {};
+    dtf.formatToParts(date).forEach(function (x) { if (x.type !== "literal") p[x.type] = x.value; });
+    return { y: +p.year, mo: +p.month, d: +p.day, h: +p.hour, min: +p.minute, wd: p.weekday };
+  }
+
+  function tzAbbrev(tz, date) {
+    try {
+      var dtf = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "short", hour: "2-digit" });
+      var part = dtf.formatToParts(date).find(function (x) { return x.type === "timeZoneName"; });
+      return part ? part.value : "";
+    } catch (e) { return ""; }
+  }
+
+  function quality(h) {
+    if (h >= 9 && h < 17) return "great";
+    if ((h >= 7 && h < 9) || (h >= 17 && h < 22)) return "ok";
+    return "bad";
+  }
+
+  function fmtHour(h, min) {
+    var mm = (min === 0) ? "" : ":" + String(min).padStart(2, "0");
+    if (state.fmt === "24") return { h: String(h).padStart(2, "0") + mm, ampm: "" };
+    var ap = h < 12 ? "am" : "pm";
+    var hh = h % 12; if (hh === 0) hh = 12;
+    return { h: hh + mm, ampm: ap };
+  }
+
+  /* ---------- URL state ---------- */
+  function loadFromURL() {
+    var q = new URLSearchParams(location.search);
+    var d = q.get("d");
+    var z = q.get("z");
+    var f = q.get("f");
+    if (f === "24" || f === "12") state.fmt = f;
+    if (z) {
+      z.split(",").forEach(function (tz) {
+        tz = tz.trim();
+        if (!tz) return;
+        var match = CITIES.find(function (c) { return c[2] === tz; });
+        if (match) state.locations.push({ name: match[0], sub: match[1], tz: match[2] });
+        else state.locations.push({ name: tz.split("/").pop().replace(/_/g, " "), sub: tz.split("/")[0], tz: tz });
+      });
+    }
+    if (d && /^\d{4}-\d{2}-\d{2}$/.test(d)) state.date = d;
+  }
+
+  function syncURL() {
+    var q = new URLSearchParams();
+    if (state.date) q.set("d", state.date);
+    if (state.locations.length) q.set("z", state.locations.map(function (l) { return l.tz; }).join(","));
+    if (state.fmt !== "12") q.set("f", state.fmt);
+    history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q.toString() : ""));
+  }
+
+  /* ---------- Defaults ---------- */
+  function todayInTz(tz) {
+    var p = partsIn(tz, new Date());
+    return p.y + "-" + String(p.mo).padStart(2, "0") + "-" + String(p.d).padStart(2, "0");
+  }
+
+  function init() {
+    loadFromURL();
+    var localTz = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+
+    if (state.locations.length === 0) {
+      var here = CITIES.find(function (c) { return c[2] === localTz; });
+      if (here) state.locations.push({ name: here[0], sub: here[1], tz: here[2] });
+      else state.locations.push({ name: localTz.split("/").pop().replace(/_/g, " "), sub: "Your timezone", tz: localTz });
+      ["Europe/London", "America/New_York"].forEach(function (tz) {
+        if (tz === localTz) return;
+        var c = CITIES.find(function (x) { return x[2] === tz; });
+        if (c) state.locations.push({ name: c[0], sub: c[1], tz: c[2] });
+      });
+    }
+
+    if (!state.date) state.date = todayInTz(state.locations[0].tz);
+
+    $("date").value = state.date;
+    document.querySelectorAll("#fmtToggle button").forEach(function (b) {
+      b.classList.toggle("active", b.dataset.fmt === state.fmt);
+    });
+
+    bindControls();
+    render();
+  }
+
+  /* ---------- Rendering ---------- */
+  function buildColumns() {
+    // 24 instants based on the home location's local hours 0..23 of selected date
+    var home = state.locations[state.homeIndex] || state.locations[0];
+    var parts = state.date.split("-");
+    var y = +parts[0], m = +parts[1], d = +parts[2];
+    var cols = [];
+    for (var h = 0; h < 24; h++) cols.push(wallToInstant(home.tz, y, m, d, h));
+    return cols;
+  }
+
+  function render() {
+    var grid = $("grid");
+    grid.innerHTML = "";
+
+    if (state.locations.length === 0) {
+      grid.innerHTML = '<tbody><tr><td><div class="mt-empty">Add a city above to get started.</div></td></tr></tbody>';
+      $("best").className = "mt-best none";
+      $("best").textContent = "";
+      $("summary").style.display = "none";
+      syncURL();
+      return;
+    }
+
+    var cols = buildColumns();
+    var homeDay = partsIn(state.locations[state.homeIndex].tz, cols[0]).d;
+
+    // Score each column for best-overlap
+    var scores = cols.map(function (inst) {
+      var s = 0;
+      state.locations.forEach(function (loc) {
+        var q = quality(partsIn(loc.tz, inst).h);
+        s += (q === "great") ? 2 : (q === "ok") ? 1 : -3;
+      });
+      return s;
+    });
+    var maxScore = Math.max.apply(null, scores);
+    var bestCols = scores.map(function (s, i) { return s === maxScore ? i : -1; }).filter(function (i) { return i >= 0; });
+
+    /* --- header --- */
+    var thead = document.createElement("thead");
+    var hr = document.createElement("tr");
+    var corner = document.createElement("th");
+    corner.className = "row-head";
+    corner.innerHTML = '<div class="city-sub">Local time &rarr;</div>';
+    hr.appendChild(corner);
+
+    cols.forEach(function (inst, i) {
+      var hp = partsIn(state.locations[state.homeIndex].tz, inst);
+      var th = document.createElement("th");
+      th.className = "hour";
+      if (bestCols.indexOf(i) >= 0) th.classList.add("is-best");
+      if (state.selectedCol === i) th.classList.add("is-selected");
+      var f = fmtHour(hp.h, 0);
+      var dayChip = hp.d !== homeDay ? '<span class="daylabel">' + hp.wd + '</span>' : "";
+      var star = bestCols.indexOf(i) >= 0 ? '<span class="star"> &#9733;</span>' : "";
+      th.innerHTML = f.h + (state.fmt === "12" ? '<span class="ampm">' + f.ampm + '</span>' : "") + star + dayChip;
+      th.addEventListener("click", function () { selectColumn(i); });
+      hr.appendChild(th);
+    });
+    thead.appendChild(hr);
+    grid.appendChild(thead);
+
+    /* --- body --- */
+    var tbody = document.createElement("tbody");
+    state.locations.forEach(function (loc, li) {
+      var tr = document.createElement("tr");
+      var head = document.createElement("th");
+      head.className = "row-head";
+      var abbr = tzAbbrev(loc.tz, cols[12]);
+      var isHome = li === state.homeIndex;
+      head.innerHTML =
+        '<div class="city-name">' + escapeHtml(loc.name) +
+          (isHome ? ' <span class="home-pill">Home</span>' : "") +
+          '<span class="actions">' +
+            (isHome ? "" : '<button class="mini set-home" title="Set as reference">&#9737;</button>') +
+            '<button class="mini remove" title="Remove">&times;</button>' +
+          '</span></div>' +
+        '<div class="city-sub">' + escapeHtml(loc.sub) + (abbr ? " &middot; " + abbr : "") + '</div>';
+      head.querySelector(".remove").addEventListener("click", function (e) { e.stopPropagation(); removeLocation(li); });
+      var sh = head.querySelector(".set-home");
+      if (sh) sh.addEventListener("click", function (e) { e.stopPropagation(); state.homeIndex = li; state.selectedCol = null; render(); });
+      tr.appendChild(head);
+
+      cols.forEach(function (inst, i) {
+        var p = partsIn(loc.tz, inst);
+        var q = quality(p.h);
+        var td = document.createElement("td");
+        td.className = "cell " + q;
+        if (state.selectedCol === i) td.classList.add("sel");
+        var f = fmtHour(p.h, p.min);
+        var nd = (p.d !== homeDay) ? '<span class="nextday">' + p.wd + '</span>' : "";
+        td.innerHTML = '<span class="h">' + f.h + (state.fmt === "12" ? '<span class="ampm">' + f.ampm + '</span>' : "") + "</span>" + nd;
+        td.addEventListener("click", function () { selectColumn(i); });
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+    grid.appendChild(tbody);
+
+    renderBest(cols, bestCols);
+    renderSummary(cols);
+    syncURL();
+  }
+
+  function renderBest(cols, bestCols) {
+    var el = $("best");
+    if (!bestCols.length) { el.className = "mt-best none"; el.textContent = ""; return; }
+    // Pick the middle best column as the headline suggestion
+    var pick = bestCols[Math.floor(bestCols.length / 2)];
+    var home = state.locations[state.homeIndex];
+    var hp = partsIn(home.tz, cols[pick]);
+    var f = fmtHour(hp.h, 0);
+    var allGreat = state.locations.every(function (l) { return quality(partsIn(l.tz, cols[pick]).h) === "great"; });
+    el.className = "mt-best";
+    el.innerHTML =
+      '<span class="tag">Best overlap</span>' +
+      '<span class="headline">' + f.h + (state.fmt === "12" ? f.ampm : "") + ' in ' + escapeHtml(home.name) + '</span>' +
+      '<span class="sub">' + (allGreat ? "Within working hours for everyone." : "The least disruptive slot for the group.") +
+        ' &nbsp;<a href="#" id="useBest" style="color:var(--devs-blue);font-weight:500">Lock it in &rarr;</a></span>';
+    document.getElementById("useBest").addEventListener("click", function (e) { e.preventDefault(); selectColumn(pick); });
+  }
+
+  function renderSummary(cols) {
+    var el = $("summary");
+    if (state.selectedCol === null) { el.style.display = "none"; return; }
+    var inst = cols[state.selectedCol];
+    var home = state.locations[state.homeIndex];
+    var hp = partsIn(home.tz, inst);
+    var dateStr = new Intl.DateTimeFormat("en-AU", { timeZone: home.tz, weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(inst);
+    var f = fmtHour(hp.h, hp.min);
+
+    var rows = state.locations.map(function (loc) {
+      var p = partsIn(loc.tz, inst);
+      var q = quality(p.h);
+      var ff = fmtHour(p.h, p.min);
+      var dayNote = p.d !== hp.d ? " (" + p.wd + ")" : "";
+      return '<li class="s-' + q + '"><span class="c">' + escapeHtml(loc.name) + '</span><span class="t">' +
+        ff.h + (state.fmt === "12" ? " " + ff.ampm : "") + dayNote + '</span></li>';
+    }).join("");
+
+    el.style.display = "block";
+    el.innerHTML =
+      '<h3>Meeting at ' + f.h + (state.fmt === "12" ? " " + f.ampm : "") + '</h3>' +
+      '<div class="when">' + dateStr + ' &middot; reference: ' + escapeHtml(home.name) + '</div>' +
+      '<ul>' + rows + '</ul>';
+  }
+
+  function selectColumn(i) {
+    state.selectedCol = (state.selectedCol === i) ? null : i;
+    render();
+  }
+
+  function removeLocation(i) {
+    state.locations.splice(i, 1);
+    if (state.homeIndex >= state.locations.length) state.homeIndex = 0;
+    if (state.homeIndex === i) state.homeIndex = 0;
+    state.selectedCol = null;
+    render();
+  }
+
+  function addLocation(city) {
+    if (state.locations.some(function (l) { return l.tz === city[2] && l.name === city[0]; })) { toast(city[0] + " is already added"); return; }
+    state.locations.push({ name: city[0], sub: city[1], tz: city[2] });
+    render();
+    toast(city[0] + " added");
+  }
+
+  /* ---------- Search ---------- */
+  function searchCities(term) {
+    term = term.trim().toLowerCase();
+    if (!term) return [];
+    return CITIES.filter(function (c) {
+      return c[0].toLowerCase().indexOf(term) >= 0 ||
+             c[1].toLowerCase().indexOf(term) >= 0 ||
+             c[2].toLowerCase().indexOf(term) >= 0;
+    }).slice(0, 8);
+  }
+
+  var activeSuggestion = -1;
+  function renderSuggestions(term) {
+    var box = $("suggestions");
+    var results = searchCities(term);
+    activeSuggestion = -1;
+    if (!results.length) { box.classList.remove("open"); box.innerHTML = ""; return; }
+    box.innerHTML = results.map(function (c, idx) {
+      return '<div class="mt-suggestion" data-idx="' + idx + '"><span class="city">' + escapeHtml(c[0]) +
+        '</span><span class="meta">' + escapeHtml(c[1]) + '</span></div>';
+    }).join("");
+    box.classList.add("open");
+    box.querySelectorAll(".mt-suggestion").forEach(function (node, idx) {
+      node.addEventListener("mousedown", function (e) {
+        e.preventDefault();
+        addLocation(results[idx]);
+        $("citySearch").value = "";
+        box.classList.remove("open");
+      });
+    });
+    box._results = results;
+  }
+
+  /* ---------- Controls ---------- */
+  function bindControls() {
+    $("date").addEventListener("change", function () {
+      if (/^\d{4}-\d{2}-\d{2}$/.test(this.value)) { state.date = this.value; state.selectedCol = null; render(); }
+    });
+
+    var search = $("citySearch");
+    var box = $("suggestions");
+    search.addEventListener("input", function () { renderSuggestions(this.value); });
+    search.addEventListener("focus", function () { if (this.value) renderSuggestions(this.value); });
+    search.addEventListener("blur", function () { setTimeout(function () { box.classList.remove("open"); }, 120); });
+    search.addEventListener("keydown", function (e) {
+      var items = box.querySelectorAll(".mt-suggestion");
+      if (!items.length) return;
+      if (e.key === "ArrowDown") { e.preventDefault(); activeSuggestion = Math.min(activeSuggestion + 1, items.length - 1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); activeSuggestion = Math.max(activeSuggestion - 1, 0); }
+      else if (e.key === "Enter") {
+        e.preventDefault();
+        var pick = activeSuggestion >= 0 ? activeSuggestion : 0;
+        if (box._results && box._results[pick]) { addLocation(box._results[pick]); this.value = ""; box.classList.remove("open"); }
+        return;
+      } else if (e.key === "Escape") { box.classList.remove("open"); return; }
+      items.forEach(function (it, i) { it.classList.toggle("active", i === activeSuggestion); });
+    });
+
+    document.querySelectorAll("#fmtToggle button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        state.fmt = this.dataset.fmt;
+        document.querySelectorAll("#fmtToggle button").forEach(function (x) { x.classList.remove("active"); });
+        this.classList.add("active");
+        render();
+      });
+    });
+
+    $("shareBtn").addEventListener("click", function () {
+      syncURL();
+      var url = location.href;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(function () { toast("Link copied to clipboard"); }, function () { toast("Copy failed"); });
+      } else { toast("Copy this URL from the address bar"); }
+    });
+  }
+
+  /* ---------- Utils ---------- */
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  var toastTimer;
+  function toast(msg) {
+    var t = $("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("show"); }, 2200);
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
