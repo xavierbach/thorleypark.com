@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 41] — 2026-06-23
+- meet: shorten the hero on the planner page (scoped `.mt-hero` override) so the controls and grid are visible straight away without scrolling; title still clears the fixed nav
+
 ## [Build 40] — 2026-06-23
 - meet: restyle the planner to the Thorley Park Devs look &mdash; now uses the shared `/css/style.css` chrome (fixed nav, dark devs hero, devs footer) with the tool recoloured to the blue devs palette; tool styles scoped under `.mt` so they don't collide with the global stylesheet
 - devs: feature Meeting Time as a Web App project card (new `images/meet-icon.svg` clock/globe icon), placed beside Aquascape before the &ldquo;More to come&rdquo; card
