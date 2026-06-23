@@ -1,5 +1,9 @@
 # Changelog
 
+## [Build 44] — 2026-06-23
+- Add `seating/` — a tap-to-arrange seating planner at `/seating/`. Built with Vite + React + TypeScript (source in `seating-planner/`, production build output to `seating/`). Arrange named guests around a rectangle, square or round table by tapping (no drag-and-drop), with computed seat coordinates that reflow when the shape or seat count changes. Editable event header and guest list, saved plans persisted to `localStorage` with unsaved-change detection, JSON import/export in the canonical config format, and a "Download image" button (`html-to-image`) that exports just the table view as a PNG. Mobile-first dining-room visual identity (Fraunces + Inter) driven by `seating-config.json` design tokens.
+- devs: feature Seating Planner as a Web App project card (new `images/seating-icon.svg`), placed beside Meeting Time before the &ldquo;More to come&rdquo; card. Added to sitemap.
+
 ## [Build 43] — 2026-06-23
 - meet: remove the date picker &mdash; the grid now always renders against today's date in the reference zone, so the current daylight-saving offset is applied automatically; dropped the `d` URL parameter and tidied the related copy/styles
 

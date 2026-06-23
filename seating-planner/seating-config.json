@@ -1,0 +1,48 @@
+{
+  "format": "seating-planner-config",
+  "version": 1,
+  "event": {
+    "title": "Dinner reservation",
+    "subtitle": "Party of 12"
+  },
+  "table": {
+    "shape": "rectangle",
+    "seats": 12
+  },
+  "constraints": {
+    "shapes": ["rectangle", "square", "round"],
+    "seats": { "min": 2, "max": 24 }
+  },
+  "guests": [
+    "Katherine",
+    "Xavier",
+    "Erin O'G",
+    "Daniel",
+    "Erin H",
+    "Claire",
+    "Jeremy",
+    "Amelia",
+    "Emile",
+    "Brooke",
+    "Nicholas",
+    "Susie"
+  ],
+  "savedPlans": [],
+  "design": {
+    "colors": {
+      "room": "#211C18",
+      "linen": "#F4EEE2",
+      "card": "#FFFFFF",
+      "cardText": "#2A2420",
+      "accent": "#C2A05A",
+      "runner": "#7A2E2E",
+      "chip": "#ECE4D6",
+      "chipText": "#2A2420",
+      "muted": "#8A7F72"
+    },
+    "fonts": {
+      "display": "Fraunces",
+      "body": "Inter"
+    }
+  }
+}
