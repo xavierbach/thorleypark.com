@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 39] — 2026-06-22
+- Add `meet/` — a meeting-time planner tool at `/meet/`, a simpler take on timeanddate.com's meeting planner: searchable city/timezone picker, colour-coded 24-hour grid (working / fringe / out-of-hours), automatic best-overlap highlight, click any column to lock in a slot and see every city's local time, 12/24h toggle, and a shareable URL that encodes the cities and date. All times computed in-browser via `Intl` with daylight-saving handled automatically; no dependencies. Added to sitemap.
+
 ## [Build 38] — 2026-06-06
 - wimbledon2026: replace Claridge's with Sanderson London (50 Berners Street, Fitzrovia) — update Jul 6 segment title, prose, hotel highlight box, dinner reference (The Painter's Room → The Long Bar); Jul 9 check-out label and prose
 - wimbledon2026: replace Le Bristol Paris (TBC) with Sofitel Paris Arc de Triomphe — Jul 11 hotel name, address (2 Rue de Beaujon, 8e), TBC chip removed
