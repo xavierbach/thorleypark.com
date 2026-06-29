@@ -40,7 +40,7 @@
 
   <Folder>
     <name>Museums &amp; Sights</name>
-    <Placemark><name>Victoria and Albert Museum</name><description>9 Jul · South Kensington · https://www.vam.ac.uk/</description><styleUrl>#sights</styleUrl><Point><coordinates>-0.1722,51.4966,0</coordinates></Point></Placemark>
+    <Placemark><name>V&amp;A East Storehouse</name><description>9 Jul · Stratford, Queen Elizabeth Olympic Park · Near Lucy &amp; Howard's · https://www.vam.ac.uk/east/storehouse</description><styleUrl>#sights</styleUrl><Point><coordinates>-0.0200,51.5460,0</coordinates></Point></Placemark>
     <Placemark><name>The Wallace Collection</name><description>8 Jul · Morning · Manchester Square · https://www.wallacecollection.org/</description><styleUrl>#sights</styleUrl><Point><coordinates>-0.1532,51.5174,0</coordinates></Point></Placemark>
     <Placemark><name>Royal Academy Summer Exhibition</name><description>8 Jul · Afternoon · Burlington House · https://www.royalacademy.org.uk/</description><styleUrl>#sights</styleUrl><Point><coordinates>-0.1396,51.5095,0</coordinates></Point></Placemark>
     <Placemark><name>Musée d'Orsay</name><description>12 Jul · Afternoon · Left Bank · https://www.musee-orsay.fr/en</description><styleUrl>#sights</styleUrl><Point><coordinates>2.3266,48.8600,0</coordinates></Point></Placemark>
