@@ -67,7 +67,8 @@
   }
   .back-link:hover { color: var(--cream); border-color: var(--cream); background: rgba(91,155,107,0.12); }
 
-  #map { flex: 1 1 auto; width: 100%; background: #0c0518; }
+  .map-stage { position: relative; flex: 1 1 auto; min-height: 0; display: flex; }
+  #map { flex: 1 1 auto; min-height: 0; width: 100%; background: #0c0518; }
 
   /* Render the light OSM tiles as a dark basemap to match the theme.
      Scoped to the tile layer only — pins and route lines live in a
@@ -86,37 +87,34 @@
   .leaflet-bar a { color: var(--cream); }
   .leaflet-bar a:hover { background: rgba(42,16,80,0.95); }
 
-  .leaflet-control-layers {
-    padding: 0.6rem 0.7rem;
-    border-radius: 6px;
-    font-family: 'Jost', sans-serif;
-    font-size: 0.78rem;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.45);
-  }
-  .leaflet-control-layers-overlays label { margin: 0.18rem 0; display: flex; align-items: center; gap: 0.4rem; }
-  .leaflet-control-layers-separator { border-top-color: rgba(91,155,107,0.25); }
-
-  /* Legend + view controls */
-  .map-panel {
-    background: rgba(30,10,56,0.92);
+  /* Custom control panel — overlays the map on desktop, drops below it on mobile */
+  #mapctl {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 1000;
+    width: 240px;
+    max-height: calc(100% - 24px);
+    overflow-y: auto;
+    background: rgba(30,10,56,0.94);
     border: 1px solid rgba(91,155,107,0.35);
     border-radius: 6px;
-    padding: 0.6rem 0.75rem;
-    font-size: 0.72rem;
     box-shadow: 0 4px 18px rgba(0,0,0,0.45);
-    line-height: 1.5;
+    padding: 0.65rem 0.75rem;
+    font-family: 'Jost', sans-serif;
+    color: var(--cream);
   }
-  .map-panel .ttl {
+  .mapctl-sec + .mapctl-sec { margin-top: 0.65rem; }
+  .mapctl-ttl {
+    display: block;
     font-size: 0.55rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--gold);
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.4rem;
   }
-  .legend-row { display: flex; align-items: center; gap: 0.45rem; }
-  .legend-dot { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.85); flex: 0 0 auto; }
-  .view-btns { display: flex; gap: 0.35rem; margin-top: 0.15rem; }
-  .view-btns button {
+  .jbtns { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+  .jbtns button {
     font-family: 'Jost', sans-serif;
     font-size: 0.62rem;
     letter-spacing: 0.1em;
@@ -125,11 +123,14 @@
     background: rgba(91,155,107,0.12);
     border: 1px solid rgba(91,155,107,0.45);
     border-radius: 4px;
-    padding: 0.32rem 0.5rem;
+    padding: 0.42rem 0.62rem;
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s;
   }
-  .view-btns button:hover { background: rgba(91,155,107,0.28); border-color: var(--gold); }
+  .jbtns button:hover { background: rgba(91,155,107,0.28); border-color: var(--gold); }
+  .tog { display: flex; align-items: center; gap: 0.5rem; font-size: 0.76rem; padding: 0.26rem 0; cursor: pointer; line-height: 1.2; }
+  .tog input { accent-color: #5B9B6B; width: 16px; height: 16px; flex: 0 0 auto; margin: 0; cursor: pointer; }
+  .tog .dot { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.85); flex: 0 0 auto; }
 
   /* Popups */
   .leaflet-popup-content-wrapper {
@@ -152,7 +153,21 @@
 
   @media (max-width: 600px) {
     .topbar h1 { font-size: 1.1rem; }
-    .map-panel { font-size: 0.66rem; }
+    /* Let the page scroll and drop the controls below the map */
+    body { height: auto; min-height: 100%; }
+    .map-stage { display: block; position: static; flex: 0 0 auto; }
+    #map { height: 60vh; min-height: 300px; }
+    .embed #map { height: 300px; }
+    #mapctl {
+      position: static;
+      width: auto;
+      max-height: none;
+      overflow: visible;
+      border-radius: 0;
+      border-left: 0;
+      border-right: 0;
+      box-shadow: none;
+    }
   }
 </style>
 </head>
@@ -166,7 +181,23 @@
   <a class="back-link" href="../">← Itinerary</a>
 </div>
 
-<div id="map"></div>
+<div class="map-stage">
+  <div id="map"></div>
+  <div id="mapctl">
+    <div class="mapctl-sec">
+      <span class="mapctl-ttl">Jump to</span>
+      <div class="jbtns">
+        <button data-v="all">Whole trip</button>
+        <button data-v="london">London</button>
+        <button data-v="paris">Paris</button>
+      </div>
+    </div>
+    <div class="mapctl-sec">
+      <span class="mapctl-ttl">Show</span>
+      <div id="toggles"></div>
+    </div>
+  </div>
+</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -289,32 +320,26 @@
   flightsLayer.addTo(map);
   groundLayer.addTo(map);
 
-  // Layer toggle control
-  const overlays = {};
-  Object.keys(CATS).forEach(k => overlays[CATS[k].label] = catLayers[k]);
-  overlays['✈ &nbsp;Flight routes'] = flightsLayer;
-  overlays['—&nbsp; Ground &amp; rail routes'] = groundLayer;
-  L.control.layers(null, overlays, { collapsed:false, position:'topright' }).addTo(map);
+  // Custom toggle panel (HTML, so it can sit outside the map on mobile).
+  // The colour dot beside each label doubles as the legend key.
+  const togglesEl = document.getElementById('toggles');
+  function addToggle(color, labelHtml, layer){
+    const row = document.createElement('label');
+    row.className = 'tog';
+    row.innerHTML = '<input type="checkbox" checked>' +
+                    '<span class="dot" style="background:' + color + '"></span>' +
+                    '<span class="tlab">' + labelHtml + '</span>';
+    const cb = row.querySelector('input');
+    cb.addEventListener('change', () => { cb.checked ? layer.addTo(map) : map.removeLayer(layer); });
+    togglesEl.appendChild(row);
+  }
+  Object.keys(CATS).forEach(k => addToggle(CATS[k].color, CATS[k].label, catLayers[k]));
+  addToggle('#E0A33E', '✈ Flight routes', flightsLayer);
+  addToggle('#5B9B6B', 'Ground &amp; rail routes', groundLayer);
 
-  // Legend + view buttons (bottom-left)
-  const panel = L.control({ position:'bottomleft' });
-  panel.onAdd = function(){
-    const d = L.DomUtil.create('div', 'map-panel');
-    let rows = '<div class="ttl">Pins</div>';
-    Object.keys(CATS).forEach(k => {
-      rows += '<div class="legend-row"><span class="legend-dot" style="background:' + CATS[k].color + '"></span>' + CATS[k].label + '</div>';
-    });
-    rows += '<div class="ttl" style="margin-top:0.55rem">Jump to</div>';
-    rows += '<div class="view-btns">' +
-            '<button data-v="all">Whole trip</button>' +
-            '<button data-v="london">London</button>' +
-            '<button data-v="paris">Paris</button></div>';
-    d.innerHTML = rows;
-    L.DomEvent.disableClickPropagation(d);
-    d.querySelectorAll('button').forEach(b => b.addEventListener('click', () => jumpTo(b.dataset.v)));
-    return d;
-  };
-  panel.addTo(map);
+  // Jump-to buttons
+  document.querySelectorAll('.jbtns button').forEach(b =>
+    b.addEventListener('click', () => jumpTo(b.dataset.v)));
 
   const VIEWS = {
     all:    L.latLngBounds([[-37.85,144.9],[51.6,2.45]]),
