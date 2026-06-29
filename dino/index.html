@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>Primal Run — Thorley Park</title>
+    <meta name="description" content="Primal Run — an epic prehistoric endless runner. Sprint your T-Rex across an erupting Cretaceous world. Play free in your browser.">
+    <meta name="theme-color" content="#0d0f1a">
+    <link rel="canonical" href="https://thorleypark.com/dino/">
+
+    <!-- iOS native-app feel -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Primal Run">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Primal Run — Cretaceous Endless Runner">
+    <meta property="og:description" content="Sprint your T-Rex across an erupting prehistoric world. Tap to jump, hold to soar, swipe to duck.">
+    <meta property="og:url" content="https://thorleypark.com/dino/">
+    <meta property="og:image" content="https://thorleypark.com/images/og-image.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-root">
+        <canvas id="game"></canvas>
+
+        <!-- HUD -->
+        <div id="hud" class="hidden">
+            <div class="hud-score">
+                <span id="score">0</span>
+                <span class="hud-best">BEST <em id="best">0</em></span>
+            </div>
+            <div id="multiplier" class="hud-mult hidden">x2</div>
+        </div>
+
+        <!-- Title screen -->
+        <div id="screen-title" class="overlay">
+            <div class="overlay-inner">
+                <div class="logo-mark">🦖</div>
+                <h1>PRIMAL<span>RUN</span></h1>
+                <p class="tagline">Outrun the Cretaceous.</p>
+                <button id="btn-start" class="btn-primary">PLAY</button>
+                <div class="controls-hint">
+                    <span><b>Tap</b> / <b>Space</b> — Jump &amp; double-jump</span>
+                    <span><b>Hold</b> — Jump higher</span>
+                    <span><b>Swipe down</b> / <b>↓</b> — Duck</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game over screen -->
+        <div id="screen-over" class="overlay hidden">
+            <div class="overlay-inner">
+                <div id="over-badge" class="over-badge"></div>
+                <h2 id="over-title">EXTINCT</h2>
+                <div class="over-stats">
+                    <div class="stat">
+                        <span class="stat-label">SCORE</span>
+                        <span class="stat-value" id="over-score">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">BEST</span>
+                        <span class="stat-value" id="over-best">0</span>
+                    </div>
+                </div>
+                <button id="btn-retry" class="btn-primary">RUN AGAIN</button>
+                <a href="/" class="btn-ghost">Thorley Park</a>
+            </div>
+        </div>
+
+        <!-- Pause button -->
+        <button id="btn-pause" class="btn-pause hidden" aria-label="Pause">❚❚</button>
+
+        <!-- Pause screen -->
+        <div id="screen-pause" class="overlay hidden">
+            <div class="overlay-inner">
+                <h2>PAUSED</h2>
+                <button id="btn-resume" class="btn-primary">RESUME</button>
+                <button id="btn-quit" class="btn-ghost">Quit to menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js" defer></script>
+</body>
+</html>
