@@ -34,15 +34,13 @@
 
   <Folder>
     <name>Tennis, Shows &amp; Events</name>
-    <Placemark><name>Wimbledon · Centre Court</name><description>7 Jul · Quarterfinal · VIP Debenture · https://www.wimbledon.com/</description><styleUrl>#events</styleUrl><Point><coordinates>-0.2141,51.4337,0</coordinates></Point></Placemark>
+    <Placemark><name>Wimbledon · Centre Court</name><description>7–8 Jul · Quarterfinals · Debenture + media accreditation · https://www.wimbledon.com/</description><styleUrl>#events</styleUrl><Point><coordinates>-0.2141,51.4337,0</coordinates></Point></Placemark>
     <Placemark><name>The Phantom of the Opera</name><description>13 Jul · Evening · His Majesty's Theatre, Haymarket · https://uk.thephantomoftheopera.com/</description><styleUrl>#events</styleUrl><Point><coordinates>-0.1318,51.5092,0</coordinates></Point></Placemark>
   </Folder>
 
   <Folder>
     <name>Museums &amp; Sights</name>
     <Placemark><name>V&amp;A East Storehouse</name><description>9 Jul · Stratford, Queen Elizabeth Olympic Park · Near Lucy &amp; Howard's · https://www.vam.ac.uk/east/storehouse</description><styleUrl>#sights</styleUrl><Point><coordinates>-0.0200,51.5460,0</coordinates></Point></Placemark>
-    <Placemark><name>The Wallace Collection</name><description>8 Jul · Morning · Manchester Square · https://www.wallacecollection.org/</description><styleUrl>#sights</styleUrl><Point><coordinates>-0.1532,51.5174,0</coordinates></Point></Placemark>
-    <Placemark><name>Royal Academy Summer Exhibition</name><description>8 Jul · Afternoon · Burlington House · https://www.royalacademy.org.uk/</description><styleUrl>#sights</styleUrl><Point><coordinates>-0.1396,51.5095,0</coordinates></Point></Placemark>
     <Placemark><name>Musée d'Orsay</name><description>12 Jul · Afternoon · Left Bank · https://www.musee-orsay.fr/en</description><styleUrl>#sights</styleUrl><Point><coordinates>2.3266,48.8600,0</coordinates></Point></Placemark>
   </Folder>
 
@@ -65,7 +63,7 @@
   <Folder>
     <name>Ground &amp; rail routes</name>
     <Placemark><name>Home → Melbourne Airport (car)</name><styleUrl>#groundLine</styleUrl><LineString><tessellate>1</tessellate><coordinates>144.5808,-37.4007,0 144.8410,-37.6690,0</coordinates></LineString></Placemark>
-    <Placemark><name>Europe — chronological route</name><styleUrl>#groundLine</styleUrl><LineString><tessellate>1</tessellate><coordinates>-0.4543,51.4700,0 -0.1755,51.5154,0 -0.1366,51.5172,0 -0.2141,51.4337,0 -0.1366,51.5172,0 -0.1532,51.5174,0 -0.1396,51.5095,0 -0.1000,51.5188,0 -0.0200,51.5460,0 -0.0205,51.5448,0 -0.1267,51.5318,0 2.3553,48.8809,0 2.3009,48.8746,0 2.3266,48.8600,0 2.3009,48.8746,0 2.3553,48.8809,0 -0.1267,51.5318,0 -0.1207,51.5101,0 -0.1318,51.5092,0 -0.1755,51.5154,0 -0.4543,51.4700,0</coordinates></LineString></Placemark>
+    <Placemark><name>Europe — chronological route</name><styleUrl>#groundLine</styleUrl><LineString><tessellate>1</tessellate><coordinates>-0.4543,51.4700,0 -0.1755,51.5154,0 -0.1366,51.5172,0 -0.2141,51.4337,0 -0.1366,51.5172,0 -0.1000,51.5188,0 -0.0200,51.5460,0 -0.0205,51.5448,0 -0.1267,51.5318,0 2.3553,48.8809,0 2.3009,48.8746,0 2.3266,48.8600,0 2.3009,48.8746,0 2.3553,48.8809,0 -0.1267,51.5318,0 -0.1207,51.5101,0 -0.1318,51.5092,0 -0.1755,51.5154,0 -0.4543,51.4700,0</coordinates></LineString></Placemark>
   </Folder>
 
 </Document>
