@@ -22,9 +22,13 @@
   <Folder>
     <name>Dining (confirmed)</name>
     <Placemark><name>Courtside Restaurant</name><description>7 Jul · Lunch 11:30 · Centre Court Debenture · https://www.wimbledon.com/en_GB/tickets/debentures/courtside_restaurant</description><styleUrl>#dining</styleUrl><Point><coordinates>-0.2128,51.4342,0</coordinates></Point></Placemark>
+    <Placemark><name>Berners Tavern</name><description>6 Jul · Dinner 17:00 · The London EDITION, Fitzrovia · https://www.bernerstavern.com/</description><styleUrl>#dining</styleUrl><Point><coordinates>-0.1374,51.5171,0</coordinates></Point></Placemark>
+    <Placemark><name>Bob Bob Ricard</name><description>7 Jul · Late supper 21:00 · Soho · https://www.bobbobricard.com/soho/</description><styleUrl>#dining</styleUrl><Point><coordinates>-0.1378,51.5127,0</coordinates></Point></Placemark>
     <Placemark><name>St. Barts</name><description>9 Jul · Dinner with Lucy &amp; Howard · Smithfield, Farringdon · https://restaurant-stbarts.co.uk/</description><styleUrl>#dining</styleUrl><Point><coordinates>-0.1000,51.5188,0</coordinates></Point></Placemark>
     <Placemark><name>Faubourg Daimant</name><description>11 Jul · Dinner 19:00 · 10e, Paris · https://www.daimant.co/faubourg-daimant.html</description><styleUrl>#dining</styleUrl><Point><coordinates>2.3472,48.8705,0</coordinates></Point></Placemark>
     <Placemark><name>Baillotte</name><description>12 Jul · Lunch 12:30 · Saint-Germain-des-Prés · https://www.restaurantbaillotte.fr/en/</description><styleUrl>#dining</styleUrl><Point><coordinates>2.3303,48.8527,0</coordinates></Point></Placemark>
+    <Placemark><name>Lazare</name><description>12 Jul · Dinner 19:00 · Éric Fréchon · Gare Saint-Lazare · https://lazare-paris.fr/</description><styleUrl>#dining</styleUrl><Point><coordinates>2.3253,48.8757,0</coordinates></Point></Placemark>
+    <Placemark><name>The Delaunay</name><description>14 Jul · Lunch 13:00 · Aldwych · https://thedelaunay.com/</description><styleUrl>#dining</styleUrl><Point><coordinates>-0.1184,51.5128,0</coordinates></Point></Placemark>
   </Folder>
 
   <Folder>
