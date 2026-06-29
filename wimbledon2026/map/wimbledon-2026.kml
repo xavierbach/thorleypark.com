@@ -65,7 +65,7 @@
   <Folder>
     <name>Ground &amp; rail routes</name>
     <Placemark><name>Home → Melbourne Airport (car)</name><styleUrl>#groundLine</styleUrl><LineString><tessellate>1</tessellate><coordinates>144.5808,-37.4007,0 144.8410,-37.6690,0</coordinates></LineString></Placemark>
-    <Placemark><name>Europe — chronological route</name><styleUrl>#groundLine</styleUrl><LineString><tessellate>1</tessellate><coordinates>-0.4543,51.4700,0 -0.1755,51.5154,0 -0.1366,51.5172,0 -0.2141,51.4337,0 -0.1366,51.5172,0 -0.1532,51.5174,0 -0.1396,51.5095,0 -0.1722,51.4966,0 -0.1000,51.5188,0 -0.0205,51.5448,0 -0.1267,51.5318,0 2.3553,48.8809,0 2.3009,48.8746,0 2.3266,48.8600,0 2.3009,48.8746,0 2.3553,48.8809,0 -0.1267,51.5318,0 -0.1207,51.5101,0 -0.1318,51.5092,0 -0.1755,51.5154,0 -0.4543,51.4700,0</coordinates></LineString></Placemark>
+    <Placemark><name>Europe — chronological route</name><styleUrl>#groundLine</styleUrl><LineString><tessellate>1</tessellate><coordinates>-0.4543,51.4700,0 -0.1755,51.5154,0 -0.1366,51.5172,0 -0.2141,51.4337,0 -0.1366,51.5172,0 -0.1532,51.5174,0 -0.1396,51.5095,0 -0.1000,51.5188,0 -0.0200,51.5460,0 -0.0205,51.5448,0 -0.1267,51.5318,0 2.3553,48.8809,0 2.3009,48.8746,0 2.3266,48.8600,0 2.3009,48.8746,0 2.3553,48.8809,0 -0.1267,51.5318,0 -0.1207,51.5101,0 -0.1318,51.5092,0 -0.1755,51.5154,0 -0.4543,51.4700,0</coordinates></LineString></Placemark>
   </Folder>
 
 </Document>
