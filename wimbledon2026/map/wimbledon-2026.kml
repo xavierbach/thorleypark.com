@@ -22,7 +22,9 @@
   <Folder>
     <name>Dining (confirmed)</name>
     <Placemark><name>Courtside Restaurant</name><description>7 Jul · Lunch 11:30 · Centre Court Debenture · https://www.wimbledon.com/en_GB/tickets/debentures/courtside_restaurant</description><styleUrl>#dining</styleUrl><Point><coordinates>-0.2128,51.4342,0</coordinates></Point></Placemark>
-    <Placemark><name>Bellamy's</name><description>8 Jul · Lunch · Bruton Place, Mayfair · https://www.bellamysrestaurant.co.uk/</description><styleUrl>#dining</styleUrl><Point><coordinates>-0.1449,51.5101,0</coordinates></Point></Placemark>
+    <Placemark><name>St. Barts</name><description>9 Jul · Dinner with Lucy &amp; Howard · Smithfield, Farringdon · https://restaurant-stbarts.co.uk/</description><styleUrl>#dining</styleUrl><Point><coordinates>-0.1000,51.5188,0</coordinates></Point></Placemark>
+    <Placemark><name>Faubourg Daimant</name><description>11 Jul · Dinner 19:00 · 10e, Paris · https://www.daimant.co/faubourg-daimant.html</description><styleUrl>#dining</styleUrl><Point><coordinates>2.3472,48.8705,0</coordinates></Point></Placemark>
+    <Placemark><name>Baillotte</name><description>12 Jul · Lunch 12:30 · Saint-Germain-des-Prés · https://www.restaurantbaillotte.fr/en/</description><styleUrl>#dining</styleUrl><Point><coordinates>2.3303,48.8527,0</coordinates></Point></Placemark>
     <Placemark><name>Brasserie Bofinger</name><description>12 Jul · Dinner · Marais · https://www.bofingerparis.com/en/</description><styleUrl>#dining</styleUrl><Point><coordinates>2.3690,48.8531,0</coordinates></Point></Placemark>
   </Folder>
 
@@ -34,6 +36,7 @@
 
   <Folder>
     <name>Museums &amp; Sights</name>
+    <Placemark><name>Victoria and Albert Museum</name><description>9 Jul · Near Lucy &amp; Howard's · South Kensington · https://www.vam.ac.uk/</description><styleUrl>#sights</styleUrl><Point><coordinates>-0.1722,51.4966,0</coordinates></Point></Placemark>
     <Placemark><name>The Wallace Collection</name><description>8 Jul · Morning · Manchester Square · https://www.wallacecollection.org/</description><styleUrl>#sights</styleUrl><Point><coordinates>-0.1532,51.5174,0</coordinates></Point></Placemark>
     <Placemark><name>Royal Academy Summer Exhibition</name><description>8 Jul · Afternoon · Burlington House · https://www.royalacademy.org.uk/</description><styleUrl>#sights</styleUrl><Point><coordinates>-0.1396,51.5095,0</coordinates></Point></Placemark>
     <Placemark><name>Hampstead Heath</name><description>10 Jul · Walk (lunch TBC) · Kenwood House · https://www.cityoflondon.gov.uk/things-to-do/green-spaces/hampstead-heath</description><styleUrl>#sights</styleUrl><Point><coordinates>-0.1620,51.5608,0</coordinates></Point></Placemark>
@@ -59,7 +62,7 @@
   <Folder>
     <name>Ground &amp; rail routes</name>
     <Placemark><name>Home → Melbourne Airport (car)</name><styleUrl>#groundLine</styleUrl><LineString><tessellate>1</tessellate><coordinates>144.5808,-37.4007,0 144.8410,-37.6690,0</coordinates></LineString></Placemark>
-    <Placemark><name>Europe — chronological route</name><styleUrl>#groundLine</styleUrl><LineString><tessellate>1</tessellate><coordinates>-0.4543,51.4700,0 -0.1755,51.5154,0 -0.1366,51.5172,0 -0.2141,51.4337,0 -0.1366,51.5172,0 -0.1532,51.5174,0 -0.1449,51.5101,0 -0.1396,51.5095,0 -0.1620,51.5608,0 -0.1267,51.5318,0 2.3553,48.8809,0 2.3009,48.8746,0 2.3266,48.8600,0 2.3690,48.8531,0 2.3009,48.8746,0 2.3553,48.8809,0 -0.1267,51.5318,0 -0.1207,51.5101,0 -0.1318,51.5092,0 -0.1755,51.5154,0 -0.4543,51.4700,0</coordinates></LineString></Placemark>
+    <Placemark><name>Europe — chronological route</name><styleUrl>#groundLine</styleUrl><LineString><tessellate>1</tessellate><coordinates>-0.4543,51.4700,0 -0.1755,51.5154,0 -0.1366,51.5172,0 -0.2141,51.4337,0 -0.1366,51.5172,0 -0.1532,51.5174,0 -0.1396,51.5095,0 -0.1722,51.4966,0 -0.1000,51.5188,0 -0.1620,51.5608,0 -0.1267,51.5318,0 2.3553,48.8809,0 2.3009,48.8746,0 2.3266,48.8600,0 2.3690,48.8531,0 2.3009,48.8746,0 2.3553,48.8809,0 -0.1267,51.5318,0 -0.1207,51.5101,0 -0.1318,51.5092,0 -0.1755,51.5154,0 -0.4543,51.4700,0</coordinates></LineString></Placemark>
   </Folder>
 
 </Document>
