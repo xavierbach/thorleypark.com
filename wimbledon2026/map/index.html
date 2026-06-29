@@ -69,6 +69,11 @@
 
   #map { flex: 1 1 auto; width: 100%; background: #0c0518; }
 
+  /* Render the light OSM tiles as a dark basemap to match the theme.
+     Scoped to the tile layer only — pins and route lines live in a
+     separate pane and are unaffected. */
+  .basemap-dark { filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9) saturate(0.7); }
+
   /* Embedded (iframe) mode: hide the topbar so the panel is all map */
   .embed .topbar { display: none; }
 
@@ -236,10 +241,10 @@
   ];
 
   // ---- Map --------------------------------------------------------------
-  const map = L.map('map', { zoomControl: true, worldCopyJump: true });
-  L.tileLayer('https://{s}.basemap.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: 'abcd', maxZoom: 19
+  const map = L.map('map', { zoomControl: true, worldCopyJump: true, center: [50.5, 1.0], zoom: 6 });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    subdomains: 'abc', maxZoom: 19, className: 'basemap-dark'
   }).addTo(map);
 
   function gmaps(p){
