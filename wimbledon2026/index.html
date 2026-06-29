@@ -498,6 +498,11 @@
     margin-top: 0.2rem;
   }
 
+  /* Category tag colours: dining = gold, hotels = lavender.
+     Events / activities / shows / travel keep the default green. */
+  .tag-dining { color: #C9A24C !important; }
+  .tag-hotel  { color: #B49BEA !important; }
+
   .venue-links {
     margin-top: 0.5rem;
     display: flex;
@@ -795,9 +800,7 @@
       </div>
       <div class="segment-body">
         <p class="segment-type">Departure · Melbourne</p>
-        <h3 class="segment-title">Off to <em>Europe</em></h3>
-        <p class="segment-detail">Two legs, two cabins, one very long journey in the kind of comfort that makes it almost enjoyable. Platinum status gets you into the best rooms in every airport along the way.</p>
-        <div class="eurostar-card">
+        <h3 class="segment-title">Off to <em>Europe</em></h3>        <div class="eurostar-card">
           <div class="eurostar-icon">
             <svg viewBox="0 0 36 24" width="34" height="22" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M3 16 L4.5 10 Q5 8 7.5 8 L21 8 Q24 8 27 11 L31 12 Q33 12.5 33 15 L33 16"/>
@@ -880,9 +883,7 @@
       </div>
       <div class="segment-body">
         <p class="segment-type">Arrival · London</p>
-        <h3 class="segment-title"><em>Sanderson</em></h3>
-        <p class="segment-detail">Touch down at Heathrow, ride the Express into Paddington, and on to Berners Street. Three nights at the Sanderson — Ian Schrager and Philippe Starck's singular take on what a London hotel should feel like. Mirrored surfaces, a courtyard that doubles as a stage set, and interiors that seem to know something the other hotels don't. Fitzrovia, not Mayfair — and entirely the right call.</p>
-        <div class="eurostar-card">
+        <h3 class="segment-title"><em>Sanderson</em></h3>        <div class="eurostar-card">
           <div class="eurostar-icon">
             <svg viewBox="0 0 36 24" width="34" height="22" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M2 18 L 3.5 8 Q 4 5 7 5 L 26 5 Q 31 5 34 12 L 34 18 Z"/>
@@ -901,16 +902,16 @@
           </div>
         </div>
         <div class="highlight-box" style="margin-top: 1rem;">
-          <p class="highlight-label">Hotel</p>
+          <p class="highlight-label tag-hotel">Hotel</p>
           <p class="highlight-name">Sanderson London, a Morgans Originals hotel</p>
           <p class="highlight-note">6–9 July · 3 nights · 50 Berners Street, Fitzrovia W1T</p>
           <p class="venue-links"><a href="https://morgansoriginals.com/sanderson/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Sanderson+London+50+Berners+Street" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="highlight-box">
-          <p class="highlight-label">Dinner · Night One · 17:00</p>
+          <p class="highlight-label tag-dining">Dinner · Night One · 17:00</p>
           <p class="highlight-name">Berners Tavern</p>
           <p class="highlight-note">The London EDITION · Berners Street · A grand room a few doors from the hotel</p>
-          <p class="venue-links"><a href="https://www.bernerstavern.com/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Berners+Tavern+Berners+Street+London" target="_blank" rel="noopener">Map ↗</a></p>
+          <p class="venue-links"><a href="https://www.bernerstavern.com/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.bernerstavern.com/our-menus" target="_blank" rel="noopener">Menu ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Berners+Tavern+Berners+Street+London" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <span class="badge badge-london">London · Night 1 of 9</span>
       </div>
@@ -926,24 +927,22 @@
       </div>
       <div class="segment-body">
         <p class="segment-type">Day Out · SW19</p>
-        <h3 class="segment-title">Wimbledon<br><em>Quarterfinal</em></h3>
-        <p class="segment-detail">Centre Court in July. Strawberries and cream, the grass courts, and the unmistakable quiet that falls over the crowd before a serve. Quarterfinal day — the draw starts thinning and the tennis gets serious.</p>
-        <div class="highlight-box">
+        <h3 class="segment-title">Wimbledon<br><em>Quarterfinal</em></h3>        <div class="highlight-box">
           <p class="highlight-label">Tickets</p>
           <p class="highlight-name">VIP Debenture · Centre Court</p>
           <p class="venue-links"><a href="https://www.wimbledon.com/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Wimbledon+Centre+Court+All+England+Lawn+Tennis+Club" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="highlight-box">
-          <p class="highlight-label">Lunch · 11:30</p>
+          <p class="highlight-label tag-dining">Lunch · 11:30</p>
           <p class="highlight-name">Courtside Restaurant</p>
           <p class="highlight-note">Three-course lunch · Table for two · Centre Court Debenture complex</p>
           <p class="venue-links"><a href="https://www.wimbledon.com/en_GB/tickets/debentures/courtside_restaurant" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=All+England+Lawn+Tennis+Club+Wimbledon" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="highlight-box">
-          <p class="highlight-label">After the Tennis · 21:00</p>
+          <p class="highlight-label tag-dining">After the Tennis · 21:00</p>
           <p class="highlight-name">Bob Bob Ricard</p>
           <p class="highlight-note">Soho · Press for Champagne · Late supper after Centre Court</p>
-          <p class="venue-links"><a href="https://www.bobbobricard.com/soho/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Bob+Bob+Ricard+Upper+James+Street+Soho+London" target="_blank" rel="noopener">Map ↗</a></p>
+          <p class="venue-links"><a href="https://www.bobbobricard.com/soho/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.bobbobricard.com/soho/menu/" target="_blank" rel="noopener">Menu ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Bob+Bob+Ricard+Upper+James+Street+Soho+London" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <span class="badge badge-london">The Championships · Debenture Holder</span>
         <span class="badge badge-london" style="margin-left: 0.4rem;">London · Night 2 of 9</span>
@@ -960,18 +959,16 @@
       </div>
       <div class="segment-body">
         <p class="segment-type">Free Day · London</p>
-        <h3 class="segment-title">London at<br><em>Leisure</em></h3>
-        <p class="segment-detail">A morning at the Wallace Collection — five minutes from the doorstep — then lunch, and the Royal Academy summer show in the afternoon.</p>
-        <div class="highlight-box">
+        <h3 class="segment-title">London at<br><em>Leisure</em></h3>        <div class="highlight-box">
           <p class="highlight-label">Morning</p>
           <p class="highlight-name">The Wallace Collection</p>
           <p class="highlight-note">Manchester Square · Free · Boucher, Fragonard, the armoury</p>
           <p class="venue-links"><a href="https://www.wallacecollection.org/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Wallace+Collection+London" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="highlight-box">
-          <p class="highlight-label">Lunch</p>
-          <p class="highlight-name"><span class="tbc-badge">TBC — To Book</span></p>
-          <p class="highlight-note">Mayfair · Lunch still to be rebooked</p>
+          <p class="highlight-label tag-dining">Lunch</p>
+          <p class="highlight-name" style="color: var(--muted); font-style: italic; font-size: 1.1rem;">Free slot</p>
+          <p class="highlight-note">Mayfair · We'll find somewhere nice on the day</p>
         </div>
         <div class="highlight-box">
           <p class="highlight-label">Afternoon</p>
@@ -996,24 +993,22 @@
       </div>
       <div class="segment-body">
         <p class="segment-type">Check-out · Sanderson London</p>
-        <h3 class="segment-title">Lucy, Howard<br><em>&amp; the Girls</em></h3>
-        <p class="segment-detail">Check out of the Sanderson, black cab across town to Kat's sister Lucy and husband Howard's place — two nights with the family, including their two daughters. The kind of time that matters most on any trip.</p>
-        <div class="highlight-box">
+        <h3 class="segment-title">Lucy, Howard<br><em>&amp; the Girls</em></h3>        <div class="highlight-box">
           <p class="highlight-label">Staying with</p>
-          <p class="highlight-name">Lucy, Howard &amp; family</p>
-          <p class="highlight-note">9–11 July · 2 nights</p>
+          <p class="highlight-name">Lucy &amp; Howard's</p>
+          <p class="highlight-note">Stratford · 9–11 July · 2 nights</p>
         </div>
         <div class="highlight-box">
-          <p class="highlight-label">Nearby</p>
+          <p class="highlight-label">Museum</p>
           <p class="highlight-name">Victoria and Albert Museum</p>
-          <p class="highlight-note">South Kensington · Near Lucy &amp; Howard's · The world's leading museum of art and design</p>
+          <p class="highlight-note">South Kensington · The world's leading museum of art and design</p>
           <p class="venue-links"><a href="https://www.vam.ac.uk/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Victoria+and+Albert+Museum+London" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="highlight-box">
-          <p class="highlight-label">Dinner</p>
+          <p class="highlight-label tag-dining">Dinner</p>
           <p class="highlight-name">St. Barts</p>
           <p class="highlight-note">Farringdon · Smithfield · Dinner with Lucy &amp; Howard</p>
-          <p class="venue-links"><a href="https://restaurant-stbarts.co.uk/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Restaurant+St+Barts+Smithfield+London" target="_blank" rel="noopener">Map ↗</a></p>
+          <p class="venue-links"><a href="https://restaurant-stbarts.co.uk/" target="_blank" rel="noopener">Website ↗</a><a href="https://restaurant-stbarts.co.uk/food-and-drink/" target="_blank" rel="noopener">Menu ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Restaurant+St+Barts+Smithfield+London" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <span class="badge badge-london">London · Night 4 of 9</span>
       </div>
@@ -1029,10 +1024,8 @@
       </div>
       <div class="segment-body">
         <p class="segment-type">Day · London</p>
-        <h3 class="segment-title">A Day with<br><em>Family</em></h3>
-        <p class="segment-detail">A slower London day, on Lucy's plan — chill hangs at Hackney Bridge by the canal, easy food and drinks with the family, then time at home before the Eurostar tomorrow.</p>
-        <div class="highlight-box">
-          <p class="highlight-label">Lunch &amp; Hangs</p>
+        <h3 class="segment-title">A Day with<br><em>Family</em></h3>        <div class="highlight-box">
+          <p class="highlight-label tag-dining">Lunch &amp; Hangs</p>
           <p class="highlight-name">Hackney Bridge</p>
           <p class="highlight-note">Hackney Wick · Canalside food market — street-food traders &amp; bars · Lucy's pick</p>
           <p class="venue-links"><a href="https://hackneybridge.org/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Hackney+Bridge+East+Bay+Lane+Hackney+Wick+London" target="_blank" rel="noopener">Map ↗</a></p>
@@ -1054,9 +1047,7 @@
       </div>
       <div class="segment-body">
         <p class="segment-type">Departure · St Pancras</p>
-        <h3 class="segment-title">Paris by<br><em>Eurostar</em></h3>
-        <p class="segment-detail">Down to St Pancras and under the Channel. Two hours and fifteen minutes to Gare du Nord. Two nights in Paris.</p>
-        <div class="eurostar-card">
+        <h3 class="segment-title">Paris by<br><em>Eurostar</em></h3>        <div class="eurostar-card">
           <div class="eurostar-icon">
             <svg viewBox="0 0 36 24" width="34" height="22" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M2 18 L 3.5 8 Q 4 5 7 5 L 26 5 Q 31 5 34 12 L 34 18 Z"/>
@@ -1071,18 +1062,16 @@
           </div>
           <div class="eurostar-info">
             <div class="eurostar-route">London → Paris</div>
-            <div class="eurostar-sub">St Pancras · Gare du Nord · Eurostar</div>
+            <div class="eurostar-sub">St Pancras 12:31 → Gare du Nord 15:49 · Eurostar Premier</div>
           </div>
         </div>
         <div class="highlight-box" style="margin-top: 1rem;">
-          <p class="highlight-label">Hotel · Paris</p>
+          <p class="highlight-label tag-hotel">Hotel · Paris</p>
           <p class="highlight-name">Sofitel Paris Arc de Triomphe</p>
           <p class="highlight-note">11–13 July · 2 nights · 2 Rue de Beaujon, 8e</p>
           <p class="venue-links"><a href="https://www.sofitel-paris-arcdetriomphe.com/en/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Sofitel+Paris+Arc+de+Triomphe" target="_blank" rel="noopener">Map ↗</a></p>
-        </div>
-        <p class="segment-detail" style="margin-top: 1rem;">The dinner reservation is the headline act.</p>
-        <div class="paris-dinner">
-          <p class="paris-dinner-label">Dinner · Night One in Paris · 19:00</p>
+        </div>        <div class="paris-dinner">
+          <p class="paris-dinner-label tag-dining">Dinner · Night One in Paris · 19:00</p>
           <p class="paris-dinner-text">Faubourg Daimant</p>
           <p class="paris-dinner-sub">10e · Table for two · Belle Époque house, plant-led cooking</p>
           <p class="venue-links"><a href="https://www.daimant.co/faubourg-daimant.html" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Faubourg+Daimant+Paris" target="_blank" rel="noopener">Map ↗</a></p>
@@ -1101,10 +1090,8 @@
       </div>
       <div class="segment-body">
         <p class="segment-type">Full Day · Paris</p>
-        <h3 class="segment-title">A Day in<br><em>Paris</em></h3>
-        <p class="segment-detail">A Sunday with shape but not too much of it. A long rooftop lunch with the city laid out below, Impressionists in their natural light, then a relaxed dinner to round off the day.</p>
-        <div class="highlight-box">
-          <p class="highlight-label">Lunch · 12:30</p>
+        <h3 class="segment-title">A Day in<br><em>Paris</em></h3>        <div class="highlight-box">
+          <p class="highlight-label tag-dining">Lunch · 12:30</p>
           <p class="highlight-name">L'Oiseau Blanc</p>
           <p class="highlight-note">The Peninsula · Avenue Kléber · Two-Michelin-star rooftop · Eiffel Tower views</p>
           <p class="venue-links"><a href="https://www.peninsula.com/en/paris/hotel-fine-dining/french-rooftop-loiseau-blanc" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=L%27Oiseau+Blanc+Peninsula+Paris+Avenue+Kleber" target="_blank" rel="noopener">Map ↗</a></p>
@@ -1116,10 +1103,10 @@
           <p class="venue-links"><a href="https://www.musee-orsay.fr/en" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Musee+d%27Orsay+Paris" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="paris-dinner">
-          <p class="paris-dinner-label">Dinner · Night Two · 19:00</p>
+          <p class="paris-dinner-label tag-dining">Dinner · Night Two · 19:00</p>
           <p class="paris-dinner-text">Lazare</p>
           <p class="paris-dinner-sub">Éric Fréchon's brasserie · Gare Saint-Lazare · Open Sundays</p>
-          <p class="venue-links"><a href="https://lazare-paris.fr/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Brasserie+Lazare+Gare+Saint-Lazare+Paris" target="_blank" rel="noopener">Map ↗</a></p>
+          <p class="venue-links"><a href="https://lazare-paris.fr/" target="_blank" rel="noopener">Website ↗</a><a href="https://lazare-paris.fr/menu/" target="_blank" rel="noopener">Menu ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Brasserie+Lazare+Gare+Saint-Lazare+Paris" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <span class="badge badge-paris">Paris · Night 7 of 9</span>
       </div>
@@ -1138,9 +1125,7 @@
       </div>
       <div class="segment-body">
         <p class="segment-type">Return · Gare du Nord · Then West End</p>
-        <h3 class="segment-title">Phantom &amp;<br><em>The Savoy</em></h3>
-        <p class="segment-detail">Eurostar back to St Pancras, check in to the Savoy, then His Majesty's Theatre for the evening. The chandelier, the mask, the score — one of those shows that simply doesn't get old.</p>
-        <div class="eurostar-card">
+        <h3 class="segment-title">Phantom &amp;<br><em>The Savoy</em></h3>        <div class="eurostar-card">
           <div class="eurostar-icon">
             <svg viewBox="0 0 36 24" width="34" height="22" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M2 18 L 3.5 8 Q 4 5 7 5 L 26 5 Q 31 5 34 12 L 34 18 Z"/>
@@ -1155,11 +1140,11 @@
           </div>
           <div class="eurostar-info">
             <div class="eurostar-route">Paris → London</div>
-            <div class="eurostar-sub">Gare du Nord · St Pancras · Eurostar</div>
+            <div class="eurostar-sub">Gare du Nord 13:12 → St Pancras 14:30 · Eurostar Premier</div>
           </div>
         </div>
         <div class="highlight-box" style="margin-top: 1rem;">
-          <p class="highlight-label">Hotel</p>
+          <p class="highlight-label tag-hotel">Hotel</p>
           <p class="highlight-name">The Savoy · Junior Suite</p>
           <p class="highlight-note">13 July · 1 night · Strand, London WC2</p>
           <p class="venue-links"><a href="https://www.thesavoylondon.com/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Savoy+Hotel+Strand+London" target="_blank" rel="noopener">Map ↗</a></p>
@@ -1198,13 +1183,11 @@
       </div>
       <div class="segment-body">
         <p class="segment-type">Departure · Heathrow</p>
-        <h3 class="segment-title">London <em>→</em><br>Home</h3>
-        <p class="segment-detail">A last unhurried lunch, then Heathrow Express out of Paddington, through the Concorde Room before a long, comfortable run east. Late evening departure, arriving home Thursday morning.</p>
-        <div class="highlight-box">
-          <p class="highlight-label">Last Lunch · 13:00</p>
+        <h3 class="segment-title">London <em>→</em><br>Home</h3>        <div class="highlight-box">
+          <p class="highlight-label tag-dining">Last Lunch · 13:00</p>
           <p class="highlight-name">The Delaunay</p>
           <p class="highlight-note">Aldwych · Grand European café-restaurant · A short walk from the Savoy</p>
-          <p class="venue-links"><a href="https://thedelaunay.com/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Delaunay+Aldwych+London" target="_blank" rel="noopener">Map ↗</a></p>
+          <p class="venue-links"><a href="https://thedelaunay.com/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.thedelaunay.com/menus/" target="_blank" rel="noopener">Menu ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Delaunay+Aldwych+London" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="eurostar-card" style="margin-top: 1rem;">
           <div class="eurostar-icon">
