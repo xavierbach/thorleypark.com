@@ -448,6 +448,30 @@
     margin-top: 0.2rem;
   }
 
+  .venue-links {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.9rem;
+  }
+
+  .venue-links a {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(91,155,107,0.4);
+    padding-bottom: 1px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .venue-links a:hover {
+    color: var(--cream);
+    border-color: var(--cream);
+  }
+
   /* EUROSTAR CARD */
   .eurostar-card {
     margin-top: 1rem;
@@ -808,10 +832,11 @@
           <p class="highlight-label">Hotel</p>
           <p class="highlight-name">Sanderson London, a Morgans Originals hotel</p>
           <p class="highlight-note">6–9 July · 3 nights · 50 Berners Street, Fitzrovia W1T</p>
+          <p class="venue-links"><a href="https://morgansoriginals.com/sanderson/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Sanderson+London+50+Berners+Street" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="highlight-box">
           <p class="highlight-label">Dinner · Night One</p>
-          <p class="highlight-name"><span class="tbc-badge">⚠️ TBC — To Book</span></p>
+          <p class="highlight-name"><span class="tbc-badge">TBC — To Book</span></p>
           <p class="highlight-note">Light bites and good drinks once the day catches up with you</p>
         </div>
         <span class="badge badge-london">London · Night 1 of 9</span>
@@ -833,15 +858,17 @@
         <div class="highlight-box">
           <p class="highlight-label">Tickets</p>
           <p class="highlight-name">VIP Debenture · Centre Court</p>
+          <p class="venue-links"><a href="https://www.wimbledon.com/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Wimbledon+Centre+Court+All+England+Lawn+Tennis+Club" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="highlight-box">
           <p class="highlight-label">Lunch · 11:30</p>
           <p class="highlight-name">Courtside Restaurant</p>
           <p class="highlight-note">Three-course lunch · Table for two · Centre Court Debenture complex</p>
+          <p class="venue-links"><a href="https://www.wimbledon.com/en_GB/tickets/debentures/courtside_restaurant" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=All+England+Lawn+Tennis+Club+Wimbledon" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="highlight-box">
           <p class="highlight-label">After the Tennis</p>
-          <p class="highlight-name"><span class="tbc-badge">⚠️ TBC — To Book</span></p>
+          <p class="highlight-name"><span class="tbc-badge">TBC — To Book</span></p>
           <p class="highlight-note">Whatever's still being served when Centre Court finishes</p>
         </div>
         <span class="badge badge-london">The Championships · Debenture Holder</span>
@@ -865,16 +892,19 @@
           <p class="highlight-label">Morning</p>
           <p class="highlight-name">The Wallace Collection</p>
           <p class="highlight-note">Manchester Square · Free · Boucher, Fragonard, the armoury</p>
+          <p class="venue-links"><a href="https://www.wallacecollection.org/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Wallace+Collection+London" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="highlight-box">
           <p class="highlight-label">Lunch</p>
           <p class="highlight-name">Bellamy's</p>
           <p class="highlight-note">Bruton Place · Mayfair brasserie · The proper claret list</p>
+          <p class="venue-links"><a href="https://www.bellamysrestaurant.co.uk/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Bellamys+Restaurant+Bruton+Place+London" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="highlight-box">
           <p class="highlight-label">Afternoon</p>
           <p class="highlight-name">Royal Academy Summer Exhibition</p>
           <p class="highlight-note">Burlington House · Open submissions, hung by Royal Academicians since 1769</p>
+          <p class="venue-links"><a href="https://www.royalacademy.org.uk/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Royal+Academy+of+Arts+Burlington+House+London" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <span class="badge badge-london">London · Night 3 of 9</span>
       </div>
@@ -918,7 +948,7 @@
         <p class="segment-detail">A slower London day. A walk somewhere green — Hampstead Heath, or Kew if quiet feels better — and time at home before the Eurostar tomorrow.</p>
         <div class="highlight-box">
           <p class="highlight-label">Walk &amp; Lunch</p>
-          <p class="highlight-name">Hampstead Heath · <span class="tbc-badge">⚠️ TBC — To Book</span></p>
+          <p class="highlight-name">Hampstead Heath · <span class="tbc-badge">TBC — To Book</span></p>
           <p class="highlight-note">Kenwood House if the weather holds · Or Kew Gardens for something quieter</p>
         </div>
         <span class="badge badge-london">London · Night 5 of 9</span>
@@ -962,11 +992,12 @@
           <p class="highlight-label">Hotel · Paris</p>
           <p class="highlight-name">Sofitel Paris Arc de Triomphe</p>
           <p class="highlight-note">11–13 July · 2 nights · 2 Rue de Beaujon, 8e</p>
+          <p class="venue-links"><a href="https://www.sofitel-paris-arcdetriomphe.com/en/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Sofitel+Paris+Arc+de+Triomphe" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <p class="segment-detail" style="margin-top: 1rem;">The dinner reservation is the headline act.</p>
         <div class="paris-dinner">
           <p class="paris-dinner-label">Dinner · Night One in Paris</p>
-          <p class="paris-dinner-text"><span class="tbc-badge">⚠️ TBC — To Book</span></p>
+          <p class="paris-dinner-text"><span class="tbc-badge">TBC — To Book</span></p>
           <p class="paris-dinner-sub">First night in Paris · Reservation still to be made</p>
         </div>
         <span class="badge badge-paris">Paris · Night 6 of 9</span>
@@ -987,18 +1018,20 @@
         <p class="segment-detail">A Sunday with shape but not too much of it. Late lunch on the Left Bank, Impressionists in their natural light, then a brasserie evening in the Marais.</p>
         <div class="highlight-box">
           <p class="highlight-label">Lunch · Long &amp; Slow</p>
-          <p class="highlight-name"><span class="tbc-badge">⚠️ TBC — To Book</span></p>
+          <p class="highlight-name"><span class="tbc-badge">TBC — To Book</span></p>
           <p class="highlight-note">Left Bank · Open every day · Sit outside if the sun is out</p>
         </div>
         <div class="highlight-box">
           <p class="highlight-label">Afternoon</p>
           <p class="highlight-name">Musée d'Orsay</p>
           <p class="highlight-note">Across the Seine · The Impressionists in their natural light · Closed Mondays — today's the day</p>
+          <p class="venue-links"><a href="https://www.musee-orsay.fr/en" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Musee+d%27Orsay+Paris" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="paris-dinner">
           <p class="paris-dinner-label">Dinner · Night Two</p>
           <p class="paris-dinner-text">Brasserie Bofinger</p>
           <p class="paris-dinner-sub">Marais · Belle Époque dining room · Open Sundays · Choucroute and the proper carafe</p>
+          <p class="venue-links"><a href="https://www.bofingerparis.com/en/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=Brasserie+Bofinger+Paris" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <span class="badge badge-paris">Paris · Night 7 of 9</span>
       </div>
@@ -1041,6 +1074,7 @@
           <p class="highlight-label">Hotel</p>
           <p class="highlight-name">The Savoy · Junior Suite</p>
           <p class="highlight-note">13 July · 1 night · Strand, London WC2</p>
+          <p class="venue-links"><a href="https://www.thesavoylondon.com/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=The+Savoy+Hotel+Strand+London" target="_blank" rel="noopener">Map ↗</a></p>
         </div>
         <div class="phantom-card" style="margin-top: 1rem;">
           <div class="phantom-mask">
@@ -1056,6 +1090,7 @@
           <div class="phantom-info">
             <div class="phantom-title">The Phantom of the Opera</div>
             <div class="phantom-venue">His Majesty's Theatre · Haymarket · West End</div>
+            <p class="venue-links"><a href="https://uk.thephantomoftheopera.com/" target="_blank" rel="noopener">Website ↗</a><a href="https://www.google.com/maps/search/?api=1&amp;query=His+Majesty%27s+Theatre+London" target="_blank" rel="noopener">Map ↗</a></p>
           </div>
         </div>
         <span class="badge badge-london">The Savoy · West End · Night 8 of 9</span>
@@ -1079,7 +1114,7 @@
         <p class="segment-detail">A last unhurried lunch, then Heathrow Express out of Paddington, through the Concorde Room before a long, comfortable run east. Late evening departure, arriving home Thursday morning.</p>
         <div class="highlight-box">
           <p class="highlight-label">Last Lunch</p>
-          <p class="highlight-name"><span class="tbc-badge">⚠️ TBC — To Book</span></p>
+          <p class="highlight-name"><span class="tbc-badge">TBC — To Book</span></p>
           <p class="highlight-note">Mayfair · Oysters &amp; champagne, the long way home</p>
         </div>
         <div class="eurostar-card" style="margin-top: 1rem;">
