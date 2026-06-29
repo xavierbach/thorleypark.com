@@ -594,6 +594,51 @@ export default function App() {
           </p>
         )}
 
+        {/* Guest list editing */}
+        <section className="panel" aria-label="Edit guest list">
+          <div className="panel-head">
+            <h2>Guest list</h2>
+          </div>
+          <div className="save-row">
+            <input
+              className="text-input"
+              value={newGuest}
+              onChange={(e) => setNewGuest(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && addGuest()}
+              placeholder="Add a guest"
+              aria-label="New guest name"
+            />
+            <button type="button" className="btn btn-primary" onClick={addGuest}>
+              Add
+            </button>
+          </div>
+          {guests.length > 0 && (
+            <ul className="guest-edit-list">
+              {guests.map((name) => (
+                <li key={name} className="guest-edit-item">
+                  <input
+                    className="text-input"
+                    defaultValue={name}
+                    onBlur={(e) => renameGuest(name, e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') (e.target as HTMLInputElement).blur()
+                    }}
+                    aria-label={`Rename ${name}`}
+                  />
+                  <button
+                    type="button"
+                    className="guest-remove"
+                    onClick={() => removeGuest(name)}
+                    aria-label={`Remove ${name}`}
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
         {/* Saved plans */}
         <section className="panel" aria-label="Saved plans">
           <div className="panel-head">
@@ -658,51 +703,6 @@ export default function App() {
                   </li>
                 )
               })}
-            </ul>
-          )}
-        </section>
-
-        {/* Guest list editing */}
-        <section className="panel" aria-label="Edit guest list">
-          <div className="panel-head">
-            <h2>Guest list</h2>
-          </div>
-          <div className="save-row">
-            <input
-              className="text-input"
-              value={newGuest}
-              onChange={(e) => setNewGuest(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && addGuest()}
-              placeholder="Add a guest"
-              aria-label="New guest name"
-            />
-            <button type="button" className="btn btn-primary" onClick={addGuest}>
-              Add
-            </button>
-          </div>
-          {guests.length > 0 && (
-            <ul className="guest-edit-list">
-              {guests.map((name) => (
-                <li key={name} className="guest-edit-item">
-                  <input
-                    className="text-input"
-                    defaultValue={name}
-                    onBlur={(e) => renameGuest(name, e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') (e.target as HTMLInputElement).blur()
-                    }}
-                    aria-label={`Rename ${name}`}
-                  />
-                  <button
-                    type="button"
-                    className="guest-remove"
-                    onClick={() => removeGuest(name)}
-                    aria-label={`Remove ${name}`}
-                  >
-                    Remove
-                  </button>
-                </li>
-              ))}
             </ul>
           )}
         </section>
