@@ -342,6 +342,26 @@
     white-space: nowrap;
   }
 
+  .tbc-badge {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.22rem 0.7rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #d3122a;
+    border: 1px solid #d3122a;
+    border-radius: 4px;
+    vertical-align: middle;
+    position: relative;
+    top: -0.15em;
+    white-space: nowrap;
+    box-shadow: 0 0 0 3px rgba(211, 18, 42, 0.22);
+  }
+
   /* FLIGHT CARD */
   .flight-card {
     margin-top: 1rem;
@@ -689,7 +709,7 @@
     <div class="segment-header">
       <div class="date-col">
         <div class="date-day">5</div>
-        <span class="date-label">Jul · Sat</span>
+        <span class="date-label">Jul · Sun</span>
       </div>
       <div class="segment-body">
         <p class="segment-type">Departure · Melbourne</p>
@@ -765,7 +785,7 @@
       <div class="segment-body">
         <p class="segment-type">Arrival · London</p>
         <h3 class="segment-title"><em>Sanderson</em></h3>
-        <p class="segment-detail">Touch down at Heathrow, ride the Express into Paddington, and on to Berners Street. Three nights at the Sanderson — Ian Schrager and Philippe Starck's singular take on what a London hotel should feel like. Mirrored surfaces, a courtyard that doubles as a stage set, the Long Bar, and interiors that seem to know something the other hotels don't. Fitzrovia, not Mayfair — and entirely the right call.</p>
+        <p class="segment-detail">Touch down at Heathrow, ride the Express into Paddington, and on to Berners Street. Three nights at the Sanderson — Ian Schrager and Philippe Starck's singular take on what a London hotel should feel like. Mirrored surfaces, a courtyard that doubles as a stage set, and interiors that seem to know something the other hotels don't. Fitzrovia, not Mayfair — and entirely the right call.</p>
         <div class="eurostar-card">
           <div class="eurostar-icon">
             <svg viewBox="0 0 36 24" width="34" height="22" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -791,8 +811,8 @@
         </div>
         <div class="highlight-box">
           <p class="highlight-label">Dinner · Night One</p>
-          <p class="highlight-name">The Long Bar <span class="chip-tbc">TBC</span></p>
-          <p class="highlight-note">Sanderson · Light bites and good drinks once the day catches up with you</p>
+          <p class="highlight-name"><span class="tbc-badge">⚠️ TBC — To Book</span></p>
+          <p class="highlight-note">Light bites and good drinks once the day catches up with you</p>
         </div>
         <span class="badge badge-london">London · Night 1 of 9</span>
       </div>
@@ -813,11 +833,15 @@
         <div class="highlight-box">
           <p class="highlight-label">Tickets</p>
           <p class="highlight-name">VIP Debenture · Centre Court</p>
-          <p class="highlight-note">Courtside Restaurant access included</p>
+        </div>
+        <div class="highlight-box">
+          <p class="highlight-label">Lunch · 11:30</p>
+          <p class="highlight-name">Courtside Restaurant</p>
+          <p class="highlight-note">Three-course lunch · Table for two · Centre Court Debenture complex</p>
         </div>
         <div class="highlight-box">
           <p class="highlight-label">After the Tennis</p>
-          <p class="highlight-name">Late supper at Claridge's <span class="chip-tbc">TBC</span></p>
+          <p class="highlight-name"><span class="tbc-badge">⚠️ TBC — To Book</span></p>
           <p class="highlight-note">Whatever's still being served when Centre Court finishes</p>
         </div>
         <span class="badge badge-london">The Championships · Debenture Holder</span>
@@ -836,7 +860,7 @@
       <div class="segment-body">
         <p class="segment-type">Free Day · London</p>
         <h3 class="segment-title">London at<br><em>Leisure</em></h3>
-        <p class="segment-detail">A morning at the Wallace Collection — five minutes from the doorstep — then lunch at Bellamy's and the Royal Academy summer show in the afternoon. Last night at Claridge's.</p>
+        <p class="segment-detail">A morning at the Wallace Collection — five minutes from the doorstep — then lunch at Bellamy's and the Royal Academy summer show in the afternoon.</p>
         <div class="highlight-box">
           <p class="highlight-label">Morning</p>
           <p class="highlight-name">The Wallace Collection</p>
@@ -844,7 +868,7 @@
         </div>
         <div class="highlight-box">
           <p class="highlight-label">Lunch</p>
-          <p class="highlight-name">Bellamy's <span class="chip-tbc">TBC</span></p>
+          <p class="highlight-name">Bellamy's</p>
           <p class="highlight-note">Bruton Place · Mayfair brasserie · The proper claret list</p>
         </div>
         <div class="highlight-box">
@@ -891,10 +915,10 @@
       <div class="segment-body">
         <p class="segment-type">Day · London</p>
         <h3 class="segment-title">A Day with<br><em>Family</em></h3>
-        <p class="segment-detail">A slower London day. A walk somewhere green — Hampstead Heath with the Spaniards Inn for lunch, or Kew if quiet feels better — and time at home before the Eurostar tomorrow.</p>
+        <p class="segment-detail">A slower London day. A walk somewhere green — Hampstead Heath, or Kew if quiet feels better — and time at home before the Eurostar tomorrow.</p>
         <div class="highlight-box">
           <p class="highlight-label">Walk &amp; Lunch</p>
-          <p class="highlight-name">Hampstead Heath · The Spaniards Inn <span class="chip-tbc">TBC</span></p>
+          <p class="highlight-name">Hampstead Heath · <span class="tbc-badge">⚠️ TBC — To Book</span></p>
           <p class="highlight-note">Kenwood House if the weather holds · Or Kew Gardens for something quieter</p>
         </div>
         <span class="badge badge-london">London · Night 5 of 9</span>
@@ -942,8 +966,8 @@
         <p class="segment-detail" style="margin-top: 1rem;">The dinner reservation is the headline act.</p>
         <div class="paris-dinner">
           <p class="paris-dinner-label">Dinner · Night One in Paris</p>
-          <p class="paris-dinner-text">Le Cinq <span class="chip-tbc">TBC</span></p>
-          <p class="paris-dinner-sub">Four Seasons George V · Three Michelin stars · Christian Le Squer</p>
+          <p class="paris-dinner-text"><span class="tbc-badge">⚠️ TBC — To Book</span></p>
+          <p class="paris-dinner-sub">First night in Paris · Reservation still to be made</p>
         </div>
         <span class="badge badge-paris">Paris · Night 6 of 9</span>
       </div>
@@ -963,8 +987,8 @@
         <p class="segment-detail">A Sunday with shape but not too much of it. Late lunch on the Left Bank, Impressionists in their natural light, then a brasserie evening in the Marais.</p>
         <div class="highlight-box">
           <p class="highlight-label">Lunch · Long &amp; Slow</p>
-          <p class="highlight-name">Café de Flore <span class="chip-tbc">TBC</span></p>
-          <p class="highlight-note">Saint-Germain · Open every day · Sit outside if the sun is out</p>
+          <p class="highlight-name"><span class="tbc-badge">⚠️ TBC — To Book</span></p>
+          <p class="highlight-note">Left Bank · Open every day · Sit outside if the sun is out</p>
         </div>
         <div class="highlight-box">
           <p class="highlight-label">Afternoon</p>
@@ -973,7 +997,7 @@
         </div>
         <div class="paris-dinner">
           <p class="paris-dinner-label">Dinner · Night Two</p>
-          <p class="paris-dinner-text">Brasserie Bofinger <span class="chip-tbc">TBC</span></p>
+          <p class="paris-dinner-text">Brasserie Bofinger</p>
           <p class="paris-dinner-sub">Marais · Belle Époque dining room · Open Sundays · Choucroute and the proper carafe</p>
         </div>
         <span class="badge badge-paris">Paris · Night 7 of 9</span>
@@ -1052,11 +1076,11 @@
       <div class="segment-body">
         <p class="segment-type">Departure · Heathrow</p>
         <h3 class="segment-title">London <em>→</em><br>Home</h3>
-        <p class="segment-detail">A last unhurried lunch at Scott's, then Heathrow Express out of Paddington, through the Concorde Room before a long, comfortable run east. Late evening departure, arriving home Thursday morning.</p>
+        <p class="segment-detail">A last unhurried lunch, then Heathrow Express out of Paddington, through the Concorde Room before a long, comfortable run east. Late evening departure, arriving home Thursday morning.</p>
         <div class="highlight-box">
           <p class="highlight-label">Last Lunch</p>
-          <p class="highlight-name">Scott's <span class="chip-tbc">TBC</span></p>
-          <p class="highlight-note">Mount Street · Mayfair · Oysters &amp; champagne, the long way home</p>
+          <p class="highlight-name"><span class="tbc-badge">⚠️ TBC — To Book</span></p>
+          <p class="highlight-note">Mayfair · Oysters &amp; champagne, the long way home</p>
         </div>
         <div class="eurostar-card" style="margin-top: 1rem;">
           <div class="eurostar-icon">
