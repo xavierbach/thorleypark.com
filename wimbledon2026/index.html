@@ -220,6 +220,23 @@
     text-transform: uppercase;
   }
 
+  .map-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid rgba(91,155,107,0.5);
+    border-radius: 999px;
+    padding: 0.7rem 1.4rem;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .map-cta:hover { color: var(--cream); border-color: var(--cream); background: rgba(91,155,107,0.12); }
+
   /* SEGMENT */
   .segment {
     margin-bottom: 0.5rem;
@@ -726,6 +743,10 @@
   <div class="timeline-intro">
     <h2>The Itinerary</h2>
     <p>9 nights · 3 cities · 2 Eurostar journeys</p>
+    <a class="map-cta" href="map/">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 L3 5.5 V21 L9 18.5 L15 21 L21 18.5 V3 L15 5.5 Z"/><line x1="9" y1="3" x2="9" y2="18.5"/><line x1="15" y1="5.5" x2="15" y2="21"/></svg>
+      View the map
+    </a>
   </div>
 
   <!-- OUTBOUND FLIGHTS -->

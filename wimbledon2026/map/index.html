@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Kat &amp; Xave — Trip Map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F0EDE6;
+    --gold: #5B9B6B;
+    --muted: #9A8FAA;
+    --bg: #1E0A38;
+    --bg-card: #250D45;
+  }
+
+  html, body { height: 100%; }
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--bg);
+    color: var(--cream);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(180deg, #250D45 0%, #1E0A38 100%);
+    border-bottom: 1px solid rgba(91,155,107,0.3);
+  }
+  .topbar h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.35rem;
+    letter-spacing: 0.01em;
+  }
+  .topbar h1 em { color: var(--gold); font-style: italic; }
+  .topbar .sub {
+    font-size: 0.55rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 0.1rem;
+  }
+  .back-link {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid rgba(91,155,107,0.5);
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .back-link:hover { color: var(--cream); border-color: var(--cream); background: rgba(91,155,107,0.12); }
+
+  #map { flex: 1 1 auto; width: 100%; background: #0c0518; }
+
+  /* Leaflet control styling to match the dark theme */
+  .leaflet-bar a, .leaflet-control-layers {
+    background: rgba(30,10,56,0.92);
+    color: var(--cream);
+    border-color: rgba(91,155,107,0.35);
+  }
+  .leaflet-bar a { color: var(--cream); }
+  .leaflet-bar a:hover { background: rgba(42,16,80,0.95); }
+
+  .leaflet-control-layers {
+    padding: 0.6rem 0.7rem;
+    border-radius: 6px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.78rem;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+  }
+  .leaflet-control-layers-overlays label { margin: 0.18rem 0; display: flex; align-items: center; gap: 0.4rem; }
+  .leaflet-control-layers-separator { border-top-color: rgba(91,155,107,0.25); }
+
+  /* Legend + view controls */
+  .map-panel {
+    background: rgba(30,10,56,0.92);
+    border: 1px solid rgba(91,155,107,0.35);
+    border-radius: 6px;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.72rem;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+    line-height: 1.5;
+  }
+  .map-panel .ttl {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.35rem;
+  }
+  .legend-row { display: flex; align-items: center; gap: 0.45rem; }
+  .legend-dot { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.85); flex: 0 0 auto; }
+  .view-btns { display: flex; gap: 0.35rem; margin-top: 0.15rem; }
+  .view-btns button {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: rgba(91,155,107,0.12);
+    border: 1px solid rgba(91,155,107,0.45);
+    border-radius: 4px;
+    padding: 0.32rem 0.5rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .view-btns button:hover { background: rgba(91,155,107,0.28); border-color: var(--gold); }
+
+  /* Popups */
+  .leaflet-popup-content-wrapper {
+    background: #250D45;
+    color: var(--cream);
+    border: 1px solid rgba(91,155,107,0.4);
+    border-radius: 6px;
+  }
+  .leaflet-popup-tip { background: #250D45; border: 1px solid rgba(91,155,107,0.4); }
+  .leaflet-popup-content { margin: 0.7rem 0.85rem; }
+  .pp strong { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 1.15rem; }
+  .pp-note { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+  .pp-links { margin-top: 0.45rem; display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; }
+  .pp-links a {
+    font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(91,155,107,0.45); padding-bottom: 1px;
+  }
+  .pp-links a:hover { color: var(--cream); border-color: var(--cream); }
+  .leaflet-container a.leaflet-popup-close-button { color: var(--muted); }
+
+  @media (max-width: 600px) {
+    .topbar h1 { font-size: 1.1rem; }
+    .map-panel { font-size: 0.66rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <h1>Kat <em>&amp;</em> Xave — Trip Map</h1>
+    <div class="sub">Melbourne · London · Paris · July 2026</div>
+  </div>
+  <a class="back-link" href="../">← Itinerary</a>
+</div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+  // ---- Categories -------------------------------------------------------
+  const CATS = {
+    hotels:    { label: 'Hotels',                 color: '#4FA3D1' },
+    dining:    { label: 'Dining (confirmed)',     color: '#E0556B' },
+    events:    { label: 'Tennis, Shows & Events', color: '#E0A33E' },
+    sights:    { label: 'Museums & Sights',       color: '#B07FD6' },
+    transport: { label: 'Transport',              color: '#8A93A6' },
+  };
+
+  // ---- Points -----------------------------------------------------------
+  // q = explicit Google Maps query (defaults to name)
+  const POINTS = [
+    // Hotels
+    { cat:'hotels', name:'Sanderson London', ll:[51.5172,-0.1366], note:'6–9 Jul · 3 nights · 50 Berners St, Fitzrovia', web:'https://morgansoriginals.com/sanderson/' },
+    { cat:'hotels', name:'Sofitel Paris Arc de Triomphe', ll:[48.8746,2.3009], note:'11–13 Jul · 2 nights · 8e', web:'https://www.sofitel-paris-arcdetriomphe.com/en/' },
+    { cat:'hotels', name:'The Savoy', ll:[51.5101,-0.1207], note:'13 Jul · 1 night · Strand', web:'https://www.thesavoylondon.com/' },
+
+    // Dining (confirmed only — TBC venues not yet booked, so not placed)
+    { cat:'dining', name:'Courtside Restaurant', ll:[51.4342,-0.2128], note:'7 Jul · Lunch 11:30 · Centre Court Debenture', web:'https://www.wimbledon.com/en_GB/tickets/debentures/courtside_restaurant', q:'All England Lawn Tennis Club Wimbledon' },
+    { cat:'dining', name:"Bellamy's", ll:[51.5101,-0.1449], note:'8 Jul · Lunch · Bruton Place, Mayfair', web:'https://www.bellamysrestaurant.co.uk/', q:"Bellamy's Restaurant Bruton Place London" },
+    { cat:'dining', name:'Brasserie Bofinger', ll:[48.8531,2.3690], note:'12 Jul · Dinner · Marais', web:'https://www.bofingerparis.com/en/', q:'Brasserie Bofinger Paris' },
+
+    // Tennis, Shows & Events
+    { cat:'events', name:'Wimbledon · Centre Court', ll:[51.4337,-0.2141], note:'7 Jul · Quarterfinal · VIP Debenture', web:'https://www.wimbledon.com/', q:'Wimbledon Centre Court All England Lawn Tennis Club' },
+    { cat:'events', name:'The Phantom of the Opera', ll:[51.5092,-0.1318], note:"13 Jul · Evening · His Majesty's Theatre", web:'https://uk.thephantomoftheopera.com/', q:"His Majesty's Theatre London" },
+
+    // Museums & Sights
+    { cat:'sights', name:'The Wallace Collection', ll:[51.5174,-0.1532], note:'8 Jul · Morning · Manchester Square', web:'https://www.wallacecollection.org/' },
+    { cat:'sights', name:'Royal Academy Summer Exhibition', ll:[51.5095,-0.1396], note:'8 Jul · Afternoon · Burlington House', web:'https://www.royalacademy.org.uk/', q:'Royal Academy of Arts Burlington House London' },
+    { cat:'sights', name:'Hampstead Heath', ll:[51.5608,-0.1620], note:'10 Jul · Walk (lunch TBC) · Kenwood House', web:'https://www.cityoflondon.gov.uk/things-to-do/green-spaces/hampstead-heath' },
+    { cat:'sights', name:"Musée d'Orsay", ll:[48.8600,2.3266], note:'12 Jul · Afternoon · Left Bank', web:'https://www.musee-orsay.fr/en' },
+
+    // Transport
+    { cat:'transport', name:'Home · Mount Macedon', ll:[-37.4007,144.5808], note:'5 Jul · 12:00 car pickup (Gisborne Cabs)', q:'-37.4007,144.5808' },
+    { cat:'transport', name:'Melbourne Airport (MEL) · T2', ll:[-37.6690,144.8410], note:'5 Jul · QF37 departs 15:55', q:'Melbourne Airport Terminal 2' },
+    { cat:'transport', name:'Singapore Changi (SIN)', ll:[1.3592,103.9894], note:'Transit · both directions', q:'Singapore Changi Airport' },
+    { cat:'transport', name:'London Heathrow (LHR)', ll:[51.4700,-0.4543], note:'Arrive 6 Jul · Depart 14 Jul', q:'London Heathrow Airport' },
+    { cat:'transport', name:'London Paddington', ll:[51.5154,-0.1755], note:'Heathrow Express terminus', q:'London Paddington Station' },
+    { cat:'transport', name:'St Pancras International', ll:[51.5318,-0.1267], note:'Eurostar · London', q:'St Pancras International Station' },
+    { cat:'transport', name:'Gare du Nord', ll:[48.8809,2.3553], note:'Eurostar · Paris', q:'Gare du Nord Paris' },
+  ];
+
+  // ---- Routes -----------------------------------------------------------
+  const FLIGHTS = [ [-37.6690,144.8410], [1.3592,103.9894], [51.4700,-0.4543] ]; // MEL–SIN–LHR (both ways)
+  const CAR     = [ [-37.4007,144.5808], [-37.6690,144.8410] ];                  // Home → MEL
+  const GROUND  = [ // chronological thread through Europe
+    [51.4700,-0.4543],  // LHR
+    [51.5154,-0.1755],  // Paddington
+    [51.5172,-0.1366],  // Sanderson
+    [51.4337,-0.2141],  // Wimbledon
+    [51.5172,-0.1366],  // back to Sanderson
+    [51.5174,-0.1532],  // Wallace Collection
+    [51.5101,-0.1449],  // Bellamy's
+    [51.5095,-0.1396],  // Royal Academy
+    [51.5608,-0.1620],  // Hampstead Heath
+    [51.5318,-0.1267],  // St Pancras
+    [48.8809,2.3553],   // Gare du Nord  (Eurostar)
+    [48.8746,2.3009],   // Sofitel
+    [48.8600,2.3266],   // Musée d'Orsay
+    [48.8531,2.3690],   // Bofinger
+    [48.8746,2.3009],   // back to Sofitel
+    [48.8809,2.3553],   // Gare du Nord
+    [51.5318,-0.1267],  // St Pancras   (Eurostar back)
+    [51.5101,-0.1207],  // The Savoy
+    [51.5092,-0.1318],  // His Majesty's Theatre
+    [51.5154,-0.1755],  // Paddington
+    [51.4700,-0.4543],  // LHR (home)
+  ];
+
+  // ---- Map --------------------------------------------------------------
+  const map = L.map('map', { zoomControl: true, worldCopyJump: true });
+  L.tileLayer('https://{s}.basemap.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd', maxZoom: 19
+  }).addTo(map);
+
+  function gmaps(p){
+    const q = p.q || p.name;
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+  }
+  function popupHtml(p){
+    let h = '<div class="pp"><strong>' + p.name + '</strong>';
+    if (p.note) h += '<div class="pp-note">' + p.note + '</div>';
+    h += '<div class="pp-links"><a target="_blank" rel="noopener" href="' + gmaps(p) + '">Google Maps ↗</a>';
+    if (p.web) h += '<a target="_blank" rel="noopener" href="' + p.web + '">Website ↗</a>';
+    h += '</div></div>';
+    return h;
+  }
+
+  // Category layers
+  const catLayers = {};
+  Object.keys(CATS).forEach(k => catLayers[k] = L.layerGroup());
+  POINTS.forEach(p => {
+    const c = CATS[p.cat].color;
+    L.circleMarker(p.ll, {
+      radius: 7, color: '#ffffff', weight: 1.5, opacity: 0.9,
+      fillColor: c, fillOpacity: 0.95
+    }).bindPopup(popupHtml(p)).bindTooltip(p.name, {direction:'top', offset:[0,-6]}).addTo(catLayers[p.cat]);
+  });
+
+  // Route layers
+  const flightsLayer = L.layerGroup([
+    L.polyline(FLIGHTS, { color:'#E0A33E', weight:2, opacity:0.6, dashArray:'6 7' })
+  ]);
+  const groundLayer = L.layerGroup([
+    L.polyline(GROUND, { color:'#5B9B6B', weight:2.5, opacity:0.7 }),
+    L.polyline(CAR,    { color:'#5B9B6B', weight:2.5, opacity:0.7 })
+  ]);
+
+  // Add everything on by default
+  Object.values(catLayers).forEach(l => l.addTo(map));
+  flightsLayer.addTo(map);
+  groundLayer.addTo(map);
+
+  // Layer toggle control
+  const overlays = {};
+  Object.keys(CATS).forEach(k => overlays[CATS[k].label] = catLayers[k]);
+  overlays['✈ &nbsp;Flight routes'] = flightsLayer;
+  overlays['—&nbsp; Ground &amp; rail routes'] = groundLayer;
+  L.control.layers(null, overlays, { collapsed:false, position:'topright' }).addTo(map);
+
+  // Legend + view buttons (bottom-left)
+  const panel = L.control({ position:'bottomleft' });
+  panel.onAdd = function(){
+    const d = L.DomUtil.create('div', 'map-panel');
+    let rows = '<div class="ttl">Pins</div>';
+    Object.keys(CATS).forEach(k => {
+      rows += '<div class="legend-row"><span class="legend-dot" style="background:' + CATS[k].color + '"></span>' + CATS[k].label + '</div>';
+    });
+    rows += '<div class="ttl" style="margin-top:0.55rem">Jump to</div>';
+    rows += '<div class="view-btns">' +
+            '<button data-v="all">Whole trip</button>' +
+            '<button data-v="london">London</button>' +
+            '<button data-v="paris">Paris</button></div>';
+    d.innerHTML = rows;
+    L.DomEvent.disableClickPropagation(d);
+    d.querySelectorAll('button').forEach(b => b.addEventListener('click', () => jumpTo(b.dataset.v)));
+    return d;
+  };
+  panel.addTo(map);
+
+  const VIEWS = {
+    all:    L.latLngBounds([[-37.85,144.9],[51.6,2.45]]),
+    london: L.latLngBounds([[51.40,-0.49],[51.58,-0.10]]),
+    paris:  L.latLngBounds([[48.845,2.285],[48.885,2.375]]),
+  };
+  function jumpTo(v){ map.fitBounds(VIEWS[v], { padding:[30,30] }); }
+
+  // Default: fit London + Paris (where most of the trip happens).
+  // invalidateSize + a re-fit on load guards against a flash of world-view
+  // before the flex layout has settled.
+  const DEFAULT_VIEW = L.latLngBounds([[48.84,-0.50],[51.58,2.40]]);
+  function fitDefault(){ map.invalidateSize(); map.fitBounds(DEFAULT_VIEW, { padding:[30,30] }); }
+  fitDefault();
+  window.addEventListener('load', fitDefault);
+</script>
+</body>
+</html>
