@@ -1,0 +1,15 @@
+{
+  "name": "Primal Run",
+  "short_name": "Primal Run",
+  "description": "An epic prehistoric endless runner. Sprint your T-Rex across an erupting Cretaceous world.",
+  "start_url": "/dino/",
+  "scope": "/dino/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0d0f1a",
+  "theme_color": "#0d0f1a",
+  "icons": [
+    { "src": "/images/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
