@@ -1,6 +1,7 @@
 /* ==========================================================================
-   PRIMAL RUN — a Cretaceous endless runner
-   Vanilla JS + Canvas. No assets, no dependencies. Built to feel native on iOS.
+   PRIMAL RUN — a prehistoric pixel-art endless runner
+   Vanilla JS + Canvas, no dependencies. Built to feel native on iOS.
+   Pixel art: Arks (dino), edermunizz (forest), Pixel Frog (creatures) — see CREDITS.md
    ========================================================================== */
 (() => {
 'use strict';
@@ -52,7 +53,7 @@ function resize() {
   canvas.height = Math.round(h * dpr);
   canvas.style.width = w + 'px';
   canvas.style.height = h + 'px';
-  GROUND = VH * 0.82;
+  GROUND = VH * 0.84;
   recomputeDifficulty();
   // Keep the dino anchored to the new ground if not mid-jump.
   if (dino.onGround) dino.y = GROUND - (dino.ducking ? dino.h * 0.62 : dino.h);
@@ -128,6 +129,69 @@ const Sound = (() => {
 function haptic(ms) { if (navigator.vibrate) { try { navigator.vibrate(ms); } catch(e){} } }
 
 // --------------------------------------------------------------------------
+// Assets — pixel-art sprites (loaded once, drawn crisp/unsmoothed).
+//   dino : Arks "DinoSprites" (24x24 x24)  idle 0-3, run 4-10, kick 11-13,
+//          hit 14-16, crouch/sprint 17-23
+//   bat/rino/pig : Pixel Adventure (CC0) creatures, used as obstacles
+//   plx-1..6 : "Free Pixel Art Forest" parallax layers (384x216, floor baked in)
+// See CREDITS.md for full attribution.
+// --------------------------------------------------------------------------
+const Assets = (() => {
+  const imgs = {};
+  const srcs = {
+    dino: 'assets/dino.png',
+    bat:  'assets/bat.png',
+    rino: 'assets/rino.png',
+    pig:  'assets/pig.png',
+    plx1: 'assets/parallax/plx-1.png', plx2: 'assets/parallax/plx-2.png',
+    plx3: 'assets/parallax/plx-3.png', plx4: 'assets/parallax/plx-4.png',
+    plx5: 'assets/parallax/plx-5.png', plx6: 'assets/parallax/plx-6.png',
+  };
+  let pending = 0, ready = false;
+  function load(cb) {
+    const keys = Object.keys(srcs);
+    pending = keys.length;
+    keys.forEach(k => {
+      const im = new Image();
+      const done = () => { if (--pending <= 0) { ready = true; cb && cb(); } };
+      im.onload = done; im.onerror = done;
+      im.src = srcs[k];
+      imgs[k] = im;
+    });
+  }
+  return { load, img: k => imgs[k], isReady: () => ready };
+})();
+
+// Draw frame `i` from a horizontal sprite sheet (frames are fw×fh, row 0).
+function drawFrame(img, fw, fh, i, dx, dy, dw, dh, flip) {
+  if (!img || !img.width) return;
+  const n = Math.max(1, Math.floor(img.width / fw));
+  const f = ((i % n) + n) % n;
+  if (flip) {
+    ctx.save();
+    ctx.translate(dx + dw, dy); ctx.scale(-1, 1);
+    ctx.drawImage(img, f * fw, 0, fw, fh, 0, 0, dw, dh);
+    ctx.restore();
+  } else {
+    ctx.drawImage(img, f * fw, 0, fw, fh, dx, dy, dw, dh);
+  }
+}
+
+// Sprite metadata for the creatures used as obstacles.
+const SPR = {
+  dino: { fw: 24, fh: 24 },
+  bat:  { fw: 46, fh: 30, n: 7 },
+  rino: { fw: 52, fh: 34, n: 6 },
+  pig:  { fw: 36, fh: 30, n: 16 },
+};
+
+// Parallax layers: factor = how fast it scrolls relative to the dino (1 = floor).
+const PLX = [
+  { k: 'plx1', f: 0.10 }, { k: 'plx2', f: 0.18 }, { k: 'plx3', f: 0.30 },
+  { k: 'plx4', f: 0.48 }, { k: 'plx5', f: 1.00 },
+];
+
+// --------------------------------------------------------------------------
 // Game state
 // --------------------------------------------------------------------------
 const STATE = { TITLE: 0, PLAY: 1, OVER: 2, PAUSE: 3 };
@@ -148,10 +212,10 @@ const dino = {
   runCycle: 0, dead: false, blink: 0,
 };
 
-const GRAVITY = 2400;
-const JUMP_V = -880;
+const GRAVITY = 2300;
+const JUMP_V = -930;
 const HOLD_FORCE = -2600;     // extra lift while holding (variable jump)
-const MAX_HOLD = 0.18;
+const MAX_HOLD = 0.2;
 
 let obstacles = [];   // ground hazards
 let flyers = [];      // pterodactyls
@@ -178,13 +242,7 @@ function aabb(a, b) {
 // --------------------------------------------------------------------------
 // World init
 // --------------------------------------------------------------------------
-function seedWorld() {
-  bgFar = []; bgMid = []; clouds = []; stars = []; embers = [];
-  for (let i = 0; i < 6; i++) bgFar.push({ x: rand(0, VW * 1.4), w: rand(180, 340), h: rand(80, 190) });
-  for (let i = 0; i < 8; i++) bgMid.push({ x: rand(0, VW * 1.4), type: randInt(0, 1), s: rand(0.7, 1.3) });
-  for (let i = 0; i < 5; i++) clouds.push({ x: rand(0, VW), y: rand(40, 200), s: rand(0.6, 1.4), spd: rand(8, 22) });
-  for (let i = 0; i < 70; i++) stars.push({ x: rand(0, VW), y: rand(0, GROUND * 0.7), r: rand(0.4, 1.6), tw: rand(0, 6.28) });
-}
+function seedWorld() { /* parallax is procedural from game.distance — nothing to seed */ }
 
 function resetGame() {
   game.speed = game.baseSpeed;
@@ -196,7 +254,7 @@ function resetGame() {
   dino.y = GROUND - dino.h;
   dino.vy = 0; dino.onGround = true; dino.ducking = false;
   dino.jumps = 0; dino.holding = false; dino.holdTime = 0;
-  dino.dead = false; dino.runCycle = 0; dino.blink = 0;
+  dino.dead = false; dino.deadAt = 0; dino.runCycle = 0; dino.blink = 0;
   seedWorld();
   el.mult.classList.add('hidden');
 }
@@ -306,6 +364,7 @@ let overReady = false;
 function gameOver() {
   if (dino.dead) return;
   dino.dead = true;
+  dino.deadAt = game.time;
   overReady = false;
   state = STATE.OVER;
   game.shake = 22; game.flash = 1;
@@ -366,20 +425,16 @@ function spawnDust(x, y) {
 // Spawning
 // --------------------------------------------------------------------------
 function spawnObstacle() {
-  const variants = [
-    { w: 26, h: 46, kind: 'rock' },
-    { w: 38, h: 64, kind: 'rock' },
-    { w: 64, h: 40, kind: 'rock' },   // wide low rock cluster
-    { w: 70, h: 54, kind: 'lava' },   // lava pool (visual), still ground hazard
-  ];
-  const v = variants[randInt(0, variants.length - 1)];
-  obstacles.push({ x: VW + 40, y: GROUND - v.h, w: v.w, h: v.h, kind: v.kind, t: 0 });
+  // Ground creatures: rino (big, charges low+wide) or angry pig (smaller).
+  const v = Math.random() < 0.5
+    ? { kind: 'rino', w: 56, h: 44 }
+    : { kind: 'pig',  w: 44, h: 40 };
+  obstacles.push({ x: VW + 40, y: GROUND - v.h, w: v.w, h: v.h, kind: v.kind, t: rand(0, 1) });
 }
 function spawnFlyer() {
-  // High = jump under, Low = duck under
-  const low = Math.random() < 0.55;
-  const y = low ? GROUND - 96 : GROUND - 180;
-  flyers.push({ x: VW + 40, y, baseY: y, w: 60, h: 34, flap: rand(0, 6.28), bob: rand(0, 6.28), low });
+  // Bat flies at head height — hits a standing dino, clears a ducking one.
+  const y = GROUND - rand(86, 98);
+  flyers.push({ x: VW + 40, y, baseY: y, w: 56, h: 36, flap: rand(0, 6.28), bob: rand(0, 6.28) });
 }
 function spawnGem() {
   const arc = Math.random() < 0.5;
@@ -394,8 +449,8 @@ function update(dt) {
   game.time += dt;
 
   if (state !== STATE.PLAY) {
-    // idle ambience still animates background a touch
-    updateBackground(dt, state === STATE.TITLE ? 120 : 0);
+    // On the title screen, gently scroll the forest and idle-animate the dino.
+    if (state === STATE.TITLE) { game.distance += 70 * dt; dino.runCycle += dt * 3; }
     updateParticles(dt);
     return;
   }
@@ -466,7 +521,9 @@ function update(dt) {
   for (let i = obstacles.length - 1; i >= 0; i--) {
     const o = obstacles[i]; o.x -= dx; o.t += dt;
     if (o.x + o.w < -20) { obstacles.splice(i, 1); continue; }
-    if (aabb(hb, o)) return gameOver();
+    // Sprites carry transparent padding — inset the hitbox so hits feel fair.
+    const ob = { x: o.x + o.w*0.14, y: o.y + o.h*0.20, w: o.w*0.72, h: o.h*0.78 };
+    if (aabb(hb, ob)) return gameOver();
   }
   for (let i = flyers.length - 1; i >= 0; i--) {
     const f = flyers[i]; f.x -= dx * 1.08; f.flap += dt * 10; f.bob += dt * 3;
@@ -491,14 +548,10 @@ function update(dt) {
     }
   }
 
-  updateBackground(dt, spd);
   updateParticles(dt);
 
   if (game.shake > 0) game.shake = Math.max(0, game.shake - dt * 40);
   if (game.flash > 0) game.flash = Math.max(0, game.flash - dt * 3);
-
-  // Day/night phase cycles slowly with distance
-  game.dayPhase = (game.distance / 4200) % 1;
 }
 
 function playerHitbox() {
@@ -518,55 +571,6 @@ function updateParticles(dt) {
   }
 }
 
-function updateBackground(dt, spd) {
-  for (const c of clouds) {
-    c.x -= (c.spd + spd * 0.06) * dt;
-    if (c.x < -120) { c.x = VW + rand(0, 200); c.y = rand(40, 200); c.s = rand(0.6, 1.4); }
-  }
-  for (const h of bgFar) {
-    h.x -= spd * 0.12 * dt;
-    if (h.x + h.w < -40) { h.x = VW + rand(0, 200); h.w = rand(180, 340); h.h = rand(80, 190); }
-  }
-  for (const t of bgMid) {
-    t.x -= spd * 0.32 * dt;
-    if (t.x < -60) { t.x = VW + rand(0, 220); t.type = randInt(0,1); t.s = rand(0.7, 1.3); }
-  }
-  for (const s of stars) s.tw += dt * 3;
-  // Volcano embers
-  if (Math.random() < 0.4) {
-    embers.push({ x: VW * 0.78 + rand(-20, 20), y: GROUND - 230 + rand(-10, 10), vx: rand(-20, 10), vy: rand(-60, -20), life: rand(1, 2.4) });
-  }
-  for (let i = embers.length - 1; i >= 0; i--) {
-    const e = embers[i];
-    e.life -= dt; e.x -= spd * 0.12 * dt + (-e.vx * dt); e.y += e.vy * dt; e.vy += 30 * dt;
-    if (e.life <= 0) embers.splice(i, 1);
-  }
-}
-
-// --------------------------------------------------------------------------
-// Palette for day/night cycle
-// --------------------------------------------------------------------------
-function skyColors(phase) {
-  // phase 0..1 → dawn → day → dusk → night → dawn
-  const stops = [
-    { p: 0.00, top: [255,176,120], bot: [255,221,170] }, // dawn
-    { p: 0.30, top: [120,180,235], bot: [200,232,255] }, // day
-    { p: 0.55, top: [248,150,90],  bot: [255,200,120] }, // dusk
-    { p: 0.75, top: [30,28,70],    bot: [90,50,90] },    // night
-    { p: 1.00, top: [255,176,120], bot: [255,221,170] }, // dawn
-  ];
-  let a = stops[0], b = stops[stops.length - 1];
-  for (let i = 0; i < stops.length - 1; i++) {
-    if (phase >= stops[i].p && phase <= stops[i+1].p) { a = stops[i]; b = stops[i+1]; break; }
-  }
-  const t = (phase - a.p) / (b.p - a.p || 1);
-  const mix = (x, y) => Math.round(lerp(x, y, t));
-  const top = `rgb(${mix(a.top[0],b.top[0])},${mix(a.top[1],b.top[1])},${mix(a.top[2],b.top[2])})`;
-  const bot = `rgb(${mix(a.bot[0],b.bot[0])},${mix(a.bot[1],b.bot[1])},${mix(a.bot[2],b.bot[2])})`;
-  const night = clamp((phase - 0.62) / 0.13, 0, 1) * clamp((0.86 - phase) / 0.1, 0, 1);
-  return { top, bot, night: clamp(night, 0, 1) };
-}
-
 // --------------------------------------------------------------------------
 // Render
 // --------------------------------------------------------------------------
@@ -581,51 +585,11 @@ function render() {
     ctx.translate(rand(-game.shake, game.shake), rand(-game.shake, game.shake));
   }
 
-  const sky = skyColors(state === STATE.PLAY ? game.dayPhase : 0.15);
+  // Crisp pixel art — never smooth when upscaling sprites.
+  ctx.imageSmoothingEnabled = false;
 
-  // --- Sky ---
-  const grad = ctx.createLinearGradient(0, 0, 0, GROUND);
-  grad.addColorStop(0, sky.top);
-  grad.addColorStop(1, sky.bot);
-  ctx.fillStyle = grad;
-  ctx.fillRect(-40, -40, W + 80, GROUND + 80);
-
-  // --- Stars (at night) ---
-  if (sky.night > 0.02) {
-    ctx.save();
-    ctx.globalAlpha = sky.night;
-    for (const s of stars) {
-      const tw = 0.5 + 0.5 * Math.sin(s.tw);
-      ctx.fillStyle = `rgba(255,255,255,${tw})`;
-      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
-    }
-    ctx.restore();
-  }
-
-  // --- Sun / Moon ---
-  drawCelestial(sky.night);
-
-  // --- Clouds ---
-  ctx.fillStyle = `rgba(255,255,255,${0.55 - sky.night * 0.35})`;
-  for (const c of clouds) drawCloud(c.x, c.y, c.s);
-
-  // --- Far hills ---
-  for (const h of bgFar) {
-    ctx.fillStyle = sky.night > 0.4 ? '#23304a' : '#7d9b8e';
-    ctx.beginPath();
-    ctx.moveTo(h.x, GROUND);
-    ctx.quadraticCurveTo(h.x + h.w/2, GROUND - h.h, h.x + h.w, GROUND);
-    ctx.fill();
-  }
-
-  // --- Volcano (anchored, parallax slight) ---
-  drawVolcano(sky.night);
-
-  // --- Mid trees ---
-  for (const t of bgMid) drawTree(t.x, t.type, t.s, sky.night);
-
-  // --- Ground ---
-  drawGround(sky.night);
+  // --- Parallax forest background (fills the screen, floor baked in) ---
+  drawParallax();
 
   // --- Gems ---
   for (const g of gems) drawGem(g);
@@ -656,163 +620,35 @@ function render() {
   ctx.restore();
 }
 
-function drawCelestial(night) {
-  const cx = W() * 0.5, prog = state === STATE.PLAY ? game.dayPhase : 0.15;
-  // sun arcs across; moon opposite
-  const ang = prog * Math.PI * 2;
-  const sunX = VW * (0.5 - Math.cos(ang) * 0.42);
-  const sunY = GROUND * 0.55 - Math.sin(ang) * GROUND * 0.42;
-  if (night < 0.85) {
-    ctx.save();
-    ctx.globalAlpha = 1 - night;
-    const g = ctx.createRadialGradient(sunX, sunY, 4, sunX, sunY, 90);
-    g.addColorStop(0, 'rgba(255,245,200,1)');
-    g.addColorStop(0.4, 'rgba(255,210,120,0.9)');
-    g.addColorStop(1, 'rgba(255,180,84,0)');
-    ctx.fillStyle = g;
-    ctx.beginPath(); ctx.arc(sunX, sunY, 90, 0, 6.283); ctx.fill();
-    ctx.fillStyle = '#fff6da';
-    ctx.beginPath(); ctx.arc(sunX, sunY, 30, 0, 6.283); ctx.fill();
-    ctx.restore();
-  }
-  if (night > 0.1) {
-    const mx = VW * (0.5 + Math.cos(ang) * 0.42);
-    const my = GROUND * 0.55 + Math.sin(ang) * GROUND * 0.42;
-    ctx.save();
-    ctx.globalAlpha = night;
-    ctx.fillStyle = '#eef0ff';
-    ctx.beginPath(); ctx.arc(mx, my, 26, 0, 6.283); ctx.fill();
-    ctx.fillStyle = 'rgba(180,185,220,0.6)';
-    ctx.beginPath(); ctx.arc(mx - 8, my - 6, 6, 0, 6.283); ctx.fill();
-    ctx.beginPath(); ctx.arc(mx + 7, my + 5, 4, 0, 6.283); ctx.fill();
-    ctx.restore();
-  }
-}
-function W() { return VW; }
-
-function drawCloud(x, y, s) {
-  ctx.beginPath();
-  ctx.arc(x, y, 22*s, 0, 6.283);
-  ctx.arc(x + 26*s, y + 6*s, 18*s, 0, 6.283);
-  ctx.arc(x - 24*s, y + 8*s, 16*s, 0, 6.283);
-  ctx.arc(x + 6*s, y + 12*s, 20*s, 0, 6.283);
-  ctx.fill();
-}
-
-function drawVolcano(night) {
-  const vx = VW * 0.78, base = GROUND, top = GROUND - 230, halfW = 150;
-  ctx.fillStyle = night > 0.4 ? '#2a2230' : '#5b4a52';
-  ctx.beginPath();
-  ctx.moveTo(vx - halfW, base);
-  ctx.lineTo(vx - 36, top + 20);
-  ctx.lineTo(vx + 36, top + 20);
-  ctx.lineTo(vx + halfW, base);
-  ctx.closePath();
-  ctx.fill();
-  // lava glow at crater
-  const g = ctx.createRadialGradient(vx, top + 20, 4, vx, top + 20, 80);
-  g.addColorStop(0, 'rgba(255,120,40,0.95)');
-  g.addColorStop(1, 'rgba(255,90,54,0)');
-  ctx.fillStyle = g;
-  ctx.beginPath(); ctx.arc(vx, top + 20, 80, 0, 6.283); ctx.fill();
-  // lava streaks
-  ctx.strokeStyle = 'rgba(255,110,50,0.7)'; ctx.lineWidth = 4; ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(vx - 14, top + 24); ctx.quadraticCurveTo(vx - 50, base - 80, vx - 70, base);
-  ctx.moveTo(vx + 16, top + 24); ctx.quadraticCurveTo(vx + 44, base - 100, vx + 60, base);
-  ctx.stroke();
-  // embers
-  for (const e of embers) {
-    ctx.globalAlpha = clamp(e.life, 0, 1);
-    ctx.fillStyle = '#ff8a3c';
-    ctx.beginPath(); ctx.arc(e.x, e.y, 2.4, 0, 6.283); ctx.fill();
-  }
-  ctx.globalAlpha = 1;
-}
-
-function drawTree(x, type, s, night) {
-  const baseY = GROUND;
-  if (type === 0) {
-    // fern palm
-    ctx.strokeStyle = night > 0.4 ? '#1c3326' : '#2d5016';
-    ctx.lineWidth = 6 * s; ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.moveTo(x, baseY); ctx.lineTo(x, baseY - 70 * s); ctx.stroke();
-    ctx.fillStyle = night > 0.4 ? '#244a33' : '#3d6b1e';
-    for (let i = 0; i < 5; i++) {
-      const a = -Math.PI/2 + (i - 2) * 0.5;
-      ctx.beginPath();
-      ctx.moveTo(x, baseY - 70 * s);
-      ctx.quadraticCurveTo(x + Math.cos(a) * 40 * s, baseY - 70 * s + Math.sin(a) * 40 * s - 18*s,
-        x + Math.cos(a) * 66 * s, baseY - 70 * s + Math.sin(a) * 66 * s);
-      ctx.lineWidth = 8 * s; ctx.strokeStyle = ctx.fillStyle; ctx.stroke();
+// Tiled parallax forest. Each layer is scaled to fill the screen height and
+// scrolls at its own fraction of the world speed (back layers slowest).
+function drawParallax() {
+  // Backdrop so screen-shake / wide screens never reveal gaps.
+  ctx.fillStyle = "#1b3a2a";
+  ctx.fillRect(-60, -60, VW + 120, VH + 120);
+  for (const L of PLX) {
+    const img = Assets.img(L.k);
+    if (!img || !img.width) continue;
+    const sh = VH + 2;                       // cover full height
+    const sw = img.width * (sh / img.height);
+    let off = (game.distance * L.f) % sw;
+    if (off < 0) off += sw;
+    for (let x = -off - sw; x < VW + sw; x += sw) {
+      ctx.drawImage(img, 0, 0, img.width, img.height, x, -1, sw, sh);
     }
-  } else {
-    // cycad bush
-    ctx.fillStyle = night > 0.4 ? '#1f3a28' : '#356017';
-    ctx.beginPath();
-    ctx.ellipse(x, baseY - 22 * s, 30 * s, 26 * s, 0, 0, 6.283);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(x - 18*s, baseY - 14 * s, 18 * s, 16 * s, 0, 0, 6.283);
-    ctx.ellipse(x + 18*s, baseY - 16 * s, 20 * s, 18 * s, 0, 0, 6.283);
-    ctx.fill();
   }
-}
-
-function drawGround(night) {
-  const top = GROUND;
-  ctx.fillStyle = night > 0.4 ? '#2a1f1a' : '#6b4f32';
-  ctx.fillRect(-40, top, VW + 80, VH - top + 80);
-  // surface highlight
-  ctx.fillStyle = night > 0.4 ? '#3a2c22' : '#8a6a44';
-  ctx.fillRect(-40, top, VW + 80, 8);
-  // scrolling texture dashes
-  ctx.strokeStyle = night > 0.4 ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.12)';
-  ctx.lineWidth = 3;
-  const off = (game.distance * 0.5) % 60;
-  ctx.beginPath();
-  for (let x = -off; x < VW + 60; x += 60) {
-    ctx.moveTo(x, top + 26); ctx.lineTo(x + 22, top + 26);
-    ctx.moveTo(x + 30, top + 48); ctx.lineTo(x + 50, top + 48);
-  }
-  ctx.stroke();
 }
 
 function drawObstacle(o) {
-  if (o.kind === 'lava') {
-    // glowing lava pool
-    const g = ctx.createLinearGradient(0, o.y, 0, o.y + o.h);
-    g.addColorStop(0, '#ffd24a'); g.addColorStop(0.5, '#ff6b2c'); g.addColorStop(1, '#c0260f');
-    ctx.fillStyle = g;
-    roundRect(o.x, o.y + o.h * 0.4, o.w, o.h * 0.6, 6); ctx.fill();
-    // bubbles
-    ctx.fillStyle = 'rgba(255,220,120,0.9)';
-    const b = (game.time * 3 + o.x) % 1;
-    ctx.beginPath(); ctx.arc(o.x + o.w*0.3, o.y + o.h*0.5 - b*10, 3, 0, 6.283); ctx.fill();
-    ctx.beginPath(); ctx.arc(o.x + o.w*0.7, o.y + o.h*0.6 - ((b+0.5)%1)*10, 2.4, 0, 6.283); ctx.fill();
-    // rocky rim
-    ctx.fillStyle = '#3a2a22';
-    roundRect(o.x - 4, o.y + o.h * 0.34, o.w + 8, 8, 4); ctx.fill();
-  } else {
-    // jagged rock
-    const g = ctx.createLinearGradient(0, o.y, 0, o.y + o.h);
-    g.addColorStop(0, '#9aa3ad'); g.addColorStop(1, '#586069');
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.moveTo(o.x, o.y + o.h);
-    ctx.lineTo(o.x + o.w * 0.18, o.y + o.h * 0.3);
-    ctx.lineTo(o.x + o.w * 0.45, o.y);
-    ctx.lineTo(o.x + o.w * 0.7, o.y + o.h * 0.36);
-    ctx.lineTo(o.x + o.w, o.y + o.h);
-    ctx.closePath();
-    ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,0.18)';
-    ctx.beginPath();
-    ctx.moveTo(o.x + o.w * 0.45, o.y);
-    ctx.lineTo(o.x + o.w * 0.7, o.y + o.h * 0.36);
-    ctx.lineTo(o.x + o.w * 0.55, o.y + o.h * 0.4);
-    ctx.closePath(); ctx.fill();
-  }
+  const m = o.kind === 'rino' ? SPR.rino : SPR.pig;
+  const fps = o.kind === 'rino' ? 14 : 18;
+  // Sprites are drawn facing left (the direction they charge the dino).
+  const flip = (o.kind === 'pig');
+  // Draw a touch taller than the hitbox so the creature's feet sit on the floor.
+  const dh = o.h * 1.12, dw = dh * (m.fw / m.fh);
+  const dx = o.x + o.w / 2 - dw / 2;
+  const dy = o.y + o.h - dh;
+  drawFrame(Assets.img(o.kind), m.fw, m.fh, Math.floor(o.t * fps), dx, dy, dw, dh, flip);
 }
 
 function drawGem(g) {
@@ -837,195 +673,46 @@ function drawGem(g) {
 }
 
 function drawPterodactyl(f) {
-  const cx = f.x + f.w/2, cy = f.y + f.h/2;
-  const flap = Math.sin(f.flap) * 0.7;
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.fillStyle = '#4a3b6b';
-  // body
-  ctx.beginPath(); ctx.ellipse(0, 0, 16, 9, 0, 0, 6.283); ctx.fill();
-  // head + beak
-  ctx.beginPath();
-  ctx.moveTo(-14, -2); ctx.lineTo(-30, -6 - flap*3); ctx.lineTo(-14, 4); ctx.closePath(); ctx.fill();
-  ctx.fillStyle = '#d98a3a';
-  ctx.beginPath(); ctx.moveTo(-26, -4); ctx.lineTo(-36, -3); ctx.lineTo(-26, 0); ctx.closePath(); ctx.fill();
-  // crest
-  ctx.fillStyle = '#e35b4a';
-  ctx.beginPath(); ctx.moveTo(-16, -6); ctx.lineTo(-22, -16); ctx.lineTo(-10, -8); ctx.closePath(); ctx.fill();
-  // wings
-  ctx.fillStyle = '#5d4b85';
-  ctx.beginPath();
-  ctx.moveTo(-4, -2);
-  ctx.quadraticCurveTo(8, -28 * (0.6 + flap), 34, -6 - flap * 10);
-  ctx.quadraticCurveTo(14, 2, 6, 2);
-  ctx.closePath(); ctx.fill();
-  ctx.beginPath();
-  ctx.moveTo(-2, 2);
-  ctx.quadraticCurveTo(10, 24 * (0.6 - flap), 32, 10 + flap * 8);
-  ctx.quadraticCurveTo(12, 6, 4, 4);
-  ctx.closePath(); ctx.fill();
-  ctx.restore();
+  // Animated bat sprite (the flying hazard).
+  drawFrame(Assets.img('bat'), SPR.bat.fw, SPR.bat.fh, Math.floor(f.flap * 1.1),
+            f.x, f.y, f.w, f.h, false);
 }
 
 // --------------------------------------------------------------------------
-// The T-Rex — drawn procedurally with a running cycle + jump/duck poses
+// The dino — animated from the Arks sprite sheet (24x24 frames):
+//   idle 0-3 · run 4-10 · kick 11-13 · hit 14-16 · crouch/sprint 17-23
 // --------------------------------------------------------------------------
 function drawDino() {
+  const img = Assets.img("dino");
   const baseH = dino.ducking ? dino.h * 0.62 : dino.h;
-  const x = dino.x, y = dino.y, w = dino.w;
-  const green = '#3d8b3d', greenDark = '#2c6b2c', belly = '#7bc47b';
-  const run = dino.runCycle;
-  const airborne = !dino.onGround;
+  const cx = dino.x + dino.w / 2;
+  const feet = dino.y + baseH;                 // == GROUND when grounded
 
-  ctx.save();
-  // soft shadow on ground
-  const sh = clamp(1 - (GROUND - (y + baseH)) / 160, 0.25, 1);
+  // soft contact shadow (fades as the dino rises)
+  const sh = clamp(1 - (GROUND - feet) / 170, 0.2, 1);
   ctx.fillStyle = `rgba(0,0,0,${0.22 * sh})`;
   ctx.beginPath();
-  ctx.ellipse(x + w*0.5, GROUND + 2, w*0.42 * sh, 7 * sh, 0, 0, 6.283);
+  ctx.ellipse(cx, GROUND + 2, dino.w * 0.42 * sh, 6 * sh, 0, 0, 6.283);
   ctx.fill();
 
-  ctx.translate(x, y);
-
-  if (dino.ducking) {
-    drawDinoDuck(w, baseH, green, greenDark, belly, run);
+  // pick the animation frame for the current state
+  let frame;
+  if (dino.dead) {
+    frame = 14 + Math.min(2, Math.floor((game.time - dino.deadAt) * 9));   // hit, then hold
+  } else if (dino.ducking) {
+    frame = 17 + (Math.floor(dino.runCycle * 1.6) % 7);                     // crouch run
+  } else if (!dino.onGround) {
+    frame = 6;                                                             // airborne pose
+  } else if (state === STATE.PLAY) {
+    frame = 4 + (Math.floor(dino.runCycle * 1.3) % 7);                      // run
   } else {
-    // ---- tail ----
-    ctx.fillStyle = greenDark;
-    ctx.beginPath();
-    ctx.moveTo(6, baseH * 0.42);
-    ctx.quadraticCurveTo(-26, baseH * 0.34, -34, baseH * 0.14);
-    ctx.quadraticCurveTo(-22, baseH * 0.5, 8, baseH * 0.6);
-    ctx.closePath(); ctx.fill();
-
-    // ---- legs (running cycle or tucked when airborne) ----
-    ctx.strokeStyle = green; ctx.lineWidth = 9; ctx.lineCap = 'round';
-    let l1, l2;
-    if (airborne) { l1 = 0.5; l2 = -0.3; }
-    else { l1 = Math.sin(run); l2 = Math.sin(run + Math.PI); }
-    drawLeg(w*0.34, baseH*0.58, l1, baseH, green);
-    drawLeg(w*0.52, baseH*0.58, l2, baseH, greenDark);
-
-    // ---- body ----
-    const bg = ctx.createLinearGradient(0, baseH*0.2, 0, baseH);
-    bg.addColorStop(0, green); bg.addColorStop(1, greenDark);
-    ctx.fillStyle = bg;
-    ctx.beginPath();
-    ctx.moveTo(0, baseH*0.5);
-    ctx.quadraticCurveTo(-2, baseH*0.14, w*0.42, baseH*0.1);
-    ctx.quadraticCurveTo(w*0.72, baseH*0.1, w*0.78, baseH*0.34);
-    ctx.quadraticCurveTo(w*0.82, baseH*0.6, w*0.5, baseH*0.66);
-    ctx.quadraticCurveTo(w*0.18, baseH*0.66, 0, baseH*0.5);
-    ctx.closePath(); ctx.fill();
-
-    // belly
-    ctx.fillStyle = belly;
-    ctx.beginPath();
-    ctx.moveTo(w*0.2, baseH*0.6);
-    ctx.quadraticCurveTo(w*0.5, baseH*0.72, w*0.7, baseH*0.5);
-    ctx.quadraticCurveTo(w*0.5, baseH*0.64, w*0.2, baseH*0.6);
-    ctx.closePath(); ctx.fill();
-
-    // ---- arm ----
-    ctx.strokeStyle = greenDark; ctx.lineWidth = 5;
-    ctx.beginPath();
-    ctx.moveTo(w*0.62, baseH*0.42);
-    ctx.lineTo(w*0.7, baseH*0.5 + (airborne ? -4 : Math.sin(run)*2));
-    ctx.stroke();
-
-    // ---- head ----
-    ctx.fillStyle = green;
-    ctx.beginPath();
-    ctx.moveTo(w*0.6, baseH*0.2);
-    ctx.quadraticCurveTo(w*0.78, baseH*0.0, w*1.02, baseH*0.06);
-    ctx.quadraticCurveTo(w*1.06, baseH*0.2, w*0.98, baseH*0.28);
-    ctx.lineTo(w*0.78, baseH*0.32);
-    ctx.quadraticCurveTo(w*0.64, baseH*0.34, w*0.6, baseH*0.2);
-    ctx.closePath(); ctx.fill();
-
-    // jaw / teeth
-    ctx.fillStyle = '#fff';
-    ctx.beginPath();
-    ctx.moveTo(w*0.86, baseH*0.27);
-    ctx.lineTo(w*0.9, baseH*0.32);
-    ctx.lineTo(w*0.94, baseH*0.27);
-    ctx.lineTo(w*0.98, baseH*0.31);
-    ctx.lineTo(w*1.0, baseH*0.26);
-    ctx.closePath(); ctx.fill();
-
-    // nostril
-    ctx.fillStyle = greenDark;
-    ctx.beginPath(); ctx.arc(w*0.98, baseH*0.12, 1.6, 0, 6.283); ctx.fill();
-
-    // eye
-    if (dino.blink > 0) {
-      ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(w*0.82, baseH*0.15); ctx.lineTo(w*0.9, baseH*0.15); ctx.stroke();
-    } else {
-      ctx.fillStyle = '#fff';
-      ctx.beginPath(); ctx.arc(w*0.86, baseH*0.15, 4.4, 0, 6.283); ctx.fill();
-      ctx.fillStyle = '#111';
-      ctx.beginPath(); ctx.arc(w*0.88, baseH*0.15, 2.2, 0, 6.283); ctx.fill();
-    }
+    frame = Math.floor(dino.runCycle * 0.6) % 4;                           // idle (title)
   }
-  ctx.restore();
-}
 
-function drawLeg(px, py, phase, baseH, color) {
-  const footX = px + phase * 10;
-  const knee = py + baseH * 0.18;
-  ctx.strokeStyle = color; ctx.lineWidth = 9; ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(px, py);
-  ctx.lineTo(footX, knee);
-  ctx.lineTo(footX + 8 + phase * 3, baseH - 1);
-  ctx.stroke();
-}
-
-function drawDinoDuck(w, h, green, greenDark, belly, run) {
-  // low, stretched pose
-  ctx.fillStyle = greenDark;
-  ctx.beginPath();
-  ctx.moveTo(2, h*0.4);
-  ctx.quadraticCurveTo(-28, h*0.3, -40, h*0.0);
-  ctx.quadraticCurveTo(-20, h*0.6, 6, h*0.7);
-  ctx.closePath(); ctx.fill();
-
-  // legs (quick shuffle)
-  const l1 = Math.sin(run*1.4), l2 = Math.sin(run*1.4 + Math.PI);
-  drawLeg(w*0.4, h*0.62, l1, h, green);
-  drawLeg(w*0.6, h*0.62, l2, h, greenDark);
-
-  const bg = ctx.createLinearGradient(0, 0, 0, h);
-  bg.addColorStop(0, green); bg.addColorStop(1, greenDark);
-  ctx.fillStyle = bg;
-  ctx.beginPath();
-  ctx.moveTo(0, h*0.5);
-  ctx.quadraticCurveTo(w*0.4, h*0.18, w*0.95, h*0.3);
-  ctx.quadraticCurveTo(w*1.0, h*0.55, w*0.6, h*0.74);
-  ctx.quadraticCurveTo(w*0.2, h*0.78, 0, h*0.5);
-  ctx.closePath(); ctx.fill();
-
-  // head forward
-  ctx.fillStyle = green;
-  ctx.beginPath();
-  ctx.moveTo(w*0.78, h*0.32);
-  ctx.quadraticCurveTo(w*1.1, h*0.2, w*1.28, h*0.34);
-  ctx.quadraticCurveTo(w*1.1, h*0.5, w*0.82, h*0.5);
-  ctx.closePath(); ctx.fill();
-  // eye
-  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(w*1.02, h*0.34, 4, 0, 6.283); ctx.fill();
-  ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(w*1.04, h*0.34, 2, 0, 6.283); ctx.fill();
-}
-
-function roundRect(x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
+  // Draw a touch larger than the hitbox; feet planted on the floor.
+  const dh = baseH * (dino.ducking ? 1.35 : 1.16);
+  const dw = dh;                                // 24x24 square source
+  drawFrame(img, 24, 24, frame, cx - dw / 2, feet - dh, dw, dh, false);
 }
 
 // --------------------------------------------------------------------------
@@ -1046,6 +733,14 @@ function frame(now) {
 resize();
 dino.y = GROUND - dino.h;
 seedWorld();
+Assets.load();           // sprites stream in; render() skips any not yet ready
 requestAnimationFrame(frame);
+
+// Read-only introspection hook (used by automated playtests; harmless to ship).
+window.__primal = {
+  state: () => state, dino,
+  obstacles: () => obstacles, flyers: () => flyers,
+  ground: () => GROUND, vw: () => VW, speed: () => game.speed,
+};
 
 })();
