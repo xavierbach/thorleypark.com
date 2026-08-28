@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 45] — 2026-08-28
+- devs: add Wall Muse as an iOS App project card (new `images/wallmuse-icon.png`), linked to https://wallmuse.tv, placed with the other iOS apps after Bucko and marked Coming Soon until the App Store release.
+
 ## [Build 44] — 2026-06-23
 - Add `seating/` — a tap-to-arrange seating planner at `/seating/`. Built with Vite + React + TypeScript (source in `seating-planner/`, production build output to `seating/`). Arrange named guests around a rectangle, square or round table by tapping (no drag-and-drop), with computed seat coordinates that reflow when the shape or seat count changes. Editable event header and guest list, saved plans persisted to `localStorage` with unsaved-change detection, JSON import/export in the canonical config format, and a "Download image" button (`html-to-image`) that exports just the table view as a PNG. Mobile-first dining-room visual identity (Fraunces + Inter) driven by `seating-config.json` design tokens.
 - devs: feature Seating Planner as a Web App project card (new `images/seating-icon.svg`), placed beside Meeting Time before the &ldquo;More to come&rdquo; card. Added to sitemap.
