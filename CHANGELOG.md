@@ -1,5 +1,9 @@
 # Changelog
 
+## [Build 50] 2026-10-06
+- christmas2026: copy edits (hero tagline removed, entree removed, pavlova swapped for panettone, parking now on Douglas Road)
+- christmas2026: add an on brand Leaflet map (CARTO tiles, green and butter pins) showing Thorley Park and the Douglas Road parking spot, plus a directions link
+
 ## [Build 49] 2026-10-06
 - christmas2026: hero heading set in Brittany Signature (self hosted in `christmas2026/fonts/`), with a two line break on mobile
 - christmas2026: add `email-header.png` (fountain mark plus "Your Secret Santa" in Brittany) for the Secret Santa emails

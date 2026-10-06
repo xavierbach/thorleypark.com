@@ -11,7 +11,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
 <link rel="preload" href="/christmas2026/fonts/BrittanySignature.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/christmas2026/styles.css?v=4">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="/christmas2026/styles.css?v=5">
 </head>
 <body>
 
@@ -22,7 +23,6 @@
   <h1>Christmas at<br class="br"> Thorley Park</h1>
   <p class="hero-date">Friday 25 December 2026</p>
   <p class="hero-address">49 Alton Road, Mount Macedon</p>
-  <p class="hero-tag">A long garden lunch under the trees. Kids very welcome.</p>
 </header>
 
 <nav aria-label="Sections">
@@ -57,10 +57,6 @@
     <p>King prawns<span class="dot">&middot;</span>Smoked salmon blinis<span class="dot">&middot;</span>Cheese board</p>
   </div>
   <div class="course">
-    <h3>Entr&eacute;e</h3>
-    <p>Burrata, heirloom tomatoes, basil</p>
-  </div>
-  <div class="course">
     <h3>Main</h3>
     <p>Roast turkey<span class="dot">&middot;</span>Warm glazed ham<span class="dot">&middot;</span>Mushroom wellington (v)</p>
   </div>
@@ -70,7 +66,7 @@
   </div>
   <div class="course">
     <h3>Dessert</h3>
-    <p>Pavlova<span class="dot">&middot;</span>Christmas pudding with custard and brandy butter<span class="dot">&middot;</span>Cherries</p>
+    <p>Panettone<span class="dot">&middot;</span>Christmas pudding with custard and brandy butter<span class="dot">&middot;</span>Cherries</p>
   </div>
   <p class="menu-foot">Champagne, wine, beer and soft drinks throughout. Vegetarian options across every course; let us know any other dietary needs in your RSVP.</p>
 </section>
@@ -82,7 +78,11 @@
     <a href="https://maps.apple.com/?address=49+Alton+Road,+Mount+Macedon+VIC+3441" target="_blank" rel="noopener">Apple Maps</a>
     <a href="https://www.google.com/maps/dir/?api=1&amp;destination=49+Alton+Road,+Mount+Macedon+VIC+3441" target="_blank" rel="noopener">Google Maps</a>
   </p>
-  <p>About an hour from Melbourne via the Calder Freeway. Parking on site; come in through the main gate.</p>
+  <p>About an hour from Melbourne via the Calder Freeway. Easiest parking is on Douglas Road, then walk up.</p>
+  <div id="map" class="map" role="img" aria-label="Map showing Thorley Park at 49 Alton Road and parking on Douglas Road"></div>
+  <p class="links map-links">
+    <a href="https://www.google.com/maps/dir/?api=1&amp;destination=-37.399306,144.586030" target="_blank" rel="noopener">Directions to parking</a>
+  </p>
   <p><strong>By train:</strong> V/Line to Woodend, then a 10 minute taxi. Pre-book, as cars are scarce on Christmas Day.</p>
 </section>
 
@@ -148,6 +148,7 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/christmas2026/app.js?v=4"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="/christmas2026/app.js?v=5"></script>
 </body>
 </html>

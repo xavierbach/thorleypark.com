@@ -180,6 +180,36 @@ p + p { margin-top: 14px; }
 .dot { color: var(--butter-2); padding: 0 4px; }
 .menu-foot { margin-top: 24px; font-size: 15px; color: var(--green-2); }
 
+/* Map */
+.map {
+  height: 320px;
+  margin: 22px 0 6px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--linen);
+}
+.map .leaflet-tile-pane { filter: sepia(0.25) saturate(0.7) brightness(1.03); }
+.map .leaflet-control-attribution { background: rgba(250,247,239,0.85); font-size: 10px; }
+.map .leaflet-control-attribution a { color: var(--green-2); }
+.pin { display: flex; flex-direction: column; align-items: center; }
+.pin span {
+  font-family: 'Jost', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 4px 9px;
+  border-radius: 20px;
+  margin-bottom: 5px;
+  box-shadow: 0 1px 3px rgba(35,64,46,0.2);
+}
+.pin i { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(35,64,46,0.3); }
+.pin.house span { background: var(--green); color: var(--ivory); }
+.pin.house i { background: var(--green); }
+.pin.park span { background: var(--butter); color: var(--green); }
+.pin.park i { background: var(--butter-2); }
+.map-links { margin-top: 8px; }
+
 /* Getting here / stay */
 .address { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; }
 .links { display: flex; gap: 20px; flex-wrap: wrap; margin: 10px 0 24px; font-size: 14px; }
