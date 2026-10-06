@@ -1,5 +1,9 @@
 # Changelog
 
+## [Build 49] 2026-10-06
+- christmas2026: hero heading set in Brittany Signature (self hosted in `christmas2026/fonts/`), with a two line break on mobile
+- christmas2026: add `email-header.png` (fountain mark plus "Your Secret Santa" in Brittany) for the Secret Santa emails
+
 ## [Build 48] 2026-10-06
 - christmas2026: Secret Santa now open to everyone including kids; a parent can add several names under one email, and the form resets the name field for the next family member
 

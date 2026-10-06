@@ -1,6 +1,13 @@
 /* Christmas at Thorley Park 2026
    Refined country garden lunch: ivory linen, garden green, butter yellow. */
 
+@font-face {
+  font-family: 'Brittany Signature';
+  src: url('/christmas2026/fonts/BrittanySignature.woff2') format('woff2'),
+       url('/christmas2026/fonts/BrittanySignature.ttf') format('truetype');
+  font-display: swap;
+}
+
 :root {
   --ivory:   #faf7ef;
   --linen:   #f3eee1;
@@ -41,12 +48,17 @@ a { color: var(--green); text-underline-offset: 3px; text-decoration-thickness: 
 }
 .hero-mark { width: 92px; height: auto; display: block; margin: 0 auto 28px; }
 .hero h1 {
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Brittany Signature', 'Cormorant Garamond', Georgia, serif;
   font-weight: 400;
-  font-size: clamp(40px, 11vw, 76px);
-  line-height: 1.02;
-  letter-spacing: -0.01em;
-  margin-bottom: 24px;
+  font-size: clamp(38px, 10vw, 72px);
+  line-height: 1.35;
+  letter-spacing: 0;
+  margin-bottom: 34px;
+}
+.hero h1 .br { display: none; }
+@media (max-width: 640px) {
+  .hero h1 { font-size: 48px; line-height: 1.55; margin-bottom: 26px; }
+  .hero h1 .br { display: inline; }
 }
 .hero-date, .hero-address {
   font-size: 13px;
