@@ -1,5 +1,9 @@
 # Changelog
 
+## [Build 51] 2026-10-06
+- christmas2026: design pass. Hero RSVP button; The Day times in larger Cormorant figures; mobile nav fits one line; two column sections on desktop; umbrella stripe repeated at the foot; darker secondary green for contrast; tighter mobile spacing
+- christmas2026: menu and lawn tip removed; Secret Santa signup folded into the RSVP (opt in tick box with a name per person); RSVP shows a confirmation panel
+
 ## [Build 50] 2026-10-06
 - christmas2026: copy edits (hero tagline removed, entree removed, pavlova swapped for panettone, parking now on Douglas Road)
 - christmas2026: add an on brand Leaflet map (CARTO tiles, green and butter pins) showing Thorley Park and the Douglas Road parking spot, plus a directions link

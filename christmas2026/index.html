@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
 <link rel="preload" href="/christmas2026/fonts/BrittanySignature.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-<link rel="stylesheet" href="/christmas2026/styles.css?v=6">
+<link rel="stylesheet" href="/christmas2026/styles.css?v=7">
 </head>
 <body>
 
@@ -23,6 +23,7 @@
   <h1>Christmas at<br class="br"> Thorley Park</h1>
   <p class="hero-date">Friday 25 December 2026</p>
   <p class="hero-address">49 Alton Road, Mount Macedon</p>
+  <a class="btn hero-btn" href="#rsvp">RSVP by 1 November</a>
 </header>
 
 <nav aria-label="Sections">
@@ -30,8 +31,8 @@
     <li><a href="#day">The Day</a></li>
     <li><a href="#getting-here">Getting Here</a></li>
     <li><a href="#stay">Stay</a></li>
-    <li><a href="#rsvp">RSVP</a></li>
     <li><a href="#secret-santa">Secret Santa</a></li>
+    <li><a href="#rsvp">RSVP</a></li>
   </ul>
 </nav>
 
@@ -39,17 +40,20 @@
 
 <section id="day">
   <h2>The Day</h2>
+  <div class="body">
   <ul class="times">
-    <li><span class="t">12:00 pm</span><span class="w">Arrive</span></li>
-    <li><span class="t">12:30 pm</span><span class="w">Champagne and canap&eacute;s</span></li>
-    <li><span class="t">2:00 pm</span><span class="w">Lunch</span></li>
-    <li><span class="t">4:00 pm</span><span class="w">Dessert and Secret Santa gifts</span></li>
+    <li><span class="t">12:00<small>pm</small></span><span class="w">Arrive</span></li>
+    <li><span class="t">12:30<small>pm</small></span><span class="w">Champagne and canap&eacute;s</span></li>
+    <li><span class="t">2:00<small>pm</small></span><span class="w">Lunch</span></li>
+    <li><span class="t">4:00<small>pm</small></span><span class="w">Dessert and Secret Santa gifts</span></li>
   </ul>
   <p class="after">Then stay as long as you like.</p>
+  </div>
 </section>
 
 <section id="getting-here">
   <h2>Getting Here</h2>
+  <div class="body">
   <p class="address">49 Alton Road, Mount Macedon VIC 3441</p>
   <p class="links">
     <a href="https://maps.apple.com/?address=49+Alton+Road,+Mount+Macedon+VIC+3441" target="_blank" rel="noopener">Apple Maps</a>
@@ -61,10 +65,12 @@
     <a href="https://www.google.com/maps/dir/?api=1&amp;destination=-37.399306,144.586030" target="_blank" rel="noopener">Directions to parking</a>
   </p>
   <p><strong>By train:</strong> V/Line to Macedon or Woodend, then a 10 minute taxi. Pre-book, as cars are scarce on Christmas Day.</p>
+  </div>
 </section>
 
 <section id="stay">
   <h2>Stay</h2>
+  <div class="body">
   <p>Staying over? A few picks nearby, book early:</p>
   <ul class="stays">
     <li><span><a href="https://www.mollisons.com.au" target="_blank" rel="noopener">Mollisons</a><span class="town">Kyneton</span></span><span class="tier luxe">Luxe</span></li>
@@ -72,10 +78,20 @@
     <li><span><a href="https://www.visitmacedonranges.com/where-to-stay/" target="_blank" rel="noopener">The Black Forest Motel</a><span class="town">Woodend</span></span><span class="tier">Value</span></li>
   </ul>
   <p class="muted">More options: <a href="https://www.visitmacedonranges.com/where-to-stay/" target="_blank" rel="noopener">Visit Macedon Ranges</a></p>
+  </div>
+</section>
+
+<section id="secret-santa">
+  <h2>Secret Santa</h2>
+  <div class="body">
+  <p>For everyone, kids included. Sign up by 1 December and Xavier will privately send you the name of the person you&rsquo;re gifting. Budget $50 to $80.</p>
+  <p class="muted">Join the draw when you RSVP below. Kids go in under a parent&rsquo;s email, and their match comes to you. Already RSVP&rsquo;d? Just send it again with the box ticked.</p>
+  </div>
 </section>
 
 <section id="rsvp">
   <h2>RSVP</h2>
+  <div class="body">
   <p>Please RSVP by Sunday 1 November.</p>
   <form id="rsvp-form" novalidate>
     <div class="row">
@@ -98,24 +114,21 @@
       </div>
     </div>
     <div><label for="rsvp-dietary">Dietary needs</label><input id="rsvp-dietary" type="text" placeholder="Leave blank if none"></div>
+    <div class="santa-opt">
+      <label class="check" for="rsvp-santa"><input id="rsvp-santa" type="checkbox"><span>Count us in for Secret Santa</span></label>
+      <div id="santa-names" class="santa-names" hidden>
+        <p class="muted small">One name per person joining the draw, kids included.</p>
+        <div id="santa-list"></div>
+        <button type="button" class="text-btn" id="santa-add">Add another name</button>
+      </div>
+    </div>
     <button class="btn" type="submit" id="rsvp-submit">Send RSVP</button>
     <p class="msg" id="rsvp-msg" role="status"></p>
   </form>
+  </div>
 </section>
 
-<section id="secret-santa">
-  <h2>Secret Santa</h2>
-  <p>For everyone, kids included. Sign up by 1 December and Xavier will privately send you the name of the person you&rsquo;re gifting. Budget $50 to $80.</p>
-  <p class="muted">Signing up the kids? Add each child by name with a parent&rsquo;s email, one at a time. Their match comes to you.</p>
-  <form id="santa-form" novalidate>
-    <div class="row">
-      <div><label for="santa-name">Name</label><input id="santa-name" type="text" autocomplete="name" required></div>
-      <div><label for="santa-email">Email</label><input id="santa-email" type="email" autocomplete="email" required></div>
-    </div>
-    <button class="btn" type="submit" id="santa-submit">Join the draw</button>
-    <p class="msg" id="santa-msg" role="status"></p>
-  </form>
-</section>
+
 
 </main>
 
@@ -123,9 +136,10 @@
   <img src="/christmas2026/fountain-green.png" alt="">
   <p>This is a private page for invited guests only. Please do not share.</p>
 </footer>
+<div class="stripe" aria-hidden="true"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="/christmas2026/app.js?v=6"></script>
+<script src="/christmas2026/app.js?v=7"></script>
 </body>
 </html>
