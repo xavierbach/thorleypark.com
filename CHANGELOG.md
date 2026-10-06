@@ -1,5 +1,11 @@
 # Changelog
 
+## [Build 46] 2026-10-06
+- christmas2026: collapse the six subpages back into one minimalist scrolling page with a small sticky anchor nav (The Day, Menu, Getting Here, Stay, RSVP, Secret Santa); old `/christmas2026/<section>/` URLs now redirect to the matching anchor
+- christmas2026: restyle from dark/gold to a country garden look: ivory background, garden green type, butter yellow accent, umbrella stripe, green fountain mark (`christmas2026/fountain-green.png`)
+- christmas2026: trimmed copy to need to know only; RSVP now takes name, email, adults, children, dietary needs (staying and notes fields dropped, public guest counter and public Santa list removed)
+- christmas2026: scripts moved to `christmas2026/app.js`; admin draw markup is only created in the DOM when `?draw=thorleypark2026` is present
+
 ## [Build 45] — 2026-08-28
 - devs: add Wall Muse as an iOS App project card (new `images/wallmuse-icon.png`), linked to https://wallmuse.tv, placed with the other iOS apps after Bucko and marked Coming Soon until the App Store release.
 
