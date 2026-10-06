@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 47] 2026-10-06
+- christmas2026: remove the admin draw from the page (Supabase row level security blocks public reads, so it could never load sign ups); the draw now runs as a query in the Supabase SQL Editor
+
 ## [Build 46] 2026-10-06
 - christmas2026: collapse the six subpages back into one minimalist scrolling page with a small sticky anchor nav (The Day, Menu, Getting Here, Stay, RSVP, Secret Santa); old `/christmas2026/<section>/` URLs now redirect to the matching anchor
 - christmas2026: restyle from dark/gold to a country garden look: ivory background, garden green type, butter yellow accent, umbrella stripe, green fountain mark (`christmas2026/fountain-green.png`)

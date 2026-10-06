@@ -248,11 +248,6 @@ input:focus, select:focus { outline: none; border-color: var(--green-2); }
 .msg.ok { color: var(--green); }
 .msg.err { color: var(--error); }
 
-/* Admin draw (rendered only with the draw parameter) */
-.admin { margin-top: 36px; padding-top: 24px; border-top: 1px dashed var(--rule); }
-.pair { display: flex; flex-wrap: wrap; gap: 6px 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 15px; }
-.pair .email { color: var(--green-2); font-size: 13px; width: 100%; word-break: break-all; }
-
 /* Footer */
 footer {
   text-align: center;

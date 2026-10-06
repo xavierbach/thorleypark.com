@@ -6,7 +6,6 @@
   const $ = id => document.getElementById(id);
 
   const say = (id, text, ok) => { const el = $(id); el.textContent = text; el.className = 'msg ' + (ok ? 'ok' : 'err'); };
-  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const validEmail = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 
   // Highlight the nav link for the section in view
@@ -66,40 +65,4 @@
     btn.textContent = 'Joined';
   });
 
-  // Admin draw: built only when the draw parameter is present
-  if (new URLSearchParams(location.search).get('draw') !== 'thorleypark2026') return;
-
-  const slot = $('admin-slot');
-  slot.innerHTML = '<div class="admin"><label>Admin</label><button class="btn" id="draw-btn" type="button">Run the draw</button><p class="msg" id="draw-msg"></p><div id="draw-result"></div></div>';
-
-  const shuffle = arr => {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
-    return a;
-  };
-
-  $('draw-btn').addEventListener('click', async () => {
-    const btn = $('draw-btn');
-    btn.disabled = true; btn.textContent = 'Drawing';
-    const { data: list, error } = await sb.from('xmas26_santa').select('name, email').order('created_at', { ascending: true });
-    if (error) {
-      console.error('Draw load error', error);
-      say('draw-msg', 'Could not load participants.', false);
-      btn.disabled = false; btn.textContent = 'Run the draw';
-      return;
-    }
-    if (!list || list.length < 3) {
-      say('draw-msg', `Need at least 3 participants (currently ${list ? list.length : 0}).`, false);
-      btn.disabled = false; btn.textContent = 'Run the draw';
-      return;
-    }
-    let shuffled;
-    do { shuffled = shuffle(list); } while (shuffled.some((p, i) => p.email === list[i].email));
-    $('draw-result').innerHTML = list.map((g, i) =>
-      `<div class="pair"><strong>${esc(g.name)}</strong><span>gives to</span><strong>${esc(shuffled[i].name)}</strong><span class="email">${esc(g.email)}</span></div>`
-    ).join('');
-    say('draw-msg', `${list.length} pairings. Send each person only their own row.`, true);
-    btn.textContent = 'Run again';
-    btn.disabled = false;
-  });
 })();
