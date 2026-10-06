@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 48] 2026-10-06
+- christmas2026: Secret Santa now open to everyone including kids; a parent can add several names under one email, and the form resets the name field for the next family member
+
 ## [Build 47] 2026-10-06
 - christmas2026: remove the admin draw from the page (Supabase row level security blocks public reads, so it could never load sign ups); the draw now runs as a query in the Supabase SQL Editor
 

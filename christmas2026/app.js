@@ -61,8 +61,9 @@
       btn.disabled = false; btn.textContent = 'Join the draw';
       return;
     }
-    say('santa-msg', error ? 'You are already in the draw.' : `You're in, ${name}. Xavier will be in touch in December.`, true);
-    btn.textContent = 'Joined';
+    say('santa-msg', error ? `${name} is already in the draw.` : `${name} is in. Add another family member, or you're all done.`, true);
+    $('santa-name').value = '';
+    btn.disabled = false; btn.textContent = 'Add another';
   });
 
 })();
