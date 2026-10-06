@@ -188,7 +188,7 @@ p + p { margin-top: 14px; }
   border-radius: 4px;
   background: var(--linen);
 }
-.map .leaflet-tile-pane { filter: sepia(0.25) saturate(0.7) brightness(1.03); }
+.map .leaflet-tile-pane { filter: grayscale(0.85) sepia(0.35) brightness(1.06) contrast(0.9); }
 .map .leaflet-control-attribution { background: rgba(250,247,239,0.85); font-size: 10px; }
 .map .leaflet-control-attribution a { color: var(--green-2); }
 .pin { display: flex; flex-direction: column; align-items: center; }
