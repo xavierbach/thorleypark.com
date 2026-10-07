@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 52] 2026-10-08
+- christmas2026: accent changed from butter yellow to dusty red (#c4675e, darker #a54c44) across stripes, buttons, tags, map pin and rules; buttons and filled tags now use ivory text
+
 ## [Build 51] 2026-10-06
 - christmas2026: design pass. Hero RSVP button; The Day times in larger Cormorant figures; mobile nav fits one line; two column sections on desktop; umbrella stripe repeated at the foot; darker secondary green for contrast; tighter mobile spacing
 - christmas2026: menu and lawn tip removed; Secret Santa signup folded into the RSVP (opt in tick box with a name per person); RSVP shows a confirmation panel

@@ -1,5 +1,5 @@
 /* Christmas at Thorley Park 2026
-   Refined country garden lunch: ivory linen, garden green, butter yellow. */
+   Refined country garden lunch: ivory linen, garden green, dusty red. */
 
 @font-face {
   font-family: 'Brittany Signature';
@@ -14,8 +14,8 @@
   --green:   #23402e;
   --green-2: #3e5544;
   --rule:    #ddd6c3;
-  --butter:  #f1dc8e;
-  --butter-2:#e7cc6a;
+  --butter:  #c4675e;  /* dusty red accent */
+  --butter-2:#a54c44;
   --error:   #8c3b2e;
 }
 
@@ -234,7 +234,7 @@ p + p { margin-top: 14px; }
 .pin i { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(35,64,46,0.3); }
 .pin.house span { background: var(--green); color: var(--ivory); }
 .pin.house i { background: var(--green); }
-.pin.park span { background: var(--butter); color: var(--green); }
+.pin.park span { background: var(--butter); color: var(--ivory); }
 .pin.park i { background: var(--butter-2); }
 .map-links { margin-top: 8px; }
 
@@ -263,7 +263,7 @@ p + p { margin-top: 14px; }
   border-radius: 20px;
   white-space: nowrap;
 }
-.tier.luxe { background: var(--butter); border-color: var(--butter); }
+.tier.luxe { background: var(--butter); border-color: var(--butter); color: var(--ivory); }
 
 /* Forms */
 form { margin-top: 28px; display: grid; gap: 18px; }
@@ -304,7 +304,7 @@ input:focus, select:focus { outline: none; border-color: var(--green-2); }
   font-weight: 400;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--green);
+  color: var(--ivory);
   background: var(--butter);
   border: 1px solid var(--butter-2);
   border-radius: 4px;
