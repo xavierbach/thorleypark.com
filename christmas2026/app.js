@@ -18,19 +18,17 @@
   }, { rootMargin: '-45% 0px -50% 0px' });
   document.querySelectorAll('main section').forEach(s => io.observe(s));
 
-  // Map: house and parking
+  // Map: the house (parking is on site)
   if (window.L && $('map')) {
     const house = [-37.3963739, 144.5856755];
-    const park = [-37.399306, 144.586030];
     const map = L.map('map', { scrollWheelZoom: false, zoomControl: true, attributionControl: true });
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
     const pin = (cls, label) => L.divIcon({ className: '', html: `<div class="pin ${cls}"><span>${label}</span><i></i></div>`, iconSize: [140, 40], iconAnchor: [70, 38] });
-    L.marker(house, { icon: pin('house', 'Thorley Park') }).addTo(map);
-    L.marker(park, { icon: pin('park', 'Park here') }).addTo(map);
-    map.fitBounds([house, park], { padding: [70, 60], maxZoom: 17 });
+    L.marker(house, { icon: pin('house', 'Thorley Park, park here') }).addTo(map);
+    map.setView(house, 16);
   }
 
   // Secret Santa opt in inside the RSVP

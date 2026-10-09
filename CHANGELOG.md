@@ -1,5 +1,9 @@
 # Changelog
 
+## [Build 53] 2026-10-10
+- christmas2026: Secret Santa budget changed from $50 to $80 to $50 max
+- christmas2026: parking moved from Douglas Road to the house; map now shows a single Thorley Park pin and the separate "Directions to parking" link is gone
+
 ## [Build 52] 2026-10-08
 - christmas2026: accent changed from butter yellow to dusty red (#c4675e, darker #a54c44) across stripes, buttons, tags, map pin and rules; buttons and filled tags now use ivory text
 

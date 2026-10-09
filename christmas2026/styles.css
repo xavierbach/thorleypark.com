@@ -211,7 +211,7 @@ p + p { margin-top: 14px; }
 /* Map */
 .map {
   height: 320px;
-  margin: 22px 0 6px;
+  margin: 22px 0 22px;
   border: 1px solid var(--rule);
   border-radius: 4px;
   background: var(--linen);
@@ -234,9 +234,6 @@ p + p { margin-top: 14px; }
 .pin i { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(35,64,46,0.3); }
 .pin.house span { background: var(--green); color: var(--ivory); }
 .pin.house i { background: var(--green); }
-.pin.park span { background: var(--butter); color: var(--ivory); }
-.pin.park i { background: var(--butter-2); }
-.map-links { margin-top: 8px; }
 
 /* Getting here / stay */
 .address { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; }
