@@ -1,5 +1,8 @@
 # Changelog
 
+## [Build 54] 2026-10-10
+- christmas2026: parking line now tells guests to enter from Alton Road, not the back dirt track
+
 ## [Build 53] 2026-10-10
 - christmas2026: Secret Santa budget changed from $50 to $80 to $50 max
 - christmas2026: parking moved from Douglas Road to the house; map now shows a single Thorley Park pin and the separate "Directions to parking" link is gone
